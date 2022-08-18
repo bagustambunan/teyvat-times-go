@@ -7,6 +7,7 @@ import (
 )
 
 type PostRepository interface {
+	FindPosts() ([]*models.Post, error)
 	FindPost(post *models.Post) (*models.Post, error)
 	FindPostBySlug(slug string) (*models.Post, error)
 }
@@ -21,6 +22,13 @@ type PRConfig struct {
 
 func NewPostRepository(c *PRConfig) PostRepository {
 	return &postRepository{db: c.DB}
+}
+
+func (repo *postRepository) FindPosts() ([]*models.Post, error) {
+	var posts []*models.Post
+	result := repo.db.
+		Find(&posts)
+	return posts, result.Error
 }
 
 func (repo *postRepository) FindPost(post *models.Post) (*models.Post, error) {

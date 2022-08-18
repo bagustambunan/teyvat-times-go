@@ -7,6 +7,15 @@ import (
 	"net/http"
 )
 
+func (h *Handler) GetPosts(c *gin.Context) {
+	postsRes, err := h.postService.GetPosts()
+	if err != nil {
+		_ = c.Error(err)
+		return
+	}
+	helpers.StandardResponse(c, http.StatusOK, postsRes)
+}
+
 func (h *Handler) GetPost(c *gin.Context) {
 	slug := c.Param("slug")
 	if slug == "" {

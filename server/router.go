@@ -35,6 +35,11 @@ func NewRouter(conf *RouterConfig) *gin.Engine {
 	)
 
 	router.GET(
+		"/posts/",
+		middlewares.AuthorizePublic,
+		h.GetPosts,
+	)
+	router.GET(
 		"/posts/:slug",
 		middlewares.AuthorizePublic,
 		h.GetPost,

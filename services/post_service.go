@@ -6,6 +6,7 @@ import (
 )
 
 type PostService interface {
+	GetPosts() (*dto.GetPostsRes, error)
 	GetPostBySlug(slug string) (*dto.GetPostRes, error)
 }
 
@@ -21,6 +22,14 @@ func NewPostService(conf *PSConfig) PostService {
 	return &postService{
 		postRepository: conf.PostRepository,
 	}
+}
+
+func (serv *postService) GetPosts() (*dto.GetPostsRes, error) {
+	posts, err := serv.postRepository.FindPosts()
+	if err != nil {
+		return nil, err
+	}
+	return new(dto.GetPostsRes).FromPosts(posts), nil
 }
 
 func (serv *postService) GetPostBySlug(slug string) (*dto.GetPostRes, error) {
