@@ -36,7 +36,7 @@ func NewRouter(conf *RouterConfig) *gin.Engine {
 
 	router.GET(
 		"/posts/:slug",
-		//middlewares.AuthorizeJWT,
+		middlewares.AuthorizePublic,
 		h.GetPost,
 	)
 
