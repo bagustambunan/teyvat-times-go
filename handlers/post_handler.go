@@ -3,12 +3,19 @@ package handlers
 import (
 	"final-project-backend/helpers"
 	"final-project-backend/httperror"
+	"final-project-backend/models"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
 
 func (h *Handler) GetPosts(c *gin.Context) {
-	postsRes, err := h.postService.GetPosts()
+	opt, parsingErr := models.NewGetPostsOption(c.Request.URL.Query())
+	if parsingErr != nil {
+		_ = c.Error(parsingErr)
+		return
+	}
+
+	postsRes, err := h.postService.GetPosts(opt)
 	if err != nil {
 		_ = c.Error(err)
 		return

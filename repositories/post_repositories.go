@@ -2,12 +2,15 @@ package repositories
 
 import "C"
 import (
+	"final-project-backend/dto"
 	"final-project-backend/models"
+	"fmt"
 	"gorm.io/gorm"
+	"math"
 )
 
 type PostRepository interface {
-	FindPosts() ([]*models.Post, error)
+	FindPosts(opt *models.GetPostsOption) (*dto.GetPostsRes, error)
 	FindPost(post *models.Post) (*models.Post, error)
 	FindPostBySlug(slug string) (*models.Post, error)
 }
@@ -24,11 +27,25 @@ func NewPostRepository(c *PRConfig) PostRepository {
 	return &postRepository{db: c.DB}
 }
 
-func (repo *postRepository) FindPosts() ([]*models.Post, error) {
+func (repo *postRepository) FindPosts(opt *models.GetPostsOption) (*dto.GetPostsRes, error) {
+	whereQuery := "post_category_id = ?"
+	whereQuery += " AND post_tier_id = ?"
+	orderQuery := fmt.Sprintf("%s %s", opt.SortBy, opt.SortOrder)
+
 	var posts []*models.Post
 	result := repo.db.
+		Where(whereQuery, opt.Category, opt.Tier).
+		Where("title ILIKE ?", "%"+opt.S+"%").
+		Order(orderQuery).
+		Limit(opt.Limit).
+		Offset((opt.Page - 1) * opt.Limit).
 		Find(&posts)
-	return posts, result.Error
+
+	postsRes := new(dto.GetPostsRes).FromPosts(posts)
+	totalData := 999
+	totalPage := int(math.Ceil(float64(totalData) / float64(opt.Limit)))
+	postsRes.SetValues(int(result.RowsAffected), opt.Limit, opt.Page, totalPage, totalData)
+	return postsRes, result.Error
 }
 
 func (repo *postRepository) FindPost(post *models.Post) (*models.Post, error) {

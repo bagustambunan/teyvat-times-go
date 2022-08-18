@@ -2,11 +2,12 @@ package services
 
 import (
 	"final-project-backend/dto"
+	"final-project-backend/models"
 	"final-project-backend/repositories"
 )
 
 type PostService interface {
-	GetPosts() (*dto.GetPostsRes, error)
+	GetPosts(opt *models.GetPostsOption) (*dto.GetPostsRes, error)
 	GetPostBySlug(slug string) (*dto.GetPostRes, error)
 }
 
@@ -24,12 +25,12 @@ func NewPostService(conf *PSConfig) PostService {
 	}
 }
 
-func (serv *postService) GetPosts() (*dto.GetPostsRes, error) {
-	posts, err := serv.postRepository.FindPosts()
+func (serv *postService) GetPosts(opt *models.GetPostsOption) (*dto.GetPostsRes, error) {
+	postsRes, err := serv.postRepository.FindPosts(opt)
 	if err != nil {
 		return nil, err
 	}
-	return new(dto.GetPostsRes).FromPosts(posts), nil
+	return postsRes, nil
 }
 
 func (serv *postService) GetPostBySlug(slug string) (*dto.GetPostRes, error) {
