@@ -7,13 +7,17 @@ import (
 	"final-project-backend/models"
 	"final-project-backend/repositories"
 	"github.com/golang-jwt/jwt/v4"
+	"math/rand"
 	"time"
 )
 
 type AuthService interface {
 	SignIn(*dto.SignInReq) (*dto.TokenRes, error)
 	GetUser(u *models.User) (*dto.GetUserRes, error)
-	AddUser(u *models.User) (*dto.GetUserRes, error)
+	CheckReferrerCode(refCode string) error
+	GetUserByReferralCode(refCode string) (*models.User, error)
+	AddUser(u *models.User) (*dto.SignUpRes, error)
+	AddUserReferral(userRef *models.UserReferral) error
 }
 
 type authService struct {
@@ -36,6 +40,15 @@ func NewAuthService(c *AuthSConfig) AuthService {
 type idTokenClaims struct {
 	jwt.RegisteredClaims
 	User *models.User `json:"user"`
+}
+
+func (serv *authService) generateReferralCode(size int) string {
+	alpha := "WXYZGHJKLQRSTABCDEFMNPUV"
+	buf := make([]byte, size)
+	for i := 0; i < size; i++ {
+		buf[i] = alpha[rand.Intn(len(alpha))]
+	}
+	return string(buf)
 }
 
 func (serv *authService) generateJWTToken(user *models.User) (*dto.TokenRes, error) {
@@ -78,10 +91,33 @@ func (serv *authService) GetUser(u *models.User) (*dto.GetUserRes, error) {
 	return new(dto.GetUserRes).FromUser(user), nil
 }
 
-func (serv *authService) AddUser(u *models.User) (*dto.GetUserRes, error) {
+func (serv *authService) CheckReferrerCode(refCode string) error {
+	_, err := serv.userRepository.FindUserByReferralCode(refCode)
+	return err
+}
+
+func (serv *authService) GetUserByReferralCode(refCode string) (*models.User, error) {
+	user, err := serv.userRepository.FindUserByReferralCode(refCode)
+	return user, err
+}
+
+func (serv *authService) AddUser(u *models.User) (*dto.SignUpRes, error) {
+	for {
+		newRefCode := serv.generateReferralCode(6)
+		if _, err := serv.userRepository.FindUserByReferralCode(newRefCode); err != nil {
+			u.ReferralCode = newRefCode
+			break
+		}
+	}
+
 	user, rowsAffected, err := serv.userRepository.Save(u)
 	if err == nil && rowsAffected == 0 {
 		return nil, httperror.BadRequestError("Duplicate email", "DUPLICATE_EMAIL")
 	}
-	return new(dto.GetUserRes).FromUser(user), nil
+	return new(dto.SignUpRes).FromUser(user), nil
+}
+
+func (serv *authService) AddUserReferral(userRef *models.UserReferral) error {
+	err := serv.userRepository.SaveUserReferral(userRef)
+	return err
 }

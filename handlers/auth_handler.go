@@ -15,28 +15,43 @@ func (h *Handler) SignUp(c *gin.Context) {
 	payload, _ := c.Get("payload")
 	signUpReq, _ := payload.(*dto.SignUpReq)
 
-	address := &models.Address{
-		Street:     signUpReq.AddressStreet,
-		City:       signUpReq.AddressCity,
-		State:      signUpReq.AddressState,
-		Country:    signUpReq.AddressCountry,
-		PostalCode: signUpReq.PostalCode,
+	userRef := &models.UserReferral{}
+	if signUpReq.ReferrerCode != "" {
+		referrerUser, errRefCode := h.authService.GetUserByReferralCode(signUpReq.ReferrerCode)
+		if errRefCode != nil {
+			_ = c.Error(httperror.BadRequestError("Referral code is not valid", "INVALID_REFERRAL_CODE"))
+			return
+		}
+		userRef.ReferrerUserID = referrerUser.ID
 	}
 
+	address := &models.Address{
+		Street:     signUpReq.Street,
+		City:       signUpReq.City,
+		State:      signUpReq.State,
+		Country:    signUpReq.Country,
+		PostalCode: signUpReq.PostalCode,
+	}
 	hashPw, _ := bcrypt.GenerateFromPassword([]byte(signUpReq.Password), bcrypt.DefaultCost)
 	hashPwStr := string(hashPw)
 	user := &models.User{
-		Email:        signUpReq.Email,
-		Name:         signUpReq.Name,
-		Phone:        signUpReq.Phone,
-		Address:      address,
-		ReferralCode: signUpReq.ReferrerCode,
-		Password:     hashPwStr,
+		Email:    signUpReq.Email,
+		Name:     signUpReq.Name,
+		Phone:    signUpReq.Phone,
+		Address:  address,
+		Password: hashPwStr,
 	}
 
 	insertedUser, saveUserErr := h.authService.AddUser(user)
 	if saveUserErr != nil {
 		_ = c.Error(saveUserErr)
+		return
+	}
+	userRef.UserID = user.ID
+
+	userRefErr := h.authService.AddUserReferral(userRef)
+	if userRefErr != nil {
+		_ = c.Error(userRefErr)
 		return
 	}
 

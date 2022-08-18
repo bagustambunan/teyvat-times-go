@@ -10,7 +10,9 @@ import (
 type UserRepository interface {
 	MatchingCredential(email, password string) (*models.User, error)
 	FindUser(user *models.User) (*models.User, error)
+	FindUserByReferralCode(refCode string) (*models.User, error)
 	Save(user *models.User) (*models.User, int, error)
+	SaveUserReferral(userRef *models.UserReferral) error
 }
 
 type userRepository struct {
@@ -46,10 +48,24 @@ func (repo *userRepository) FindUser(user *models.User) (*models.User, error) {
 	return user, result.Error
 }
 
+func (repo *userRepository) FindUserByReferralCode(refCode string) (*models.User, error) {
+	user := &models.User{}
+	result := repo.db.
+		Where("referral_code = ?", refCode).
+		First(&user)
+	return user, result.Error
+}
+
 func (repo *userRepository) Save(user *models.User) (*models.User, int, error) {
 	result := repo.db.
 		Select("Email", "Name", "Phone", "ReferralCode", "Password", "Address", "AddressID").
 		Clauses(clause.OnConflict{DoNothing: true}).
 		Create(user)
 	return user, int(result.RowsAffected), result.Error
+}
+
+func (repo *userRepository) SaveUserReferral(userRef *models.UserReferral) error {
+	result := repo.db.
+		Create(&userRef)
+	return result.Error
 }
