@@ -10,6 +10,7 @@ import (
 
 type RouterConfig struct {
 	AuthService services.AuthService
+	PostService services.PostService
 }
 
 func NewRouter(conf *RouterConfig) *gin.Engine {
@@ -17,6 +18,7 @@ func NewRouter(conf *RouterConfig) *gin.Engine {
 
 	h := handlers.New(&handlers.HandlerConfig{
 		AuthService: conf.AuthService,
+		PostService: conf.PostService,
 	})
 
 	router.Use(middlewares.ErrorHandler)
@@ -30,6 +32,12 @@ func NewRouter(conf *RouterConfig) *gin.Engine {
 		"/sign-in",
 		middlewares.RequestValidator(&dto.SignInReq{}),
 		h.SignIn,
+	)
+
+	router.GET(
+		"/posts/:slug",
+		//middlewares.AuthorizeJWT,
+		h.GetPost,
 	)
 
 	router.NoRoute(h.HandleNotFound)

@@ -15,8 +15,14 @@ func Init() {
 		AppConfig:      config.Config,
 	})
 
+	postRepository := repositories.NewPostRepository(&repositories.PRConfig{DB: db.Get()})
+	postService := services.NewPostService(&services.PSConfig{
+		PostRepository: postRepository,
+	})
+
 	router := NewRouter(&RouterConfig{
 		AuthService: authService,
+		PostService: postService,
 	})
 
 	err := router.Run(fmt.Sprintf(":%d", config.Config.AppPort))
