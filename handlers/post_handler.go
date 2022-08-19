@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"final-project-backend/dto"
 	"final-project-backend/helpers"
 	"final-project-backend/httperror"
 	"final-project-backend/models"
@@ -35,6 +36,28 @@ func (h *Handler) GetPost(c *gin.Context) {
 		_ = c.Error(err)
 		return
 	}
+	helpers.StandardResponse(c, http.StatusOK, postRes)
+}
 
+func (h *Handler) AddPost(c *gin.Context) {
+	payload, _ := c.Get("payload")
+	postReq, _ := payload.(*dto.PostReq)
+
+	postRes, err := h.postService.AddPost(&models.Post{
+		PostTierID:     postReq.PostTierID,
+		PostCategoryID: postReq.PostCategoryID,
+		Title:          postReq.Title,
+		Content:        postReq.Content,
+		Slug:           postReq.Slug,
+		Summary:        postReq.Summary,
+		ImgThumbnailID: 2,
+		ImgContentID:   3,
+		CreatedByID:    postReq.CreatedByID,
+		UpdatedById:    postReq.UpdatedByID,
+	})
+	if err != nil {
+		_ = c.Error(err)
+		return
+	}
 	helpers.StandardResponse(c, http.StatusOK, postRes)
 }

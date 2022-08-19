@@ -6,6 +6,7 @@ import (
 	"final-project-backend/models"
 	"fmt"
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 	"math"
 )
 
@@ -13,6 +14,7 @@ type PostRepository interface {
 	FindPosts(opt *models.GetPostsOption) (*dto.GetPostsRes, error)
 	FindPost(post *models.Post) (*models.Post, error)
 	FindPostBySlug(slug string) (*models.Post, error)
+	Save(post *models.Post) (*models.Post, int, error)
 }
 
 type postRepository struct {
@@ -67,6 +69,8 @@ func (repo *postRepository) FindPost(post *models.Post) (*models.Post, error) {
 }
 
 func (repo *postRepository) FindPostBySlug(slug string) (*models.Post, error) {
+	// TODO: FIX THIS
+
 	// TEST VIA RAW
 	//query := "SELECT posts.id,posts.post_tier_id,posts.post_category_id,posts.title,posts.content,posts.slug,posts.summary,posts.img_thumbnail_id,posts.img_content_id,posts.created_by_id,posts.updated_by_id,"
 	//query += " C.id AS PostCategory__id,C.created_at AS PostCategory__created_at,C.updated_at AS PostCategory__updated_at,C.deleted_at AS PostCategory__deleted_at,C.name AS PostCategory__name"
@@ -103,5 +107,11 @@ func (repo *postRepository) FindPostBySlug(slug string) (*models.Post, error) {
 		Where("slug = ?", slug).
 		First(&post)
 	return post, result.Error
+}
 
+func (repo *postRepository) Save(post *models.Post) (*models.Post, int, error) {
+	result := repo.db.
+		Clauses(clause.OnConflict{DoNothing: true}).
+		Create(post)
+	return post, int(result.RowsAffected), result.Error
 }

@@ -9,6 +9,7 @@ import (
 type PostService interface {
 	GetPosts(opt *models.GetPostsOption) (*dto.GetPostsRes, error)
 	GetPostBySlug(slug string) (*dto.GetPostRes, error)
+	AddPost(post *models.Post) (*dto.GetPostRes, error)
 }
 
 type postService struct {
@@ -39,4 +40,12 @@ func (serv *postService) GetPostBySlug(slug string) (*dto.GetPostRes, error) {
 		return nil, err
 	}
 	return new(dto.GetPostRes).FromPost(fetchedPost), nil
+}
+
+func (serv *postService) AddPost(post *models.Post) (*dto.GetPostRes, error) {
+	insertedPost, _, err := serv.postRepository.Save(post)
+	if err != nil {
+		return nil, err
+	}
+	return new(dto.GetPostRes).FromPost(insertedPost), nil
 }

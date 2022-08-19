@@ -44,6 +44,12 @@ func NewRouter(conf *RouterConfig) *gin.Engine {
 		middlewares.AuthorizePublic,
 		h.GetPost,
 	)
+	router.POST(
+		"/posts",
+		middlewares.AuthorizeInternal,
+		middlewares.RequestValidator(&dto.PostReq{}),
+		h.AddPost,
+	)
 
 	router.NoRoute(h.HandleNotFound)
 
