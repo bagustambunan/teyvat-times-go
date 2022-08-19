@@ -28,21 +28,33 @@ func NewPostRepository(c *PRConfig) PostRepository {
 }
 
 func (repo *postRepository) FindPosts(opt *models.GetPostsOption) (*dto.GetPostsRes, error) {
-	whereQuery := "post_category_id = ?"
-	whereQuery += " AND post_tier_id = ?"
-	orderQuery := fmt.Sprintf("%s %s", opt.SortBy, opt.SortOrder)
-
 	var posts []*models.Post
 	result := repo.db.
-		Where(whereQuery, opt.Category, opt.Tier).
-		Where("title ILIKE ?", "%"+opt.S+"%").
+		Table("posts")
+
+	if opt.Category != 0 {
+		result = result.
+			Where("post_category_id = ?", opt.Category)
+	}
+	if opt.Tier != 0 {
+		result = result.
+			Where("post_tier_id = ?", opt.Tier)
+	}
+	if opt.S != "" {
+		result = result.
+			Where("title ILIKE ?", "%"+opt.S+"%")
+	}
+	orderQuery := fmt.Sprintf("%s %s", opt.SortBy, opt.SortOrder)
+	result = result.
 		Order(orderQuery).
-		Limit(opt.Limit).
-		Offset((opt.Page - 1) * opt.Limit).
 		Find(&posts)
+	totalData := int(result.RowsAffected)
+
+	result = result.
+		Limit(opt.Limit).
+		Offset((opt.Page - 1) * opt.Limit)
 
 	postsRes := new(dto.GetPostsRes).FromPosts(posts)
-	totalData := 999
 	totalPage := int(math.Ceil(float64(totalData) / float64(opt.Limit)))
 	postsRes.SetValues(int(result.RowsAffected), opt.Limit, opt.Page, totalPage, totalData)
 	return postsRes, result.Error
