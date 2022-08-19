@@ -49,6 +49,9 @@ func AuthorizeJWT(c *gin.Context) *models.User {
 		c.AbortWithStatusJSON(unauthorizedErr.StatusCode, unauthorizedErr)
 		return nil
 	}
+
+	// check tr_tokens
+
 	return &user
 }
 
