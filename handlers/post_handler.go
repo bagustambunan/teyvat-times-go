@@ -60,3 +60,18 @@ func (h *Handler) AddPost(c *gin.Context) {
 	}
 	helpers.StandardResponse(c, http.StatusOK, postRes)
 }
+
+func (h *Handler) PublicGetPost(c *gin.Context) {
+	slug := c.Param("slug")
+	if slug == "" {
+		_ = c.Error(httperror.BadRequestError("Slug is invalid", "INVALID_SLUG"))
+		return
+	}
+
+	postRes, err := h.postService.GetPostBySlug(slug)
+	if err != nil {
+		_ = c.Error(err)
+		return
+	}
+	helpers.StandardResponse(c, http.StatusOK, postRes)
+}
