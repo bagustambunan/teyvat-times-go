@@ -48,7 +48,6 @@ func (h *Handler) AddPost(c *gin.Context) {
 		PostCategoryID: postReq.PostCategoryID,
 		Title:          postReq.Title,
 		Content:        postReq.Content,
-		Slug:           postReq.Slug,
 		Summary:        postReq.Summary,
 		ImgThumbnailID: 2,
 		ImgContentID:   3,
