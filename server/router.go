@@ -23,6 +23,7 @@ func NewRouter(conf *RouterConfig) *gin.Engine {
 
 	router.Use(middlewares.ErrorHandler)
 
+	// AUTH
 	router.POST(
 		"/sign-up",
 		middlewares.RequestValidator(&dto.SignUpReq{}),
@@ -34,14 +35,15 @@ func NewRouter(conf *RouterConfig) *gin.Engine {
 		h.SignIn,
 	)
 
+	// ADMIN > POST
 	router.GET(
 		"/posts/",
-		middlewares.AuthorizePublic,
+		middlewares.AuthorizeInternal,
 		h.GetPosts,
 	)
 	router.GET(
 		"/posts/:slug",
-		middlewares.AuthorizePublic,
+		middlewares.AuthorizeInternal,
 		h.GetPost,
 	)
 	router.POST(
@@ -49,6 +51,18 @@ func NewRouter(conf *RouterConfig) *gin.Engine {
 		middlewares.AuthorizeInternal,
 		middlewares.RequestValidator(&dto.PostReq{}),
 		h.AddPost,
+	)
+
+	// PUBLIC > POST
+	router.GET(
+		"/pub/posts/",
+		middlewares.AuthorizePublic,
+		h.GetPosts,
+	)
+	router.GET(
+		"/pub/posts/:slug",
+		middlewares.AuthorizePublic,
+		h.GetPost,
 	)
 
 	router.NoRoute(h.HandleNotFound)
