@@ -1,11 +1,11 @@
 package dto
 
 type PostReq struct {
-	PostTierID     int    `json:"postTierID"`
-	PostCategoryID int    `json:"postCategoryID"`
-	Title          string `json:"title"`
-	Content        string `json:"content"`
-	Summary        string `json:"summary"`
-	CreatedByID    int    `json:"createdByID"`
-	UpdatedByID    int    `json:"updatedByID"`
+	PostTierID     int    `json:"postTierID" binding:"required"`
+	PostCategoryID int    `json:"postCategoryID" binding:"required"`
+	Title          string `json:"title" binding:"required"`
+	Content        string `json:"content" binding:"required"`
+	Summary        string `json:"summary" binding:"required"`
+	CreatedByID    int    `json:"createdByID" binding:"required"`
+	UpdatedByID    int    `json:"updatedByID" binding:"required"`
 }
