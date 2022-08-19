@@ -59,9 +59,9 @@ func AuthorizePublic(c *gin.Context) {
 
 func AuthorizeInternal(c *gin.Context) {
 	user := AuthorizeJWT(c)
-	unauthorizedErr := httperror.UnauthorizedError()
+	forbiddenErr := httperror.ForbiddenError()
 	if user.RoleID != 1 {
-		c.AbortWithStatusJSON(unauthorizedErr.StatusCode, unauthorizedErr)
+		c.AbortWithStatusJSON(forbiddenErr.StatusCode, forbiddenErr)
 		return
 	}
 	c.Set("user", user)

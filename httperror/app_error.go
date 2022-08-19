@@ -33,6 +33,14 @@ func InternalServerError(message string) AppError {
 	}
 }
 
+func ForbiddenError() AppError {
+	return AppError{
+		Code:       "FORBIDDEN_ERROR",
+		Message:    "Forbidden error",
+		StatusCode: http.StatusForbidden,
+	}
+}
+
 func UnauthorizedError() AppError {
 	return AppError{
 		Code:       "UNAUTHORIZED_ERROR",
