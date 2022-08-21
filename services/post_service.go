@@ -78,6 +78,9 @@ func (serv *postService) UnlockAPost(user *models.User, post *models.Post) (*mod
 	if fetchErr == nil {
 		return nil, httperror.BadRequestError("Post already unlocked", "POST_ALREADY_UNLOCKED")
 	}
+	if post.PostTierID == 1 {
+		return nil, httperror.BadRequestError("Cannot unlock free tier post", "INVALID_UNLOCK")
+	}
 
 	if user.Coins < post.GetCoinsRequired() {
 		return nil, httperror.BadRequestError("Not enough coins", "COINS_NOT_ENOUGH")
