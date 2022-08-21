@@ -8,13 +8,13 @@ type User struct {
 	RoleID       int      `json:"roleID"`
 	Role         *Role    `json:"-"`
 	Username     string   `json:"username"`
-	Email        string   `json:"email"`
+	Email        string   `json:"-"`
 	Name         string   `json:"name"`
-	Phone        string   `json:"phone"`
-	AddressID    int      `json:"addressID"`
+	Phone        string   `json:"-"`
+	AddressID    int      `json:"-"`
 	Address      *Address `json:"-"`
-	ReferralCode string   `json:"referralCode"`
-	ProfilePicID int      `json:"profilePicID"`
+	ReferralCode string   `json:"-"`
+	ProfilePicID int      `json:"-"`
 	ProfilePic   *Image   `json:"-"`
 	Password     string   `json:"-"`
 }

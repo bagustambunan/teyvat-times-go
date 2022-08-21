@@ -15,6 +15,9 @@ type PostRepository interface {
 	FindPost(post *models.Post) (*models.Post, error)
 	FindPostBySlug(slug string) (*models.Post, error)
 	Save(post *models.Post) (*models.Post, int, error)
+	FindActivity(act *models.UserPostActivities) (*models.UserPostActivities, error)
+	SaveActivity(act *models.UserPostActivities) (*models.UserPostActivities, error)
+	UpdateActivity(act *models.UserPostActivities) (*models.UserPostActivities, error)
 }
 
 type postRepository struct {
@@ -107,6 +110,28 @@ func (repo *postRepository) FindPostBySlug(slug string) (*models.Post, error) {
 		Where("slug = ?", slug).
 		First(&post)
 	return post, result.Error
+}
+
+func (repo *postRepository) FindActivity(act *models.UserPostActivities) (*models.UserPostActivities, error) {
+	result := repo.db.
+		Where("user_id = ?", act.UserID).
+		Where("post_id = ?", act.PostID).
+		First(&act)
+	return act, result.Error
+}
+
+func (repo *postRepository) SaveActivity(act *models.UserPostActivities) (*models.UserPostActivities, error) {
+	result := repo.db.
+		Clauses(clause.OnConflict{DoNothing: true}).
+		Create(act)
+	return act, result.Error
+}
+
+func (repo *postRepository) UpdateActivity(act *models.UserPostActivities) (*models.UserPostActivities, error) {
+	result := repo.db.
+		Model(&act).
+		UpdateColumn("views_count", gorm.Expr("views_count + ?", 1))
+	return act, result.Error
 }
 
 func (repo *postRepository) Save(post *models.Post) (*models.Post, int, error) {

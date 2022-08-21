@@ -42,7 +42,7 @@ func NewRouter(conf *RouterConfig) *gin.Engine {
 		h.GetPosts,
 	)
 	router.GET(
-		"/posts/:slug",
+		"/posts/:postID",
 		middlewares.AuthorizeInternal,
 		h.GetPost,
 	)
@@ -62,7 +62,7 @@ func NewRouter(conf *RouterConfig) *gin.Engine {
 	router.GET(
 		"/pub/posts/:slug",
 		middlewares.AuthorizePublic,
-		h.GetPost,
+		h.PubReadPost,
 	)
 
 	router.NoRoute(h.HandleNotFound)

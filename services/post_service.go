@@ -12,7 +12,9 @@ import (
 
 type PostService interface {
 	GetPosts(opt *models.GetPostsOption) (*dto.GetPostsRes, error)
-	GetPostBySlug(slug string) (*dto.GetPostRes, error)
+	GetPost(post *models.Post) (*dto.GetPostRes, error)
+	AddActivity(user *models.User, post *models.Post) (*models.UserPostActivities, error)
+	GetPostBySlug(user *models.User, slug string) (*dto.GetPostRes, error)
 	AddPost(post *models.Post) (*dto.GetPostRes, error)
 }
 
@@ -59,12 +61,40 @@ func (serv *postService) GetPosts(opt *models.GetPostsOption) (*dto.GetPostsRes,
 	return postsRes, nil
 }
 
-func (serv *postService) GetPostBySlug(slug string) (*dto.GetPostRes, error) {
-	fetchedPost, err := serv.postRepository.FindPostBySlug(slug)
+func (serv *postService) GetPost(post *models.Post) (*dto.GetPostRes, error) {
+	fetchedPost, err := serv.postRepository.FindPost(post)
 	if err != nil {
 		return nil, err
 	}
 	return new(dto.GetPostRes).FromPost(fetchedPost), nil
+}
+
+func (serv *postService) AddActivity(user *models.User, post *models.Post) (*models.UserPostActivities, error) {
+	act := &models.UserPostActivities{
+		UserID: user.ID,
+		PostID: post.ID,
+	}
+	fetchedAct, fetchErr := serv.postRepository.FindActivity(act)
+	if fetchErr != nil {
+		fetchedAct, _ = serv.postRepository.SaveActivity(act)
+	}
+	updatedAct, updateErr := serv.postRepository.UpdateActivity(fetchedAct)
+	return updatedAct, updateErr
+}
+
+func (serv *postService) GetPostBySlug(user *models.User, slug string) (*dto.GetPostRes, error) {
+	fetchedPost, err := serv.postRepository.FindPostBySlug(slug)
+	if err != nil {
+		return nil, err
+	}
+
+	//Check post tier
+	//if fetchedPost.PostTierID != 1 {
+	//
+	//}
+
+	_, err2 := serv.AddActivity(user, fetchedPost)
+	return new(dto.GetPostRes).FromPost(fetchedPost), err2
 }
 
 func (serv *postService) AddPost(post *models.Post) (*dto.GetPostRes, error) {

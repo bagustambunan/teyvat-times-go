@@ -71,12 +71,12 @@ func (h *Handler) SignIn(c *gin.Context) {
 
 func (h *Handler) GetUserFromToken(c *gin.Context) *models.User {
 	userPayload, _ := c.Get("user")
-	user, isUser := userPayload.(models.User)
+	user, isUser := userPayload.(*models.User)
 	if !isUser {
 		_ = c.Error(httperror.UnauthorizedError())
 		return nil
 	}
-	return &user
+	return user
 }
 
 func (h *Handler) GetUserInfo(c *gin.Context) {

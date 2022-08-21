@@ -150,7 +150,25 @@ CREATE TABLE public.posts (
 );
 INSERT INTO public.posts (post_tier_id, post_category_id, title, content, slug, summary, img_thumbnail_id, img_content_id, created_by_id, updated_by_id) VALUES (1,1,'Mondstadt signs a deal with Fatui','Test content','mondstadt-signs-a-deal-with-fatui','What do you think, Jean?',2,3,1,1);
 
-
+-- table user_post_activities
+CREATE TABLE public.user_post_activities (
+    id bigserial NOT NULL,
+    user_id bigint NOT NULL,
+    post_id bigint NOT NULL,
+    is_liked int DEFAULT 0 NOT NULL,
+    is_shared int DEFAULT 0 NOT NULL,
+    views_count int DEFAULT 0 NOT NULL,
+    created_at timestamp without time zone DEFAULT now() NOT NULL,
+    updated_at timestamp without time zone DEFAULT now() NOT NULL,
+    deleted_at timestamp without time zone,
+    PRIMARY KEY(id),
+    CONSTRAINT fk_user
+        FOREIGN KEY (user_id)
+            REFERENCES public.users(id),
+    CONSTRAINT fk_post
+        FOREIGN KEY (post_id)
+            REFERENCES public.posts(id)
+);
 
 ------
 
