@@ -18,7 +18,6 @@ type AuthService interface {
 	GetUserByReferralCode(refCode string) (*models.User, error)
 	AddUser(u *models.User) (*dto.SignUpRes, error)
 	AddUserReferral(userRef *models.UserReferral) error
-	UpdateUserCoins(user *models.User, coins int) (*models.User, error)
 }
 
 type authService struct {
@@ -116,8 +115,4 @@ func (serv *authService) AddUser(u *models.User) (*dto.SignUpRes, error) {
 func (serv *authService) AddUserReferral(userRef *models.UserReferral) error {
 	err := serv.userRepository.SaveUserReferral(userRef)
 	return err
-}
-
-func (serv *authService) UpdateUserCoins(user *models.User, coins int) (*models.User, error) {
-	return serv.userRepository.UpdateCoins(user, coins)
 }

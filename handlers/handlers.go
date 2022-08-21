@@ -8,17 +8,20 @@ import (
 
 type Handler struct {
 	authService services.AuthService
+	userService services.UserService
 	postService services.PostService
 }
 
 type HandlerConfig struct {
 	AuthService services.AuthService
+	UserService services.UserService
 	PostService services.PostService
 }
 
 func New(conf *HandlerConfig) *Handler {
 	return &Handler{
 		authService: conf.AuthService,
+		userService: conf.UserService,
 		postService: conf.PostService,
 	}
 }

@@ -10,6 +10,7 @@ import (
 
 type RouterConfig struct {
 	AuthService services.AuthService
+	UserService services.UserService
 	PostService services.PostService
 }
 
@@ -18,6 +19,7 @@ func NewRouter(conf *RouterConfig) *gin.Engine {
 
 	h := handlers.New(&handlers.HandlerConfig{
 		AuthService: conf.AuthService,
+		UserService: conf.UserService,
 		PostService: conf.PostService,
 	})
 

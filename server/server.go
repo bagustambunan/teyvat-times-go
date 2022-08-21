@@ -14,6 +14,9 @@ func Init() {
 		UserRepository: userRepository,
 		AppConfig:      config.Config,
 	})
+	userService := services.NewUserService(&services.USConfig{
+		UserRepository: userRepository,
+	})
 
 	postRepository := repositories.NewPostRepository(&repositories.PRConfig{DB: db.Get()})
 	postService := services.NewPostService(&services.PSConfig{
@@ -22,6 +25,7 @@ func Init() {
 
 	router := NewRouter(&RouterConfig{
 		AuthService: authService,
+		UserService: userService,
 		PostService: postService,
 	})
 
