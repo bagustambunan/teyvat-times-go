@@ -74,11 +74,14 @@ func (serv *postService) UnlockAPost(user *models.User, post *models.Post) (*mod
 		UserID: user.ID,
 		PostID: post.ID,
 	}
+	_, fetchErr := serv.postRepository.FindUnlock(unlock)
+	if fetchErr == nil {
+		return nil, httperror.BadRequestError("Post already unlocked", "POST_ALREADY_UNLOCKED")
+	}
 
 	if user.Coins < post.GetCoinsRequired() {
 		return nil, httperror.BadRequestError("Not enough coins", "COINS_NOT_ENOUGH")
 	}
-
 	return serv.postRepository.SaveUnlock(unlock)
 }
 
