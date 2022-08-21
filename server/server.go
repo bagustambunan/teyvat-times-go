@@ -28,11 +28,17 @@ func Init() {
 		SubscriptionRepository: subscriptionRepository,
 	})
 
+	voucherRepository := repositories.NewVoucherRepository(&repositories.VRConfig{DB: db.Get()})
+	voucherService := services.NewVoucherService(&services.VSConfig{
+		VoucherRepository: voucherRepository,
+	})
+
 	router := NewRouter(&RouterConfig{
 		AuthService:         authService,
 		UserService:         userService,
 		PostService:         postService,
 		SubscriptionService: subscriptionService,
+		VoucherService:      voucherService,
 	})
 
 	err := router.Run(fmt.Sprintf(":%d", config.Config.AppPort))

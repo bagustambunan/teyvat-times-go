@@ -12,3 +12,7 @@ type UserVoucher struct {
 	DateExpired string  `json:"dateExpired"`
 	IsUsed      int     `json:"isUsed"`
 }
+
+func (uv *UserVoucher) GetVoucherAmount() int {
+	return uv.Voucher.Amount
+}
