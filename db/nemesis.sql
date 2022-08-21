@@ -307,3 +307,78 @@ CREATE TABLE public.transactions (
             REFERENCES public.user_vouchers(id)
 );
 INSERT INTO public.transactions (user_id, subscription_id, status_id, gross_total, net_total, user_voucher_id) VALUES (1,1,2,30000,5000,1);
+
+------
+
+-- table gifts
+CREATE TABLE public.gifts(
+    id int NOT NULL,
+    name character varying NOT NULL UNIQUE,
+    description character varying NOT NULL,
+    image_id bigint DEFAULT 3 NOT NULL,
+    stock int DEFAULT 0 NOT NULL,
+    created_at timestamp without time zone DEFAULT now() NOT NULL,
+    updated_at timestamp without time zone DEFAULT now() NOT NULL,
+    deleted_at timestamp without time zone,
+    PRIMARY KEY(id),
+    CONSTRAINT fk_image
+        FOREIGN KEY (image_id)
+            REFERENCES public.images(id)
+);
+INSERT INTO public.gifts (id, name, description, image_id, stock) VALUES (1,'Tote bag','This is tote bag',3,5);
+INSERT INTO public.gifts (id, name, description, image_id, stock) VALUES (2,'T-shirt','This is t-shirt',3,10);
+INSERT INTO public.gifts (id, name, description, image_id, stock) VALUES (3,'Keyboard','This is keyboard',3,25);
+
+-- table gift_claim_statuses
+CREATE TABLE public.gift_claim_statuses (
+    id int NOT NULL,
+    name character varying NOT NULL UNIQUE,
+    created_at timestamp without time zone DEFAULT now() NOT NULL,
+    updated_at timestamp without time zone DEFAULT now() NOT NULL,
+    deleted_at timestamp without time zone,
+    PRIMARY KEY(id)
+);
+INSERT INTO public.gift_claim_statuses (id, name) VALUES (1,'Draft');
+INSERT INTO public.gift_claim_statuses (id, name) VALUES (2,'Processing');
+INSERT INTO public.gift_claim_statuses (id, name) VALUES (3,'Completed');
+INSERT INTO public.gift_claim_statuses (id, name) VALUES (4,'Canceled');
+
+-- table gift_claims
+CREATE TABLE public.gift_claims (
+    id bigserial NOT NULL,
+    user_id bigint NOT NULL,
+    address_id bigint NOT NULL,
+    status_id int DEFAULT 1 NOT NULL,
+    created_at timestamp without time zone DEFAULT now() NOT NULL,
+    updated_at timestamp without time zone DEFAULT now() NOT NULL,
+    deleted_at timestamp without time zone,
+    PRIMARY KEY(id),
+    CONSTRAINT fk_user
+        FOREIGN KEY (user_id)
+            REFERENCES public.users(id),
+    CONSTRAINT fk_address
+        FOREIGN KEY (address_id)
+            REFERENCES public.addresses(id),
+    CONSTRAINT fk_gift_claim_status
+        FOREIGN KEY (status_id)
+            REFERENCES public.gift_claim_statuses(id)
+);
+INSERT INTO public.gift_claims (user_id, address_id, status_id) VALUES (1,1,1);
+
+-- table gift_claim_items
+CREATE TABLE public.gift_claim_items (
+    id bigserial NOT NULL,
+    gift_id int NOT NULL,
+    gift_claim_id bigint NOT NULL,
+    created_at timestamp without time zone DEFAULT now() NOT NULL,
+    updated_at timestamp without time zone DEFAULT now() NOT NULL,
+    deleted_at timestamp without time zone,
+    PRIMARY KEY(id),
+    CONSTRAINT fk_gift
+        FOREIGN KEY (gift_id)
+            REFERENCES public.gifts(id),
+    CONSTRAINT fk_gift_claim
+        FOREIGN KEY (gift_claim_id)
+            REFERENCES public.gift_claims(id)
+);
+INSERT INTO public.gift_claim_items (gift_id, gift_claim_id) VALUES (1,1);
