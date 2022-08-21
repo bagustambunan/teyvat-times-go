@@ -69,8 +69,8 @@ func (serv *authService) generateJWTToken(user *models.User) (*dto.TokenRes, str
 	}
 
 	dtoToken := dto.TokenRes{
-		UserID:  user.ID,
-		IDToken: tokenString,
+		UserID: user.ID,
+		Token:  tokenString,
 	}
 	return &dtoToken, tokenString, nil
 }

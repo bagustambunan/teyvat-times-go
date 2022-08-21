@@ -1,6 +1,6 @@
 package dto
 
 type TokenRes struct {
-	UserID  int    `json:"userID"`
-	IDToken string `json:"idToken"`
+	UserID int    `json:"userID"`
+	Token  string `json:"token"`
 }
