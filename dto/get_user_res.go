@@ -13,7 +13,7 @@ type GetUserRes struct {
 	ProfilePic *models.Image   `json:"profilePic"`
 }
 
-func (_ GetUserRes) FromUser(u *models.User) *GetUserRes {
+func (_ *GetUserRes) FromUser(u *models.User) *GetUserRes {
 	return &GetUserRes{
 		ID:         u.ID,
 		Role:       u.Role,

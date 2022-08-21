@@ -11,7 +11,7 @@ type SignUpRes struct {
 	Address *models.Address `json:"address"`
 }
 
-func (_ SignUpRes) FromUser(u *models.User) *SignUpRes {
+func (_ *SignUpRes) FromUser(u *models.User) *SignUpRes {
 	return &SignUpRes{
 		ID: u.ID,
 		//Username: u.Username,

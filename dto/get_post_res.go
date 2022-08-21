@@ -20,7 +20,7 @@ type GetPostRes struct {
 	//UpdatedBy    *models.User         `json:"updatedBy"`
 }
 
-func (_ GetPostRes) FromPost(p *models.Post) *GetPostRes {
+func (_ *GetPostRes) FromPost(p *models.Post) *GetPostRes {
 	return &GetPostRes{
 		ID:             p.ID,
 		PostTierID:     p.PostTierID,
