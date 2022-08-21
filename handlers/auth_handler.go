@@ -8,7 +8,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
 	"net/http"
-	"strconv"
 )
 
 func (h *Handler) SignUp(c *gin.Context) {
@@ -76,27 +75,10 @@ func (h *Handler) GetUserFromToken(c *gin.Context) *models.User {
 		_ = c.Error(httperror.UnauthorizedError())
 		return nil
 	}
-	return user
-}
-
-func (h *Handler) GetUserInfo(c *gin.Context) {
-	userID, idErr := strconv.Atoi(c.Param("userID"))
-	if idErr != nil {
-		_ = c.Error(idErr)
-		return
-	}
-
-	if userID != h.GetUserFromToken(c).ID {
+	fetchedUser, fetchErr := h.authService.GetUser(user)
+	if fetchErr != nil {
 		_ = c.Error(httperror.UnauthorizedError())
-		return
+		return nil
 	}
-
-	userRes, findUserErr := h.authService.GetUser(&models.User{
-		ID: userID,
-	})
-	if findUserErr != nil {
-		_ = c.Error(findUserErr)
-		return
-	}
-	helpers.StandardResponse(c, http.StatusOK, userRes)
+	return fetchedUser
 }

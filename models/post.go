@@ -22,3 +22,7 @@ type Post struct {
 	UpdatedById    int           `json:"updatedByID"`
 	UpdatedBy      *User         `json:"-"`
 }
+
+func (p *Post) GetCoinsRequired() int {
+	return p.PostTier.CoinsRequired
+}

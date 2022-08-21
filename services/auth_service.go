@@ -13,11 +13,12 @@ import (
 
 type AuthService interface {
 	SignIn(*dto.SignInReq) (*dto.TokenRes, error)
-	GetUser(u *models.User) (*dto.GetUserRes, error)
+	GetUser(u *models.User) (*models.User, error)
 	CheckReferrerCode(refCode string) error
 	GetUserByReferralCode(refCode string) (*models.User, error)
 	AddUser(u *models.User) (*dto.SignUpRes, error)
 	AddUserReferral(userRef *models.UserReferral) error
+	UpdateUserCoins(user *models.User, coins int) (*models.User, error)
 }
 
 type authService struct {
@@ -82,12 +83,8 @@ func (serv *authService) SignIn(req *dto.SignInReq) (*dto.TokenRes, error) {
 	return token, err
 }
 
-func (serv *authService) GetUser(u *models.User) (*dto.GetUserRes, error) {
-	user, err := serv.userRepository.FindUser(u)
-	if err != nil {
-		return nil, err
-	}
-	return new(dto.GetUserRes).FromUser(user), nil
+func (serv *authService) GetUser(u *models.User) (*models.User, error) {
+	return serv.userRepository.FindUser(u)
 }
 
 func (serv *authService) CheckReferrerCode(refCode string) error {
@@ -119,4 +116,8 @@ func (serv *authService) AddUser(u *models.User) (*dto.SignUpRes, error) {
 func (serv *authService) AddUserReferral(userRef *models.UserReferral) error {
 	err := serv.userRepository.SaveUserReferral(userRef)
 	return err
+}
+
+func (serv *authService) UpdateUserCoins(user *models.User, coins int) (*models.User, error) {
+	return serv.userRepository.UpdateCoins(user, coins)
 }

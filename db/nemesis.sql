@@ -51,6 +51,7 @@ CREATE TABLE public.users (
     address_id bigint,
     referral_code character varying,
     profile_pic_id bigint DEFAULT 1 NOT NULL,
+    coins int DEFAULT 0 NOT NULL,
     created_at timestamp without time zone DEFAULT now() NOT NULL,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     deleted_at timestamp without time zone,

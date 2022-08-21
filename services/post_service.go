@@ -2,6 +2,7 @@ package services
 
 import (
 	"final-project-backend/dto"
+	"final-project-backend/httperror"
 	"final-project-backend/models"
 	"final-project-backend/repositories"
 	"log"
@@ -12,6 +13,7 @@ import (
 
 type PostService interface {
 	CanUserAccessThisPost(user *models.User, post *models.Post) error
+	UnlockAPost(user *models.User, post *models.Post) (*models.PostUnlock, error)
 	GetPosts(opt *models.GetPostsOption) (*dto.GetPostsRes, error)
 	GetPost(post *models.Post) (*models.Post, error)
 	AddActivity(user *models.User, post *models.Post) (*models.UserPostActivities, error)
@@ -65,6 +67,19 @@ func (serv *postService) CanUserAccessThisPost(user *models.User, post *models.P
 		return fetchErr
 	}
 	return nil
+}
+
+func (serv *postService) UnlockAPost(user *models.User, post *models.Post) (*models.PostUnlock, error) {
+	unlock := &models.PostUnlock{
+		UserID: user.ID,
+		PostID: post.ID,
+	}
+
+	if user.Coins < post.GetCoinsRequired() {
+		return nil, httperror.BadRequestError("Not enough coins", "COINS_NOT_ENOUGH")
+	}
+
+	return serv.postRepository.SaveUnlock(unlock)
 }
 
 func (serv *postService) GetPosts(opt *models.GetPostsOption) (*dto.GetPostsRes, error) {

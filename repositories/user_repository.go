@@ -13,6 +13,7 @@ type UserRepository interface {
 	FindUserByReferralCode(refCode string) (*models.User, error)
 	Save(user *models.User) (*models.User, int, error)
 	SaveUserReferral(userRef *models.UserReferral) error
+	UpdateCoins(user *models.User, coins int) (*models.User, error)
 }
 
 type userRepository struct {
@@ -68,4 +69,11 @@ func (repo *userRepository) SaveUserReferral(userRef *models.UserReferral) error
 	result := repo.db.
 		Create(&userRef)
 	return result.Error
+}
+
+func (repo *userRepository) UpdateCoins(user *models.User, coins int) (*models.User, error) {
+	result := repo.db.
+		Model(&user).
+		UpdateColumn("coins", gorm.Expr("coins + ?", coins))
+	return user, result.Error
 }

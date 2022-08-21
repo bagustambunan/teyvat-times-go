@@ -70,6 +70,8 @@ func (repo *postRepository) FindPosts(opt *models.GetPostsOption) (*dto.GetPosts
 
 func (repo *postRepository) FindPost(post *models.Post) (*models.Post, error) {
 	result := repo.db.
+		Joins("PostTier").
+		Joins("PostCategory").
 		First(&post)
 	return post, result.Error
 }
