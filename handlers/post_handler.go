@@ -17,9 +17,9 @@ func (h *Handler) GetPosts(c *gin.Context) {
 		return
 	}
 
-	postsRes, err := h.postService.GetPosts(opt)
-	if err != nil {
-		_ = c.Error(err)
+	postsRes, fetchErr := h.postService.GetPosts(opt)
+	if fetchErr != nil {
+		_ = c.Error(fetchErr)
 		return
 	}
 	helpers.StandardResponse(c, http.StatusOK, postsRes)
@@ -32,11 +32,12 @@ func (h *Handler) GetPost(c *gin.Context) {
 		return
 	}
 
-	postRes, err := h.postService.GetPost(&models.Post{ID: postID})
-	if err != nil {
-		_ = c.Error(err)
+	fetchedPost, fetchErr := h.postService.GetPost(&models.Post{ID: postID})
+	if fetchErr != nil {
+		_ = c.Error(fetchErr)
 		return
 	}
+	postRes := new(dto.GetPostRes).FromPost(fetchedPost)
 	helpers.StandardResponse(c, http.StatusOK, postRes)
 }
 
@@ -70,10 +71,42 @@ func (h *Handler) PubReadPost(c *gin.Context) {
 		return
 	}
 
-	postRes, err := h.postService.GetPostBySlug(user, slug)
-	if err != nil {
-		_ = c.Error(err)
+	fetchedPost, fetchErr := h.postService.GetPostBySlug(slug)
+	if fetchErr != nil {
+		_ = c.Error(fetchErr)
 		return
 	}
+
+	_, actErr := h.postService.AddActivity(user, fetchedPost)
+	if actErr != nil {
+		_ = c.Error(actErr)
+		return
+	}
+
+	postRes := new(dto.GetPostRes).FromPost(fetchedPost)
 	helpers.StandardResponse(c, http.StatusOK, postRes)
+}
+
+func (h *Handler) PubPostActivity(c *gin.Context) {
+	user := h.GetUserFromToken(c)
+	postID, idErr := strconv.Atoi(c.Param("postID"))
+	if idErr != nil {
+		_ = c.Error(idErr)
+		return
+	}
+	fetchedPost, fetchErr := h.postService.GetPost(&models.Post{ID: postID})
+	if fetchErr != nil {
+		_ = c.Error(fetchErr)
+		return
+	}
+
+	payload, _ := c.Get("payload")
+	actReq, _ := payload.(*dto.ActivityReq)
+	act, actErr := h.postService.UpdateActivity(user, fetchedPost, actReq)
+	if actErr != nil {
+		_ = c.Error(actErr)
+		return
+	}
+
+	helpers.StandardResponse(c, http.StatusOK, act)
 }

@@ -17,6 +17,7 @@ type PostRepository interface {
 	Save(post *models.Post) (*models.Post, int, error)
 	FindActivity(act *models.UserPostActivities) (*models.UserPostActivities, error)
 	SaveActivity(act *models.UserPostActivities) (*models.UserPostActivities, error)
+	IncreaseViewsActivity(act *models.UserPostActivities) (*models.UserPostActivities, error)
 	UpdateActivity(act *models.UserPostActivities) (*models.UserPostActivities, error)
 }
 
@@ -127,10 +128,18 @@ func (repo *postRepository) SaveActivity(act *models.UserPostActivities) (*model
 	return act, result.Error
 }
 
-func (repo *postRepository) UpdateActivity(act *models.UserPostActivities) (*models.UserPostActivities, error) {
+func (repo *postRepository) IncreaseViewsActivity(act *models.UserPostActivities) (*models.UserPostActivities, error) {
 	result := repo.db.
 		Model(&act).
 		UpdateColumn("views_count", gorm.Expr("views_count + ?", 1))
+	return act, result.Error
+}
+
+func (repo *postRepository) UpdateActivity(act *models.UserPostActivities) (*models.UserPostActivities, error) {
+	result := repo.db.
+		Model(&act).
+		UpdateColumn("is_liked", act.IsLiked).
+		UpdateColumn("is_shared", act.IsShared)
 	return act, result.Error
 }
 

@@ -64,6 +64,12 @@ func NewRouter(conf *RouterConfig) *gin.Engine {
 		middlewares.AuthorizePublic,
 		h.PubReadPost,
 	)
+	router.POST(
+		"/pub/posts/:postID/activities",
+		middlewares.AuthorizePublic,
+		middlewares.RequestValidator(&dto.ActivityReq{}),
+		h.PubPostActivity,
+	)
 
 	router.NoRoute(h.HandleNotFound)
 

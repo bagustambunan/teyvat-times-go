@@ -12,9 +12,10 @@ import (
 
 type PostService interface {
 	GetPosts(opt *models.GetPostsOption) (*dto.GetPostsRes, error)
-	GetPost(post *models.Post) (*dto.GetPostRes, error)
+	GetPost(post *models.Post) (*models.Post, error)
 	AddActivity(user *models.User, post *models.Post) (*models.UserPostActivities, error)
-	GetPostBySlug(user *models.User, slug string) (*dto.GetPostRes, error)
+	UpdateActivity(user *models.User, post *models.Post, actReq *dto.ActivityReq) (*models.UserPostActivities, error)
+	GetPostBySlug(slug string) (*models.Post, error)
 	AddPost(post *models.Post) (*dto.GetPostRes, error)
 }
 
@@ -61,12 +62,8 @@ func (serv *postService) GetPosts(opt *models.GetPostsOption) (*dto.GetPostsRes,
 	return postsRes, nil
 }
 
-func (serv *postService) GetPost(post *models.Post) (*dto.GetPostRes, error) {
-	fetchedPost, err := serv.postRepository.FindPost(post)
-	if err != nil {
-		return nil, err
-	}
-	return new(dto.GetPostRes).FromPost(fetchedPost), nil
+func (serv *postService) GetPost(post *models.Post) (*models.Post, error) {
+	return serv.postRepository.FindPost(post)
 }
 
 func (serv *postService) AddActivity(user *models.User, post *models.Post) (*models.UserPostActivities, error) {
@@ -78,11 +75,27 @@ func (serv *postService) AddActivity(user *models.User, post *models.Post) (*mod
 	if fetchErr != nil {
 		fetchedAct, _ = serv.postRepository.SaveActivity(act)
 	}
+	updatedAct, updateErr := serv.postRepository.IncreaseViewsActivity(fetchedAct)
+	return updatedAct, updateErr
+}
+
+func (serv *postService) UpdateActivity(user *models.User, post *models.Post, actReq *dto.ActivityReq) (*models.UserPostActivities, error) {
+	act := &models.UserPostActivities{
+		UserID: user.ID,
+		PostID: post.ID,
+	}
+	fetchedAct, fetchErr := serv.postRepository.FindActivity(act)
+	if fetchErr != nil {
+		fetchedAct, _ = serv.postRepository.SaveActivity(act)
+	}
+	fetchedAct.IsLiked = actReq.IsLiked
+	fetchedAct.IsShared = actReq.IsShared
+
 	updatedAct, updateErr := serv.postRepository.UpdateActivity(fetchedAct)
 	return updatedAct, updateErr
 }
 
-func (serv *postService) GetPostBySlug(user *models.User, slug string) (*dto.GetPostRes, error) {
+func (serv *postService) GetPostBySlug(slug string) (*models.Post, error) {
 	fetchedPost, err := serv.postRepository.FindPostBySlug(slug)
 	if err != nil {
 		return nil, err
@@ -93,8 +106,7 @@ func (serv *postService) GetPostBySlug(user *models.User, slug string) (*dto.Get
 	//
 	//}
 
-	_, err2 := serv.AddActivity(user, fetchedPost)
-	return new(dto.GetPostRes).FromPost(fetchedPost), err2
+	return fetchedPost, nil
 }
 
 func (serv *postService) AddPost(post *models.Post) (*dto.GetPostRes, error) {
