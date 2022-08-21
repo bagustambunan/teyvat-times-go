@@ -33,12 +33,18 @@ func Init() {
 		VoucherRepository: voucherRepository,
 	})
 
+	giftRepository := repositories.NewGiftRepository(&repositories.GRConfig{DB: db.Get()})
+	giftService := services.NewGiftService(&services.GSConfig{
+		GiftRepository: giftRepository,
+	})
+
 	router := NewRouter(&RouterConfig{
 		AuthService:         authService,
 		UserService:         userService,
 		PostService:         postService,
 		SubscriptionService: subscriptionService,
 		VoucherService:      voucherService,
+		GiftService:         giftService,
 	})
 
 	err := router.Run(fmt.Sprintf(":%d", config.Config.AppPort))

@@ -14,6 +14,7 @@ type RouterConfig struct {
 	PostService         services.PostService
 	SubscriptionService services.SubscriptionService
 	VoucherService      services.VoucherService
+	GiftService         services.GiftService
 }
 
 func NewRouter(conf *RouterConfig) *gin.Engine {
@@ -25,6 +26,7 @@ func NewRouter(conf *RouterConfig) *gin.Engine {
 		PostService:         conf.PostService,
 		SubscriptionService: conf.SubscriptionService,
 		VoucherService:      conf.VoucherService,
+		GiftService:         conf.GiftService,
 	})
 
 	router.Use(middlewares.ErrorHandler)

@@ -12,6 +12,7 @@ type Handler struct {
 	postService         services.PostService
 	subscriptionService services.SubscriptionService
 	voucherService      services.VoucherService
+	giftService         services.GiftService
 }
 
 type HandlerConfig struct {
@@ -20,6 +21,7 @@ type HandlerConfig struct {
 	PostService         services.PostService
 	SubscriptionService services.SubscriptionService
 	VoucherService      services.VoucherService
+	GiftService         services.GiftService
 }
 
 func New(conf *HandlerConfig) *Handler {
@@ -29,6 +31,7 @@ func New(conf *HandlerConfig) *Handler {
 		postService:         conf.PostService,
 		subscriptionService: conf.SubscriptionService,
 		voucherService:      conf.VoucherService,
+		giftService:         conf.GiftService,
 	}
 }
 
