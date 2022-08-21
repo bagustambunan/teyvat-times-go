@@ -11,6 +11,7 @@ import (
 )
 
 type PostService interface {
+	CanUserAccessThisPost(user *models.User, post *models.Post) error
 	GetPosts(opt *models.GetPostsOption) (*dto.GetPostsRes, error)
 	GetPost(post *models.Post) (*models.Post, error)
 	AddActivity(user *models.User, post *models.Post) (*models.UserPostActivities, error)
@@ -52,6 +53,18 @@ func (serv *postService) generatePrefix(size int) string {
 		buf[i] = alpha[rand.Intn(len(alpha))]
 	}
 	return string(buf)
+}
+
+func (serv *postService) CanUserAccessThisPost(user *models.User, post *models.Post) error {
+	if post.PostTierID != 1 {
+		unlock := &models.PostUnlock{
+			UserID: user.ID,
+			PostID: post.ID,
+		}
+		_, fetchErr := serv.postRepository.FindUnlock(unlock)
+		return fetchErr
+	}
+	return nil
 }
 
 func (serv *postService) GetPosts(opt *models.GetPostsOption) (*dto.GetPostsRes, error) {

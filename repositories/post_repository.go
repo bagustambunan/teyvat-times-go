@@ -15,6 +15,8 @@ type PostRepository interface {
 	FindPost(post *models.Post) (*models.Post, error)
 	FindPostBySlug(slug string) (*models.Post, error)
 	Save(post *models.Post) (*models.Post, int, error)
+	FindUnlock(unlock *models.PostUnlock) (*models.PostUnlock, error)
+	SaveUnlock(unlock *models.PostUnlock) (*models.PostUnlock, error)
 	FindActivity(act *models.UserPostActivities) (*models.UserPostActivities, error)
 	SaveActivity(act *models.UserPostActivities) (*models.UserPostActivities, error)
 	IncreaseViewsActivity(act *models.UserPostActivities) (*models.UserPostActivities, error)
@@ -113,6 +115,20 @@ func (repo *postRepository) FindPostBySlug(slug string) (*models.Post, error) {
 	return post, result.Error
 }
 
+func (repo *postRepository) FindUnlock(unlock *models.PostUnlock) (*models.PostUnlock, error) {
+	result := repo.db.
+		Where("user_id = ?", unlock.UserID).
+		Where("post_id = ?", unlock.PostID).
+		First(&unlock)
+	return unlock, result.Error
+}
+
+func (repo *postRepository) SaveUnlock(unlock *models.PostUnlock) (*models.PostUnlock, error) {
+	result := repo.db.
+		Create(unlock)
+	return unlock, result.Error
+}
+
 func (repo *postRepository) FindActivity(act *models.UserPostActivities) (*models.UserPostActivities, error) {
 	result := repo.db.
 		Where("user_id = ?", act.UserID).
@@ -123,7 +139,6 @@ func (repo *postRepository) FindActivity(act *models.UserPostActivities) (*model
 
 func (repo *postRepository) SaveActivity(act *models.UserPostActivities) (*models.UserPostActivities, error) {
 	result := repo.db.
-		Clauses(clause.OnConflict{DoNothing: true}).
 		Create(act)
 	return act, result.Error
 }

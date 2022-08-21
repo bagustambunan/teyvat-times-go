@@ -70,10 +70,15 @@ func (h *Handler) PubReadPost(c *gin.Context) {
 		_ = c.Error(httperror.BadRequestError("Slug is invalid", "INVALID_SLUG"))
 		return
 	}
-
 	fetchedPost, fetchErr := h.postService.GetPostBySlug(slug)
 	if fetchErr != nil {
 		_ = c.Error(fetchErr)
+		return
+	}
+
+	accessErr := h.postService.CanUserAccessThisPost(user, fetchedPost)
+	if accessErr != nil {
+		_ = c.Error(httperror.UnauthorizedError())
 		return
 	}
 
@@ -97,6 +102,12 @@ func (h *Handler) PubPostActivity(c *gin.Context) {
 	fetchedPost, fetchErr := h.postService.GetPost(&models.Post{ID: postID})
 	if fetchErr != nil {
 		_ = c.Error(fetchErr)
+		return
+	}
+
+	accessErr := h.postService.CanUserAccessThisPost(user, fetchedPost)
+	if accessErr != nil {
+		_ = c.Error(httperror.UnauthorizedError())
 		return
 	}
 

@@ -170,6 +170,23 @@ CREATE TABLE public.user_post_activities (
             REFERENCES public.posts(id)
 );
 
+-- table post_unlocks
+CREATE TABLE public.post_unlocks (
+    id bigserial NOT NULL,
+    user_id bigint NOT NULL,
+    post_id bigint NOT NULL,
+    created_at timestamp without time zone DEFAULT now() NOT NULL,
+    updated_at timestamp without time zone DEFAULT now() NOT NULL,
+    deleted_at timestamp without time zone,
+    PRIMARY KEY(id),
+    CONSTRAINT fk_user
+        FOREIGN KEY (user_id)
+            REFERENCES public.users(id),
+    CONSTRAINT fk_post
+        FOREIGN KEY (post_id)
+            REFERENCES public.posts(id)
+);
+
 ------
 
 -- table subscriptions
