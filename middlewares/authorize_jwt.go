@@ -50,8 +50,6 @@ func AuthorizeJWT(c *gin.Context) *models.User {
 		return nil
 	}
 
-	// check tr_tokens
-
 	return &user
 }
 

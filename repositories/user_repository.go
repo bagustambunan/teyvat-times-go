@@ -13,8 +13,6 @@ type UserRepository interface {
 	FindUserByReferralCode(refCode string) (*models.User, error)
 	Save(user *models.User) (*models.User, int, error)
 	SaveUserReferral(userRef *models.UserReferral) error
-	SaveTrToken(trToken *models.TrToken) (*models.TrToken, error)
-	FindTrToken(trToken *models.TrToken) (*models.TrToken, error)
 }
 
 type userRepository struct {
@@ -70,17 +68,4 @@ func (repo *userRepository) SaveUserReferral(userRef *models.UserReferral) error
 	result := repo.db.
 		Create(&userRef)
 	return result.Error
-}
-
-func (repo *userRepository) SaveTrToken(trToken *models.TrToken) (*models.TrToken, error) {
-	result := repo.db.
-		Clauses(clause.OnConflict{DoNothing: true}).
-		Create(trToken)
-	return trToken, result.Error
-}
-
-func (repo *userRepository) FindTrToken(trToken *models.TrToken) (*models.TrToken, error) {
-	result := repo.db.
-		First(&trToken)
-	return trToken, result.Error
 }

@@ -13,7 +13,6 @@ import (
 
 type AuthService interface {
 	SignIn(*dto.SignInReq) (*dto.TokenRes, error)
-	GetTrToken(trToken *models.TrToken) (*models.TrToken, error)
 	GetUser(u *models.User) (*dto.GetUserRes, error)
 	CheckReferrerCode(refCode string) error
 	GetUserByReferralCode(refCode string) (*models.User, error)
@@ -52,7 +51,7 @@ func (serv *authService) generateReferralCode(size int) string {
 	return string(buf)
 }
 
-func (serv *authService) generateJWTToken(user *models.User) (*dto.TokenRes, string, error) {
+func (serv *authService) generateJWTToken(user *models.User) (*dto.TokenRes, error) {
 	claims := &idTokenClaims{
 		jwt.RegisteredClaims{
 			IssuedAt:  jwt.NewNumericDate(time.Now()),
@@ -63,16 +62,15 @@ func (serv *authService) generateJWTToken(user *models.User) (*dto.TokenRes, str
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	tokenString, err := token.SignedString(serv.appConfig.JWTSecretKey)
-
 	if err != nil {
-		return nil, "", err
+		return nil, err
 	}
 
 	dtoToken := dto.TokenRes{
 		UserID: user.ID,
 		Token:  tokenString,
 	}
-	return &dtoToken, tokenString, nil
+	return &dtoToken, nil
 }
 
 func (serv *authService) SignIn(req *dto.SignInReq) (*dto.TokenRes, error) {
@@ -80,26 +78,8 @@ func (serv *authService) SignIn(req *dto.SignInReq) (*dto.TokenRes, error) {
 	if noAuthErr != nil || user == nil {
 		return nil, httperror.UnauthorizedError()
 	}
-	token, tokenString, err := serv.generateJWTToken(user)
-	if err != nil {
-		return nil, err
-	}
-
-	// Insert token to tr_tokens
-	_, trTokenErr := serv.userRepository.SaveTrToken(&models.TrToken{
-		UserID:    user.ID,
-		Token:     tokenString,
-		IsExpired: 0,
-	})
-	if trTokenErr != nil {
-		return nil, err
-	}
-
-	return token, nil
-}
-
-func (serv *authService) GetTrToken(trToken *models.TrToken) (*models.TrToken, error) {
-	return serv.userRepository.FindTrToken(trToken)
+	token, err := serv.generateJWTToken(user)
+	return token, err
 }
 
 func (serv *authService) GetUser(u *models.User) (*dto.GetUserRes, error) {

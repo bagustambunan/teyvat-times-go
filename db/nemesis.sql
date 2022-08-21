@@ -84,21 +84,6 @@ CREATE TABLE public.user_referrals (
             REFERENCES public.users(id)
 );
 
--- table tr_tokens
-CREATE TABLE public.tr_tokens (
-      id bigserial NOT NULL,
-      user_id bigint NOT NULL,
-      token character varying NOT NULL,
-      is_expired int DEFAULT 0 NOT NULL,
-      created_at timestamp without time zone DEFAULT now() NOT NULL,
-      updated_at timestamp without time zone DEFAULT now() NOT NULL,
-      deleted_at timestamp without time zone,
-      PRIMARY KEY(id),
-      CONSTRAINT fk_user
-          FOREIGN KEY(user_id)
-              REFERENCES public.users(id)
-);
-
 -- table post_tiers
 CREATE TABLE public.post_tiers (
     id int NOT NULL,

@@ -100,30 +100,3 @@ func (h *Handler) GetUserInfo(c *gin.Context) {
 	}
 	helpers.StandardResponse(c, http.StatusOK, userRes)
 }
-
-//func (h *Handler) CheckToken(user *models.User, token string) error {
-//	_, err := h.authService.GetTrToken(&models.TrToken{
-//		User:      user,
-//		Token:     token,
-//		IsExpired: 0,
-//	})
-//	if err != nil {
-//		return err
-//	}
-//	return nil
-//}
-
-func (h *Handler) CheckToken(user *models.User, token string) gin.HandlerFunc {
-	return func(c *gin.Context) {
-		_, err := h.authService.GetTrToken(&models.TrToken{
-			User:      user,
-			Token:     token,
-			IsExpired: 0,
-		})
-		if err != nil {
-			unauthorizedErr := httperror.UnauthorizedError()
-			c.AbortWithStatusJSON(unauthorizedErr.StatusCode, unauthorizedErr)
-			return
-		}
-	}
-}
