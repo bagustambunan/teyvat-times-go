@@ -7,6 +7,7 @@ import (
 	"final-project-backend/models"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"time"
 )
 
 func (h *Handler) AddTransaction(c *gin.Context) {
@@ -25,8 +26,11 @@ func (h *Handler) AddTransaction(c *gin.Context) {
 			_ = c.Error(httperror.BadRequestError("Invalid user voucher", "INVALID_USER_VOUCHER"))
 			return
 		}
-		// TODO: check expired
-		//if uv.DateExpired
+		dateExpired, _ := time.Parse("2006-01-02T00:00:00Z", uv.DateExpired)
+		if dateExpired.Before(time.Now()) {
+			_ = c.Error(httperror.BadRequestError("User voucher expired", "USER_VOUCHER_EXPIRED"))
+			return
+		}
 		if uv.IsUsed != 0 {
 			_ = c.Error(httperror.BadRequestError("User voucher is already used", "USER_VOUCHER_ALREADY_USED"))
 			return
