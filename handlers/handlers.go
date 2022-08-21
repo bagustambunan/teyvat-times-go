@@ -7,22 +7,25 @@ import (
 )
 
 type Handler struct {
-	authService services.AuthService
-	userService services.UserService
-	postService services.PostService
+	authService         services.AuthService
+	userService         services.UserService
+	postService         services.PostService
+	subscriptionService services.SubscriptionService
 }
 
 type HandlerConfig struct {
-	AuthService services.AuthService
-	UserService services.UserService
-	PostService services.PostService
+	AuthService         services.AuthService
+	UserService         services.UserService
+	PostService         services.PostService
+	SubscriptionService services.SubscriptionService
 }
 
 func New(conf *HandlerConfig) *Handler {
 	return &Handler{
-		authService: conf.AuthService,
-		userService: conf.UserService,
-		postService: conf.PostService,
+		authService:         conf.AuthService,
+		userService:         conf.UserService,
+		postService:         conf.PostService,
+		subscriptionService: conf.SubscriptionService,
 	}
 }
 

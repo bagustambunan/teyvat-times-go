@@ -23,10 +23,16 @@ func Init() {
 		PostRepository: postRepository,
 	})
 
+	subscriptionRepository := repositories.NewSubscriptionRepository(&repositories.SRConfig{DB: db.Get()})
+	subscriptionService := services.NewSubscriptionService(&services.SSConfig{
+		SubscriptionRepository: subscriptionRepository,
+	})
+
 	router := NewRouter(&RouterConfig{
-		AuthService: authService,
-		UserService: userService,
-		PostService: postService,
+		AuthService:         authService,
+		UserService:         userService,
+		PostService:         postService,
+		SubscriptionService: subscriptionService,
 	})
 
 	err := router.Run(fmt.Sprintf(":%d", config.Config.AppPort))

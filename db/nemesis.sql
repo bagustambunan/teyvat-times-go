@@ -284,9 +284,10 @@ INSERT INTO public.transaction_statuses (id, name) VALUES (4,'Canceled');
 CREATE TABLE public.transactions (
     id bigserial NOT NULL,
     user_id bigint NOT NULL,
+    subscription_id int NOT NULL,
     status_id int NOT NULL,
-    grossTotal int NOT NULL,
-    netTotal int NOT NULL,
+    gross_total int NOT NULL,
+    net_total int NOT NULL,
     user_voucher_id bigint,
     created_at timestamp without time zone DEFAULT now() NOT NULL,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
@@ -295,6 +296,9 @@ CREATE TABLE public.transactions (
     CONSTRAINT fk_user
         FOREIGN KEY (user_id)
            REFERENCES public.users(id),
+    CONSTRAINT fk_subscription
+        FOREIGN KEY (subscription_id)
+            REFERENCES public.subscriptions(id),
     CONSTRAINT fk_transaction_status
         FOREIGN KEY (status_id)
            REFERENCES public.transaction_statuses(id),
@@ -302,80 +306,4 @@ CREATE TABLE public.transactions (
         FOREIGN KEY (user_voucher_id)
             REFERENCES public.user_vouchers(id)
 );
-INSERT INTO public.transactions (user_id, status_id, grosstotal, netTotal, user_voucher_id) VALUES (1,2,30000,5000,1);
-
--- table transaction_items
-CREATE TABLE public.transaction_items (
-     id bigserial NOT NULL,
-     subscription_id int NOT NULL,
-     transaction_id bigint NOT NULL,
-     created_at timestamp without time zone DEFAULT now() NOT NULL,
-     updated_at timestamp without time zone DEFAULT now() NOT NULL,
-     deleted_at timestamp without time zone,
-     PRIMARY KEY(id),
-     CONSTRAINT fk_subscription
-         FOREIGN KEY (subscription_id)
-             REFERENCES public.subscriptions(id),
-     CONSTRAINT fk_transaction
-         FOREIGN KEY (transaction_id)
-             REFERENCES public.transactions(id)
-);
-INSERT INTO public.transaction_items (subscription_id, transaction_id) VALUES (1,1);
-
--- ---------------------------------------------------
--- -- table wallets
--- CREATE TABLE public.wallets (
---     id bigserial NOT NULL,
---     balance integer DEFAULT 0 NOT NULL,
---     created_at timestamp without time zone DEFAULT now() NOT NULL,
---     updated_at timestamp without time zone DEFAULT now() NOT NULL,
---     deleted_at timestamp without time zone,
---     PRIMARY KEY(id)
--- );
---
--- -- table transaction_types
--- CREATE TABLE public.transaction_types (
---                   id int NOT NULL,
---                   name character varying NOT NULL UNIQUE,
---                   created_at timestamp without time zone DEFAULT now() NOT NULL,
---                   updated_at timestamp without time zone DEFAULT now() NOT NULL,
---                   deleted_at timestamp without time zone,
---                   PRIMARY KEY(id)
--- );
---
--- -- table top_up_sources
--- CREATE TABLE public.top_up_sources (
---     id int NOT NULL,
---     name character varying NOT NULL UNIQUE,
---     created_at timestamp without time zone DEFAULT now() NOT NULL,
---     updated_at timestamp without time zone DEFAULT now() NOT NULL,
---     deleted_at timestamp without time zone,
---     PRIMARY KEY(id)
--- );
---
--- -- table transactions
--- CREATE TABLE public.transactions (
---     id bigserial NOT NULL,
---     transaction_type_id int NOT NULL,
---     top_up_source_id int NOT NULL,
---     source_wallet_id bigint NOT NULL,
---     destination_wallet_id bigint NOT NULL,
---     amount int NOT NULL,
---     description character varying NOT NULL,
---     created_at timestamp without time zone DEFAULT now() NOT NULL,
---     updated_at timestamp without time zone DEFAULT now() NOT NULL,
---     deleted_at timestamp without time zone,
---     PRIMARY KEY(id),
---     CONSTRAINT fk_transaction_type
---      FOREIGN KEY(transaction_type_id)
---          REFERENCES transaction_types(id),
---     CONSTRAINT fk_top_up_source
---      FOREIGN KEY(top_up_source_id)
---          REFERENCES top_up_sources(id),
---     CONSTRAINT fk_source_wallet
---      FOREIGN KEY(source_wallet_id)
---          REFERENCES wallets(id),
---     CONSTRAINT fk_destination_wallet
---      FOREIGN KEY(destination_wallet_id)
---          REFERENCES wallets(id)
--- );
+INSERT INTO public.transactions (user_id, subscription_id, status_id, gross_total, net_total, user_voucher_id) VALUES (1,1,2,30000,5000,1);

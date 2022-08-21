@@ -9,18 +9,20 @@ import (
 )
 
 type RouterConfig struct {
-	AuthService services.AuthService
-	UserService services.UserService
-	PostService services.PostService
+	AuthService         services.AuthService
+	UserService         services.UserService
+	PostService         services.PostService
+	SubscriptionService services.SubscriptionService
 }
 
 func NewRouter(conf *RouterConfig) *gin.Engine {
 	router := gin.Default()
 
 	h := handlers.New(&handlers.HandlerConfig{
-		AuthService: conf.AuthService,
-		UserService: conf.UserService,
-		PostService: conf.PostService,
+		AuthService:         conf.AuthService,
+		UserService:         conf.UserService,
+		PostService:         conf.PostService,
+		SubscriptionService: conf.SubscriptionService,
 	})
 
 	router.Use(middlewares.ErrorHandler)
@@ -76,6 +78,14 @@ func NewRouter(conf *RouterConfig) *gin.Engine {
 		"/pub/posts/:postID/unlocks",
 		middlewares.AuthorizePublic,
 		h.PubPostUnlock,
+	)
+
+	// PUBLIC > SUBSCRIPTION
+	router.POST(
+		"/pub/transactions",
+		middlewares.AuthorizePublic,
+		middlewares.RequestValidator(&dto.TransactionReq{}),
+		h.AddTransaction,
 	)
 
 	router.NoRoute(h.HandleNotFound)
