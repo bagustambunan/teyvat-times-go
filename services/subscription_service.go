@@ -5,6 +5,7 @@ import (
 	"final-project-backend/httperror"
 	"final-project-backend/models"
 	"final-project-backend/repositories"
+	"time"
 )
 
 type SubscriptionService interface {
@@ -46,4 +47,33 @@ func (serv *subscriptionService) AddTransaction(user *models.User, req *dto.Tran
 
 	insertedTr, insertErr := serv.subscriptionRepository.SaveTransaction(transaction)
 	return new(dto.TransactionRes).FromTransaction(insertedTr), insertErr
+}
+
+// TODO: method to finish payment a transaction
+
+func (serv *subscriptionService) GetUserLatestSubscription(user *models.User) *models.UserSubscription {
+	us, err := serv.subscriptionRepository.FindUserLatestSubscription(user)
+	if err != nil {
+		return nil
+	}
+	return us
+}
+
+func (serv *subscriptionService) AddUserSubscription(user *models.User, subscription *models.Subscription) (*models.UserSubscription, error) {
+	dateStart := time.Now()
+
+	if latestUs := serv.GetUserLatestSubscription(user); latestUs != nil {
+		latestUsEnded, _ := time.Parse("2006-01-02", latestUs.DateEnded)
+		if latestUsEnded.After(dateStart) {
+			dateStart = latestUsEnded.AddDate(0, 0, 1)
+		}
+	}
+
+	us := &models.UserSubscription{
+		UserID:         user.ID,
+		SubscriptionID: subscription.ID,
+		DateStart:      dateStart.Format("2006-01-02"),
+		DateEnded:      dateStart.AddDate(0, 1, 0).Format("2006-01-02"),
+	}
+	return serv.subscriptionRepository.SaveUserSubscription(us)
 }

@@ -7,7 +7,9 @@ import (
 
 type SubscriptionRepository interface {
 	FindSubscription(subscription *models.Subscription) (*models.Subscription, error)
+	SaveUserSubscription(us *models.UserSubscription) (*models.UserSubscription, error)
 	SaveTransaction(transaction *models.Transaction) (*models.Transaction, error)
+	FindUserLatestSubscription(user *models.User) (*models.UserSubscription, error)
 }
 
 type subscriptionRepository struct {
@@ -26,6 +28,19 @@ func (repo *subscriptionRepository) FindSubscription(subscription *models.Subscr
 	result := repo.db.
 		First(&subscription)
 	return subscription, result.Error
+}
+
+func (repo *subscriptionRepository) FindUserLatestSubscription(user *models.User) (*models.UserSubscription, error) {
+	us := &models.UserSubscription{}
+	result := repo.db.
+		Last(&us)
+	return us, result.Error
+}
+
+func (repo *subscriptionRepository) SaveUserSubscription(us *models.UserSubscription) (*models.UserSubscription, error) {
+	result := repo.db.
+		Create(us)
+	return us, result.Error
 }
 
 func (repo *subscriptionRepository) SaveTransaction(transaction *models.Transaction) (*models.Transaction, error) {
