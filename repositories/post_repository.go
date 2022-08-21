@@ -21,6 +21,7 @@ type PostRepository interface {
 	SaveActivity(act *models.UserPostActivities) (*models.UserPostActivities, error)
 	IncreaseViewsActivity(act *models.UserPostActivities) (*models.UserPostActivities, error)
 	UpdateActivity(act *models.UserPostActivities) (*models.UserPostActivities, error)
+	FindUserLatestSubscription(user *models.User) (*models.UserSubscription, error)
 }
 
 type postRepository struct {
@@ -165,4 +166,12 @@ func (repo *postRepository) Save(post *models.Post) (*models.Post, int, error) {
 		Clauses(clause.OnConflict{DoNothing: true}).
 		Create(post)
 	return post, int(result.RowsAffected), result.Error
+}
+
+func (repo *postRepository) FindUserLatestSubscription(user *models.User) (*models.UserSubscription, error) {
+	us := &models.UserSubscription{}
+	result := repo.db.
+		Where("user_id = ?", user.ID).
+		Last(&us)
+	return us, result.Error
 }

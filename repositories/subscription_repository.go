@@ -33,6 +33,7 @@ func (repo *subscriptionRepository) FindSubscription(subscription *models.Subscr
 func (repo *subscriptionRepository) FindUserLatestSubscription(user *models.User) (*models.UserSubscription, error) {
 	us := &models.UserSubscription{}
 	result := repo.db.
+		Where("user_id = ?", user.ID).
 		Last(&us)
 	return us, result.Error
 }

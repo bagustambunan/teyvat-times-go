@@ -51,7 +51,7 @@ func (h *Handler) PubReadPost(c *gin.Context) {
 
 	accessErr := h.postService.CanUserAccessThisPost(user, fetchedPost)
 	if accessErr != nil {
-		_ = c.Error(httperror.UnauthorizedError())
+		_ = c.Error(accessErr)
 		return
 	}
 
@@ -80,7 +80,7 @@ func (h *Handler) PubPostActivity(c *gin.Context) {
 
 	accessErr := h.postService.CanUserAccessThisPost(user, fetchedPost)
 	if accessErr != nil {
-		_ = c.Error(httperror.UnauthorizedError())
+		_ = c.Error(accessErr)
 		return
 	}
 

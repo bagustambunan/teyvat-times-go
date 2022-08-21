@@ -9,6 +9,7 @@ import (
 	"math/rand"
 	"regexp"
 	"strings"
+	"time"
 )
 
 type PostService interface {
@@ -59,12 +60,23 @@ func (serv *postService) generatePrefix(size int) string {
 
 func (serv *postService) CanUserAccessThisPost(user *models.User, post *models.Post) error {
 	if post.PostTierID != 1 {
+		latestUs, usErr := serv.postRepository.FindUserLatestSubscription(user)
+		if usErr != nil {
+			return httperror.BadRequestError("User has no active subscription", "NO_ACTIVE_SUBSCRIPTION")
+		}
+		latestUsEnded, _ := time.Parse("2006-01-02T00:00:00Z", latestUs.DateEnded)
+		if latestUsEnded.Before(time.Now()) {
+			return httperror.BadRequestError("User has no active subscription", "NO_ACTIVE_SUBSCRIPTION")
+		}
+
 		unlock := &models.PostUnlock{
 			UserID: user.ID,
 			PostID: post.ID,
 		}
 		_, fetchErr := serv.postRepository.FindUnlock(unlock)
-		return fetchErr
+		if fetchErr != nil {
+			return httperror.BadRequestError("Post is locked", "UNLOCKED_POST")
+		}
 	}
 	return nil
 }
