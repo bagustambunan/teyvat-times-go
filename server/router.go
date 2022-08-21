@@ -89,6 +89,11 @@ func NewRouter(conf *RouterConfig) *gin.Engine {
 		middlewares.RequestValidator(&dto.TransactionReq{}),
 		h.AddTransaction,
 	)
+	router.POST(
+		"/pub/subscriptions",
+		middlewares.AuthorizePublic,
+		h.TestAddUserSubscription,
+	)
 
 	router.NoRoute(h.HandleNotFound)
 

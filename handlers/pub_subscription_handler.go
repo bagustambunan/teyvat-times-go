@@ -51,3 +51,15 @@ func (h *Handler) AddTransaction(c *gin.Context) {
 
 	helpers.StandardResponse(c, http.StatusCreated, trRes)
 }
+
+// TODO: delete this handler
+func (h *Handler) TestAddUserSubscription(c *gin.Context) {
+	user := h.GetUserFromToken(c)
+	subscription := &models.Subscription{ID: 1}
+	us, err := h.subscriptionService.AddUserSubscription(user, subscription)
+	if err != nil {
+		_ = c.Error(err)
+		return
+	}
+	helpers.StandardResponse(c, http.StatusCreated, us)
+}

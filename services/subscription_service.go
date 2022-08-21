@@ -10,6 +10,7 @@ import (
 
 type SubscriptionService interface {
 	AddTransaction(user *models.User, req *dto.TransactionReq, discount int) (*dto.TransactionRes, error)
+	AddUserSubscription(user *models.User, subscription *models.Subscription) (*models.UserSubscription, error)
 }
 
 type subscriptionService struct {
@@ -63,7 +64,7 @@ func (serv *subscriptionService) AddUserSubscription(user *models.User, subscrip
 	dateStart := time.Now()
 
 	if latestUs := serv.GetUserLatestSubscription(user); latestUs != nil {
-		latestUsEnded, _ := time.Parse("2006-01-02", latestUs.DateEnded)
+		latestUsEnded, _ := time.Parse("2006-01-02T00:00:00Z", latestUs.DateEnded)
 		if latestUsEnded.After(dateStart) {
 			dateStart = latestUsEnded.AddDate(0, 0, 1)
 		}
