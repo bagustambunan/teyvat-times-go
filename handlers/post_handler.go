@@ -107,3 +107,34 @@ func (h *Handler) GetCategory(c *gin.Context) {
 	}
 	helpers.StandardResponse(c, http.StatusOK, category)
 }
+
+func (h *Handler) AddCategory(c *gin.Context) {
+	payload, _ := c.Get("payload")
+	req, _ := payload.(*dto.CategoryReq)
+	category, err := h.postService.AddCategory(req)
+	if err != nil {
+		_ = c.Error(err)
+		return
+	}
+	helpers.StandardResponse(c, http.StatusCreated, category)
+}
+
+func (h *Handler) UpdateCategory(c *gin.Context) {
+	postCategoryID, idErr := strconv.Atoi(c.Param("postCategoryID"))
+	if idErr != nil {
+		_ = c.Error(idErr)
+		return
+	}
+	payload, _ := c.Get("payload")
+	req, _ := payload.(*dto.CategoryReq)
+	category, err := h.postService.UpdateCategory(&models.PostCategory{
+		ID:    postCategoryID,
+		Name:  req.Name,
+		Color: req.Color,
+	})
+	if err != nil {
+		_ = c.Error(err)
+		return
+	}
+	helpers.StandardResponse(c, http.StatusOK, category)
+}

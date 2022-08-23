@@ -25,6 +25,8 @@ type PostService interface {
 	GetCategories() ([]*models.PostCategory, error)
 	GetTier(tier *models.PostTier) (*models.PostTier, error)
 	GetCategory(category *models.PostCategory) (*models.PostCategory, error)
+	AddCategory(req *dto.CategoryReq) (*models.PostCategory, error)
+	UpdateCategory(category *models.PostCategory) (*models.PostCategory, error)
 }
 
 type postService struct {
@@ -190,4 +192,23 @@ func (serv *postService) GetTier(tier *models.PostTier) (*models.PostTier, error
 
 func (serv *postService) GetCategory(category *models.PostCategory) (*models.PostCategory, error) {
 	return serv.postRepository.FindCategory(category)
+}
+
+func (serv *postService) AddCategory(req *dto.CategoryReq) (*models.PostCategory, error) {
+	category, rowsAffected, err := serv.postRepository.SaveCategory(&models.PostCategory{
+		Name:  req.Name,
+		Color: req.Color,
+	})
+	if err == nil && rowsAffected == 0 {
+		return nil, httperror.BadRequestError("Duplicate category", "DUPLICATE_CATEGORY")
+	}
+	return category, err
+}
+
+func (serv *postService) UpdateCategory(category *models.PostCategory) (*models.PostCategory, error) {
+	cat, rowsAffected, err := serv.postRepository.UpdateCategory(category)
+	if err == nil && rowsAffected == 0 {
+		return nil, httperror.BadRequestError("Duplicate category", "DUPLICATE_CATEGORY")
+	}
+	return cat, err
 }

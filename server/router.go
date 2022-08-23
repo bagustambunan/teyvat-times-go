@@ -52,16 +52,30 @@ func NewRouter(conf *RouterConfig) *gin.Engine {
 		h.SignIn,
 	)
 
+	// ADMIN > CATEGORY
+	router.GET(
+		"/categories/:postCategoryID",
+		middlewares.AuthorizeInternal,
+		h.GetCategory,
+	)
+	router.POST(
+		"/categories",
+		middlewares.AuthorizeInternal,
+		middlewares.RequestValidator(&dto.CategoryReq{}),
+		h.AddCategory,
+	)
+	router.PATCH(
+		"/categories/:postCategoryID",
+		middlewares.AuthorizeInternal,
+		middlewares.RequestValidator(&dto.CategoryReq{}),
+		h.UpdateCategory,
+	)
+
 	// ADMIN > POST
 	router.GET(
 		"/tiers/:postTierID",
 		middlewares.AuthorizeInternal,
 		h.GetTier,
-	)
-	router.GET(
-		"/categories/:postCategoryID",
-		middlewares.AuthorizeInternal,
-		h.GetCategory,
 	)
 	router.GET(
 		"/posts/",
