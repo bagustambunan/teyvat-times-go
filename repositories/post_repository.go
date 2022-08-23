@@ -24,6 +24,8 @@ type PostRepository interface {
 	FindUserLatestSubscription(user *models.User) (*models.UserSubscription, error)
 	FindTiers() ([]*models.PostTier, error)
 	FindCategories() ([]*models.PostCategory, error)
+	FindTier(tier *models.PostTier) (*models.PostTier, error)
+	FindCategory(category *models.PostCategory) (*models.PostCategory, error)
 }
 
 type postRepository struct {
@@ -188,9 +190,21 @@ func (repo *postRepository) FindTiers() ([]*models.PostTier, error) {
 	return tiers, result.Error
 }
 
+func (repo *postRepository) FindTier(tier *models.PostTier) (*models.PostTier, error) {
+	result := repo.db.
+		First(&tier)
+	return tier, result.Error
+}
+
 func (repo *postRepository) FindCategories() ([]*models.PostCategory, error) {
 	var categories []*models.PostCategory
 	result := repo.db.
 		Find(&categories)
 	return categories, result.Error
+}
+
+func (repo *postRepository) FindCategory(category *models.PostCategory) (*models.PostCategory, error) {
+	result := repo.db.
+		First(&category)
+	return category, result.Error
 }

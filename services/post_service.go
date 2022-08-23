@@ -23,6 +23,8 @@ type PostService interface {
 	AddPost(post *models.Post) (*dto.GetPostRes, error)
 	GetTiers() ([]*models.PostTier, error)
 	GetCategories() ([]*models.PostCategory, error)
+	GetTier(tier *models.PostTier) (*models.PostTier, error)
+	GetCategory(category *models.PostCategory) (*models.PostCategory, error)
 }
 
 type postService struct {
@@ -180,4 +182,12 @@ func (serv *postService) GetTiers() ([]*models.PostTier, error) {
 
 func (serv *postService) GetCategories() ([]*models.PostCategory, error) {
 	return serv.postRepository.FindCategories()
+}
+
+func (serv *postService) GetTier(tier *models.PostTier) (*models.PostTier, error) {
+	return serv.postRepository.FindTier(tier)
+}
+
+func (serv *postService) GetCategory(category *models.PostCategory) (*models.PostCategory, error) {
+	return serv.postRepository.FindCategory(category)
 }

@@ -79,3 +79,31 @@ func (h *Handler) GetCategories(c *gin.Context) {
 	}
 	helpers.StandardResponse(c, http.StatusOK, categories)
 }
+
+func (h *Handler) GetTier(c *gin.Context) {
+	postTierID, idErr := strconv.Atoi(c.Param("postTierID"))
+	if idErr != nil {
+		_ = c.Error(idErr)
+		return
+	}
+	tier, fetchErr := h.postService.GetTier(&models.PostTier{ID: postTierID})
+	if fetchErr != nil {
+		_ = c.Error(fetchErr)
+		return
+	}
+	helpers.StandardResponse(c, http.StatusOK, tier)
+}
+
+func (h *Handler) GetCategory(c *gin.Context) {
+	postCategoryID, idErr := strconv.Atoi(c.Param("postCategoryID"))
+	if idErr != nil {
+		_ = c.Error(idErr)
+		return
+	}
+	category, fetchErr := h.postService.GetCategory(&models.PostCategory{ID: postCategoryID})
+	if fetchErr != nil {
+		_ = c.Error(fetchErr)
+		return
+	}
+	helpers.StandardResponse(c, http.StatusOK, category)
+}

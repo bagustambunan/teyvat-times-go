@@ -7,4 +7,5 @@ type PostTier struct {
 	ID            int    `json:"postTierID" gorm:"primaryKey"`
 	Name          string `json:"name"`
 	CoinsRequired int    `json:"coinsRequired"`
+	Color         string `json:"color"`
 }
