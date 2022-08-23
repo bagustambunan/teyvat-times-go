@@ -21,7 +21,6 @@ func validateToken(encodedToken string) (*jwt.Token, error) {
 
 func AuthorizeJWT(c *gin.Context) *models.User {
 	authHeader := c.GetHeader("Authorization")
-
 	s := strings.Split(authHeader, "Bearer ")
 	unauthorizedErr := httperror.UnauthorizedError()
 	if len(s) < 2 {
@@ -49,7 +48,6 @@ func AuthorizeJWT(c *gin.Context) *models.User {
 		c.AbortWithStatusJSON(unauthorizedErr.StatusCode, unauthorizedErr)
 		return nil
 	}
-
 	return &user
 }
 
@@ -60,8 +58,8 @@ func AuthorizePublic(c *gin.Context) {
 
 func AuthorizeInternal(c *gin.Context) {
 	user := AuthorizeJWT(c)
-	forbiddenErr := httperror.ForbiddenError()
 	if user.RoleID != 1 {
+		forbiddenErr := httperror.ForbiddenError()
 		c.AbortWithStatusJSON(forbiddenErr.StatusCode, forbiddenErr)
 		return
 	}

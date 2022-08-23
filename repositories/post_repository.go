@@ -39,7 +39,9 @@ func NewPostRepository(c *PRConfig) PostRepository {
 func (repo *postRepository) FindPosts(opt *models.GetPostsOption) (*dto.GetPostsRes, error) {
 	var posts []*models.Post
 	result := repo.db.
-		Table("posts")
+		Table("posts").
+		Joins("PostTier").
+		Joins("PostCategory")
 
 	if opt.Category != 0 {
 		result = result.
@@ -61,7 +63,8 @@ func (repo *postRepository) FindPosts(opt *models.GetPostsOption) (*dto.GetPosts
 
 	result = result.
 		Limit(opt.Limit).
-		Offset((opt.Page - 1) * opt.Limit)
+		Offset((opt.Page - 1) * opt.Limit).
+		Find(&posts)
 
 	postsRes := new(dto.GetPostsRes).FromPosts(posts)
 	totalPage := int(math.Ceil(float64(totalData) / float64(opt.Limit)))
