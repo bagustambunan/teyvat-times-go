@@ -4,6 +4,6 @@ import "gorm.io/gorm"
 
 type PostCategory struct {
 	gorm.Model `json:"-"`
-	ID         int    `json:"roleID" gorm:"primaryKey"`
+	ID         int    `json:"postCategoryID" gorm:"primaryKey"`
 	Name       string `json:"name"`
 }

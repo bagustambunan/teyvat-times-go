@@ -90,28 +90,30 @@ CREATE TABLE public.post_tiers (
     id int NOT NULL,
     name character varying NOT NULL UNIQUE,
     coins_required int NOT NULL,
+    color character varying,
     created_at timestamp without time zone DEFAULT now() NOT NULL,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     deleted_at timestamp without time zone,
     PRIMARY KEY(id)
 );
-INSERT INTO public.post_tiers (id, name, coins_required) VALUES (1,'Free',0);
-INSERT INTO public.post_tiers (id, name, coins_required) VALUES (2,'Premium',1);
-INSERT INTO public.post_tiers (id, name, coins_required) VALUES (3,'VIP',2);
+INSERT INTO public.post_tiers (id, name, coins_required, color) VALUES (1,'Free',0,'black');
+INSERT INTO public.post_tiers (id, name, coins_required, color) VALUES (2,'Premium',1),'blue';
+INSERT INTO public.post_tiers (id, name, coins_required, color) VALUES (3,'VIP',2,'gold');
 
 -- table post_categories
 CREATE TABLE public.post_categories(
     id int NOT NULL,
     name character varying NOT NULL UNIQUE,
+    color character varying,
     created_at timestamp without time zone DEFAULT now() NOT NULL,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     deleted_at timestamp without time zone,
     PRIMARY KEY(id)
 );
-INSERT INTO public.post_categories (id, name) VALUES (1,'Politic');
-INSERT INTO public.post_categories (id, name) VALUES (2,'Economy');
-INSERT INTO public.post_categories (id, name) VALUES (3,'Sport');
-INSERT INTO public.post_categories (id, name) VALUES (4,'Entertainment');
+INSERT INTO public.post_categories (id, name, color) VALUES (1,'Politic','red');
+INSERT INTO public.post_categories (id, name, color) VALUES (2,'Economy','blue');
+INSERT INTO public.post_categories (id, name, color) VALUES (3,'Sport','green');
+INSERT INTO public.post_categories (id, name, color) VALUES (4,'Entertainment','purple');
 
 -- table posts
 CREATE TABLE public.posts (

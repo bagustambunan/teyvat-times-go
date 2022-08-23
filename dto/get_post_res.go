@@ -2,7 +2,6 @@ package dto
 
 import (
 	"final-project-backend/models"
-	"fmt"
 )
 
 type GetPostRes struct {
@@ -24,8 +23,6 @@ type GetPostRes struct {
 }
 
 func (_ *GetPostRes) FromPost(p *models.Post) *GetPostRes {
-	fmt.Println("============= POST ==================")
-	fmt.Println(p.PostCategory)
 	return &GetPostRes{
 		ID:           p.ID,
 		PostTier:     p.PostTier,

@@ -61,3 +61,21 @@ func (h *Handler) AddPost(c *gin.Context) {
 	}
 	helpers.StandardResponse(c, http.StatusOK, postRes)
 }
+
+func (h *Handler) GetTiers(c *gin.Context) {
+	tiers, fetchErr := h.postService.GetTiers()
+	if fetchErr != nil {
+		_ = c.Error(fetchErr)
+		return
+	}
+	helpers.StandardResponse(c, http.StatusOK, tiers)
+}
+
+func (h *Handler) GetCategories(c *gin.Context) {
+	categories, fetchErr := h.postService.GetCategories()
+	if fetchErr != nil {
+		_ = c.Error(fetchErr)
+		return
+	}
+	helpers.StandardResponse(c, http.StatusOK, categories)
+}

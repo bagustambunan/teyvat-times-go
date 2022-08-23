@@ -72,6 +72,16 @@ func NewRouter(conf *RouterConfig) *gin.Engine {
 
 	// PUBLIC > POST
 	router.GET(
+		"/pub/tiers/",
+		middlewares.AuthorizePublic,
+		h.GetTiers,
+	)
+	router.GET(
+		"/pub/categories/",
+		middlewares.AuthorizePublic,
+		h.GetCategories,
+	)
+	router.GET(
 		"/pub/posts/",
 		middlewares.AuthorizePublic,
 		h.GetPosts,

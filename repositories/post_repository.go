@@ -22,6 +22,8 @@ type PostRepository interface {
 	IncreaseViewsActivity(act *models.UserPostActivities) (*models.UserPostActivities, error)
 	UpdateActivity(act *models.UserPostActivities) (*models.UserPostActivities, error)
 	FindUserLatestSubscription(user *models.User) (*models.UserSubscription, error)
+	FindTiers() ([]*models.PostTier, error)
+	FindCategories() ([]*models.PostCategory, error)
 }
 
 type postRepository struct {
@@ -177,4 +179,18 @@ func (repo *postRepository) FindUserLatestSubscription(user *models.User) (*mode
 		Where("user_id = ?", user.ID).
 		Last(&us)
 	return us, result.Error
+}
+
+func (repo *postRepository) FindTiers() ([]*models.PostTier, error) {
+	var tiers []*models.PostTier
+	result := repo.db.
+		Find(&tiers)
+	return tiers, result.Error
+}
+
+func (repo *postRepository) FindCategories() ([]*models.PostCategory, error) {
+	var categories []*models.PostCategory
+	result := repo.db.
+		Find(&categories)
+	return categories, result.Error
 }
