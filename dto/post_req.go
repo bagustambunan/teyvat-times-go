@@ -6,6 +6,4 @@ type PostReq struct {
 	Title          string `json:"title" binding:"required"`
 	Content        string `json:"content" binding:"required"`
 	Summary        string `json:"summary" binding:"required"`
-	CreatedByID    int    `json:"createdByID" binding:"required"`
-	UpdatedByID    int    `json:"updatedByID" binding:"required"`
 }

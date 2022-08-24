@@ -21,6 +21,7 @@ type PostService interface {
 	UpdateActivity(user *models.User, post *models.Post, actReq *dto.ActivityReq) (*models.UserPostActivities, error)
 	GetPostBySlug(slug string) (*models.Post, error)
 	AddPost(post *models.Post) (*dto.GetPostRes, error)
+	UpdatePost(post *models.Post) (*dto.GetPostRes, error)
 	GetTiers() ([]*models.PostTier, error)
 	GetCategories() ([]*models.PostCategory, error)
 	GetTier(tier *models.PostTier) (*models.PostTier, error)
@@ -176,6 +177,14 @@ func (serv *postService) AddPost(post *models.Post) (*dto.GetPostRes, error) {
 		return nil, err
 	}
 	return new(dto.GetPostRes).FromPost(insertedPost), nil
+}
+
+func (serv *postService) UpdatePost(post *models.Post) (*dto.GetPostRes, error) {
+	updatedPost, err := serv.postRepository.UpdatePost(post)
+	if err != nil {
+		return nil, err
+	}
+	return new(dto.GetPostRes).FromPost(updatedPost), nil
 }
 
 func (serv *postService) GetTiers() ([]*models.PostTier, error) {

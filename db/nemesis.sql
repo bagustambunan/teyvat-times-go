@@ -122,7 +122,7 @@ CREATE TABLE public.posts (
     post_category_id bigint NOT NULL,
     title character varying NOT NULL,
     content text NOT NULL,
-    slug character varying NOT NULL,
+    slug character varying NOT NULL UNIQUE,
     summary character varying NOT NULL,
     img_thumbnail_id bigint DEFAULT 2 NOT NULL,
     img_content_id bigint DEFAULT 3 NOT NULL,

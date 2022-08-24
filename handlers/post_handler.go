@@ -41,6 +41,7 @@ func (h *Handler) GetPost(c *gin.Context) {
 }
 
 func (h *Handler) AddPost(c *gin.Context) {
+	user := h.GetUserFromToken(c)
 	payload, _ := c.Get("payload")
 	postReq, _ := payload.(*dto.PostReq)
 
@@ -52,8 +53,35 @@ func (h *Handler) AddPost(c *gin.Context) {
 		Summary:        postReq.Summary,
 		ImgThumbnailID: 2,
 		ImgContentID:   3,
-		CreatedByID:    postReq.CreatedByID,
-		UpdatedById:    postReq.UpdatedByID,
+		CreatedByID:    user.ID,
+		UpdatedById:    user.ID,
+	})
+	if err != nil {
+		_ = c.Error(err)
+		return
+	}
+	helpers.StandardResponse(c, http.StatusCreated, postRes)
+}
+
+func (h *Handler) UpdatePost(c *gin.Context) {
+	user := h.GetUserFromToken(c)
+	payload, _ := c.Get("payload")
+	postReq, _ := payload.(*dto.PostReq)
+
+	postID, idErr := strconv.Atoi(c.Param("postID"))
+	if idErr != nil {
+		_ = c.Error(idErr)
+		return
+	}
+
+	postRes, err := h.postService.UpdatePost(&models.Post{
+		ID:             postID,
+		PostTierID:     postReq.PostTierID,
+		PostCategoryID: postReq.PostCategoryID,
+		Title:          postReq.Title,
+		Content:        postReq.Content,
+		Summary:        postReq.Summary,
+		UpdatedById:    user.ID,
 	})
 	if err != nil {
 		_ = c.Error(err)

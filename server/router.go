@@ -64,7 +64,7 @@ func NewRouter(conf *RouterConfig) *gin.Engine {
 		middlewares.RequestValidator(&dto.CategoryReq{}),
 		h.AddCategory,
 	)
-	router.PATCH(
+	router.PUT(
 		"/categories/:postCategoryID",
 		middlewares.AuthorizeInternal,
 		middlewares.RequestValidator(&dto.CategoryReq{}),
@@ -86,6 +86,12 @@ func NewRouter(conf *RouterConfig) *gin.Engine {
 		"/posts/:postID",
 		middlewares.AuthorizeInternal,
 		h.GetPost,
+	)
+	router.PUT(
+		"/posts/:postID",
+		middlewares.AuthorizeInternal,
+		middlewares.RequestValidator(&dto.PostReq{}),
+		h.UpdatePost,
 	)
 	router.POST(
 		"/posts",

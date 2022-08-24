@@ -15,6 +15,7 @@ type PostRepository interface {
 	FindPost(post *models.Post) (*models.Post, error)
 	FindPostBySlug(slug string) (*models.Post, error)
 	Save(post *models.Post) (*models.Post, int, error)
+	UpdatePost(post *models.Post) (*models.Post, error)
 	FindUnlock(unlock *models.PostUnlock) (*models.PostUnlock, error)
 	SaveUnlock(unlock *models.PostUnlock) (*models.PostUnlock, error)
 	FindActivity(act *models.UserPostActivities) (*models.UserPostActivities, error)
@@ -175,6 +176,16 @@ func (repo *postRepository) Save(post *models.Post) (*models.Post, int, error) {
 		Clauses(clause.OnConflict{DoNothing: true}).
 		Create(post)
 	return post, int(result.RowsAffected), result.Error
+}
+func (repo *postRepository) UpdatePost(post *models.Post) (*models.Post, error) {
+	result := repo.db.
+		Model(&post).
+		UpdateColumn("post_tier_id", post.PostTierID).
+		UpdateColumn("post_category_id", post.PostCategoryID).
+		UpdateColumn("title", post.Title).
+		UpdateColumn("content", post.Content).
+		UpdateColumn("summary", post.Summary)
+	return post, result.Error
 }
 
 func (repo *postRepository) FindUserLatestSubscription(user *models.User) (*models.UserSubscription, error) {
