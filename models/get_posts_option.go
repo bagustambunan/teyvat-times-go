@@ -54,7 +54,7 @@ func NewGetPostsOption(params map[string][]string) (*GetPostsOption, error) {
 			return nil, err
 		}
 	}
-	if params["sort"] != nil {
+	if params["sortOrder"] != nil {
 		sortOrderVal, err = parseSortOrder(params["sortOrder"][0])
 		if err != nil {
 			return nil, err
@@ -93,14 +93,14 @@ func NewGetPostsOption(params map[string][]string) (*GetPostsOption, error) {
 }
 
 func parseCategory(value int) (int, error) {
-	if value < 1 {
+	if value < 0 {
 		return 0, httperror.BadRequestError("Invalid category parameter", "INVALID_QUERY_PARAMETER")
 	}
 	return value, nil
 }
 
 func parseTier(value int) (int, error) {
-	if value < 1 {
+	if value < 0 {
 		return 0, httperror.BadRequestError("Invalid tier parameter", "INVALID_QUERY_PARAMETER")
 	}
 	return value, nil

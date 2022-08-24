@@ -67,6 +67,9 @@ func (serv *postService) generatePrefix(size int) string {
 }
 
 func (serv *postService) CanUserAccessThisPost(user *models.User, post *models.Post) error {
+	//if user.RoleID == 1 {
+	//	return nil
+	//}
 	if post.PostTierID != 1 {
 		latestUs, usErr := serv.postRepository.FindUserLatestSubscription(user)
 		if usErr != nil {
@@ -76,7 +79,6 @@ func (serv *postService) CanUserAccessThisPost(user *models.User, post *models.P
 		if latestUsEnded.Before(time.Now()) {
 			return httperror.BadRequestError("User has no active subscription", "NO_ACTIVE_SUBSCRIPTION")
 		}
-
 		unlock := &models.PostUnlock{
 			UserID: user.ID,
 			PostID: post.ID,
@@ -154,11 +156,6 @@ func (serv *postService) GetPostBySlug(slug string) (*models.Post, error) {
 	if err != nil {
 		return nil, err
 	}
-
-	//Check post tier
-	//if fetchedPost.PostTierID != 1 {
-	//
-	//}
 
 	return fetchedPost, nil
 }

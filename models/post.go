@@ -8,7 +8,7 @@ type Post struct {
 	PostTierID     int           `json:"postTierID"`
 	PostTier       *PostTier     `json:"-"`
 	PostCategoryID int           `json:"postCategoryID"`
-	PostCategory   *PostCategory `json:"_"`
+	PostCategory   *PostCategory `json:"-"`
 	Title          string        `json:"title"`
 	Content        string        `json:"content"`
 	Slug           string        `json:"slug"`
@@ -19,8 +19,10 @@ type Post struct {
 	ImgContent     *Image        `json:"-"`
 	CreatedByID    int           `json:"createdByID"`
 	CreatedBy      *User         `json:"-"`
-	UpdatedById    int           `json:"updatedByID"`
+	UpdatedByID    int           `json:"updatedByID"`
 	UpdatedBy      *User         `json:"-"`
+	CreatedAt      string        `json:"createdAt"`
+	UpdatedAt      string        `json:"updatedAt"`
 }
 
 func (p *Post) GetCoinsRequired() int {
