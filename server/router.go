@@ -93,6 +93,11 @@ func NewRouter(conf *RouterConfig) *gin.Engine {
 		middlewares.RequestValidator(&dto.PostReq{}),
 		h.UpdatePost,
 	)
+	router.DELETE(
+		"/posts/:postID",
+		middlewares.AuthorizeInternal,
+		h.DeletePost,
+	)
 	router.POST(
 		"/posts",
 		middlewares.AuthorizeInternal,

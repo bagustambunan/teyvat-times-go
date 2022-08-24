@@ -90,6 +90,20 @@ func (h *Handler) UpdatePost(c *gin.Context) {
 	helpers.StandardResponse(c, http.StatusOK, postRes)
 }
 
+func (h *Handler) DeletePost(c *gin.Context) {
+	postID, idErr := strconv.Atoi(c.Param("postID"))
+	if idErr != nil {
+		_ = c.Error(idErr)
+		return
+	}
+	err := h.postService.DeletePost(&models.Post{ID: postID})
+	if err != nil {
+		_ = c.Error(err)
+		return
+	}
+	helpers.StandardResponse(c, http.StatusOK, "")
+}
+
 func (h *Handler) GetTiers(c *gin.Context) {
 	tiers, fetchErr := h.postService.GetTiers()
 	if fetchErr != nil {

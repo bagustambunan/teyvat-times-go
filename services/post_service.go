@@ -22,6 +22,7 @@ type PostService interface {
 	GetPostBySlug(slug string) (*models.Post, error)
 	AddPost(post *models.Post) (*dto.GetPostRes, error)
 	UpdatePost(post *models.Post) (*dto.GetPostRes, error)
+	DeletePost(post *models.Post) error
 	GetTiers() ([]*models.PostTier, error)
 	GetCategories() ([]*models.PostCategory, error)
 	GetTier(tier *models.PostTier) (*models.PostTier, error)
@@ -185,6 +186,10 @@ func (serv *postService) UpdatePost(post *models.Post) (*dto.GetPostRes, error) 
 		return nil, err
 	}
 	return new(dto.GetPostRes).FromPost(updatedPost), nil
+}
+
+func (serv *postService) DeletePost(post *models.Post) error {
+	return serv.postRepository.DeletePost(post)
 }
 
 func (serv *postService) GetTiers() ([]*models.PostTier, error) {

@@ -16,6 +16,7 @@ type PostRepository interface {
 	FindPostBySlug(slug string) (*models.Post, error)
 	Save(post *models.Post) (*models.Post, int, error)
 	UpdatePost(post *models.Post) (*models.Post, error)
+	DeletePost(post *models.Post) error
 	FindUnlock(unlock *models.PostUnlock) (*models.PostUnlock, error)
 	SaveUnlock(unlock *models.PostUnlock) (*models.PostUnlock, error)
 	FindActivity(act *models.UserPostActivities) (*models.UserPostActivities, error)
@@ -186,6 +187,11 @@ func (repo *postRepository) UpdatePost(post *models.Post) (*models.Post, error) 
 		UpdateColumn("content", post.Content).
 		UpdateColumn("summary", post.Summary)
 	return post, result.Error
+}
+func (repo *postRepository) DeletePost(post *models.Post) error {
+	result := repo.db.
+		Delete(&post)
+	return result.Error
 }
 
 func (repo *postRepository) FindUserLatestSubscription(user *models.User) (*models.UserSubscription, error) {
