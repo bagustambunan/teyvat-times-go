@@ -7,7 +7,7 @@ type Gift struct {
 	ID          int    `json:"giftID" gorm:"primaryKey"`
 	Name        string `json:"name"`
 	Description string `json:"description"`
-	ImageID     int    `json:"imageID"`
-	Image       *Image `json:"-"`
+	ImageID     int    `json:"-"`
+	Image       *Image `json:"image"`
 	Stock       int    `json:"stock"`
 }

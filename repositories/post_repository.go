@@ -26,8 +26,8 @@ type PostRepository interface {
 	FindCategories() ([]*models.PostCategory, error)
 	FindTier(tier *models.PostTier) (*models.PostTier, error)
 	FindCategory(category *models.PostCategory) (*models.PostCategory, error)
-	SaveCategory(category *models.PostCategory) (*models.PostCategory, int, error)
-	UpdateCategory(category *models.PostCategory) (*models.PostCategory, int, error)
+	SaveCategory(category *models.PostCategory) (*models.PostCategory, error)
+	UpdateCategory(category *models.PostCategory) (*models.PostCategory, error)
 }
 
 type postRepository struct {
@@ -211,16 +211,15 @@ func (repo *postRepository) FindCategory(category *models.PostCategory) (*models
 	return category, result.Error
 }
 
-func (repo *postRepository) SaveCategory(category *models.PostCategory) (*models.PostCategory, int, error) {
+func (repo *postRepository) SaveCategory(category *models.PostCategory) (*models.PostCategory, error) {
 	result := repo.db.
-		Clauses(clause.OnConflict{DoNothing: true}).
 		Create(category)
-	return category, int(result.RowsAffected), result.Error
+	return category, result.Error
 }
-func (repo *postRepository) UpdateCategory(category *models.PostCategory) (*models.PostCategory, int, error) {
+func (repo *postRepository) UpdateCategory(category *models.PostCategory) (*models.PostCategory, error) {
 	result := repo.db.
 		Model(&category).
 		UpdateColumn("name", category.Name).
 		UpdateColumn("color", category.Color)
-	return category, int(result.RowsAffected), result.Error
+	return category, result.Error
 }

@@ -1,10 +1,13 @@
 package repositories
 
 import (
+	"final-project-backend/models"
 	"gorm.io/gorm"
 )
 
 type GiftRepository interface {
+	FindGifts() ([]*models.Gift, error)
+	FindGift(gift *models.Gift) (*models.Gift, error)
 }
 
 type giftRepository struct {
@@ -17,4 +20,18 @@ type GRConfig struct {
 
 func NewGiftRepository(c *GRConfig) GiftRepository {
 	return &giftRepository{db: c.DB}
+}
+
+func (repo *giftRepository) FindGifts() ([]*models.Gift, error) {
+	var gifts []*models.Gift
+	result := repo.db.
+		Joins("Image").
+		Find(&gifts)
+	return gifts, result.Error
+}
+func (repo *giftRepository) FindGift(gift *models.Gift) (*models.Gift, error) {
+	result := repo.db.
+		Joins("Image").
+		First(&gift)
+	return gift, result.Error
 }

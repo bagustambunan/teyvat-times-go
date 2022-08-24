@@ -103,7 +103,7 @@ INSERT INTO public.post_tiers (id, name, coins_required, color) VALUES (3,'VIP',
 -- table post_categories
 CREATE TABLE public.post_categories(
     id bigserial NOT NULL,
-    name character varying NOT NULL UNIQUE,
+    name character varying NOT NULL,
     color character varying,
     created_at timestamp without time zone DEFAULT now() NOT NULL,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,

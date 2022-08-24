@@ -140,6 +140,18 @@ func NewRouter(conf *RouterConfig) *gin.Engine {
 		h.TestAddUserSubscription,
 	)
 
+	// PUBLIC > GIFT
+	router.GET(
+		"/pub/gifts/",
+		middlewares.AuthorizePublic,
+		h.GetGifts,
+	)
+	router.GET(
+		"/pub/gifts/:giftID",
+		middlewares.AuthorizePublic,
+		h.GetGift,
+	)
+
 	router.NoRoute(h.HandleNotFound)
 
 	return router
