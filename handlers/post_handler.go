@@ -54,7 +54,7 @@ func (h *Handler) AddPost(c *gin.Context) {
 		ImgThumbnailID: 2,
 		ImgContentID:   3,
 		CreatedByID:    user.ID,
-		UpdatedById:    user.ID,
+		UpdatedByID:    user.ID,
 	})
 	if err != nil {
 		_ = c.Error(err)
@@ -81,7 +81,7 @@ func (h *Handler) UpdatePost(c *gin.Context) {
 		Title:          postReq.Title,
 		Content:        postReq.Content,
 		Summary:        postReq.Summary,
-		UpdatedById:    user.ID,
+		UpdatedByID:    user.ID,
 	})
 	if err != nil {
 		_ = c.Error(err)

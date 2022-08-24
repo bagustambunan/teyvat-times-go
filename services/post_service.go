@@ -17,6 +17,7 @@ type PostService interface {
 	UnlockAPost(user *models.User, post *models.Post) (*models.PostUnlock, error)
 	GetPosts(opt *models.GetPostsOption) (*dto.GetPostsRes, error)
 	GetPost(post *models.Post) (*models.Post, error)
+	GetActivity(user *models.User, post *models.Post) (*models.UserPostActivities, error)
 	AddActivity(user *models.User, post *models.Post) (*models.UserPostActivities, error)
 	UpdateActivity(user *models.User, post *models.Post, actReq *dto.ActivityReq) (*models.UserPostActivities, error)
 	GetPostBySlug(slug string) (*models.Post, error)
@@ -120,6 +121,14 @@ func (serv *postService) GetPosts(opt *models.GetPostsOption) (*dto.GetPostsRes,
 
 func (serv *postService) GetPost(post *models.Post) (*models.Post, error) {
 	return serv.postRepository.FindPost(post)
+}
+
+func (serv *postService) GetActivity(user *models.User, post *models.Post) (*models.UserPostActivities, error) {
+	act := &models.UserPostActivities{
+		UserID: user.ID,
+		PostID: post.ID,
+	}
+	return serv.postRepository.FindActivity(act)
 }
 
 func (serv *postService) AddActivity(user *models.User, post *models.Post) (*models.UserPostActivities, error) {

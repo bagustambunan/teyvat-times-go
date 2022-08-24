@@ -65,6 +65,31 @@ func (h *Handler) PubReadPost(c *gin.Context) {
 	helpers.StandardResponse(c, http.StatusOK, postRes)
 }
 
+func (h *Handler) PubGetActivity(c *gin.Context) {
+	user := h.GetUserFromToken(c)
+	postID, idErr := strconv.Atoi(c.Param("postID"))
+	if idErr != nil {
+		_ = c.Error(idErr)
+		return
+	}
+	fetchedPost, fetchErr := h.postService.GetPost(&models.Post{ID: postID})
+	if fetchErr != nil {
+		_ = c.Error(fetchErr)
+		return
+	}
+	accessErr := h.postService.CanUserAccessThisPost(user, fetchedPost)
+	if accessErr != nil {
+		_ = c.Error(accessErr)
+		return
+	}
+	act, actErr := h.postService.GetActivity(user, fetchedPost)
+	if actErr != nil {
+		_ = c.Error(actErr)
+		return
+	}
+	helpers.StandardResponse(c, http.StatusOK, act)
+}
+
 func (h *Handler) PubPostActivity(c *gin.Context) {
 	user := h.GetUserFromToken(c)
 	postID, idErr := strconv.Atoi(c.Param("postID"))
