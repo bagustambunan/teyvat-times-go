@@ -46,6 +46,9 @@ func (repo *userRepository) MatchingCredential(email, password string) (*models.
 
 func (repo *userRepository) FindUser(user *models.User) (*models.User, error) {
 	result := repo.db.
+		Joins("Role").
+		Joins("Address").
+		Joins("ProfilePic").
 		First(&user)
 	return user, result.Error
 }
