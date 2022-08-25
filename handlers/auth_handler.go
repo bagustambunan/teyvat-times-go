@@ -34,6 +34,7 @@ func (h *Handler) SignUp(c *gin.Context) {
 	hashPw, _ := bcrypt.GenerateFromPassword([]byte(signUpReq.Password), bcrypt.DefaultCost)
 	hashPwStr := string(hashPw)
 	user := &models.User{
+		Username: signUpReq.Username,
 		Email:    signUpReq.Email,
 		Name:     signUpReq.Name,
 		Phone:    signUpReq.Phone,
@@ -46,12 +47,14 @@ func (h *Handler) SignUp(c *gin.Context) {
 		_ = c.Error(saveUserErr)
 		return
 	}
-	userRef.UserID = user.ID
 
-	userRefErr := h.authService.AddUserReferral(userRef)
-	if userRefErr != nil {
-		_ = c.Error(userRefErr)
-		return
+	if signUpReq.ReferrerCode != "" {
+		userRef.UserID = user.ID
+		userRefErr := h.authService.AddUserReferral(userRef)
+		if userRefErr != nil {
+			_ = c.Error(userRefErr)
+			return
+		}
 	}
 
 	helpers.StandardResponse(c, http.StatusCreated, insertedUser)

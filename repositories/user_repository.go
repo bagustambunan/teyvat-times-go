@@ -1,17 +1,18 @@
 package repositories
 
 import (
+	"final-project-backend/httperror"
 	"final-project-backend/models"
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
-	"gorm.io/gorm/clause"
 )
 
 type UserRepository interface {
 	MatchingCredential(email, password string) (*models.User, error)
 	FindUser(user *models.User) (*models.User, error)
 	FindUserByReferralCode(refCode string) (*models.User, error)
-	Save(user *models.User) (*models.User, int, error)
+	CheckUsernameAndEmail(user *models.User) error
+	Save(user *models.User) (*models.User, error)
 	SaveUserReferral(userRef *models.UserReferral) error
 	UpdateCoins(user *models.User, coins int) (*models.User, error)
 }
@@ -57,12 +58,29 @@ func (repo *userRepository) FindUserByReferralCode(refCode string) (*models.User
 	return user, result.Error
 }
 
-func (repo *userRepository) Save(user *models.User) (*models.User, int, error) {
+func (repo *userRepository) CheckUsernameAndEmail(user *models.User) error {
+	resultUserName := repo.db.
+		Where("username = ?", user.Username).
+		First(&user)
+	if resultUserName.Error == nil {
+		return httperror.BadRequestError("DUPLICATE_USERNAME", "Username already taken")
+	}
+
+	resultEmail := repo.db.
+		Where("email = ?", user.Email).
+		First(&user)
+	if resultEmail.Error == nil {
+		return httperror.BadRequestError("DUPLICATE_EMAIL", "Email already used")
+	}
+
+	return nil
+}
+
+func (repo *userRepository) Save(user *models.User) (*models.User, error) {
 	result := repo.db.
-		Select("Email", "Name", "Phone", "ReferralCode", "Password", "Address", "AddressID").
-		Clauses(clause.OnConflict{DoNothing: true}).
+		Select("Email", "Name", "Username", "Phone", "ReferralCode", "Password", "Address", "AddressID").
 		Create(user)
-	return user, int(result.RowsAffected), result.Error
+	return user, result.Error
 }
 
 func (repo *userRepository) SaveUserReferral(userRef *models.UserReferral) error {

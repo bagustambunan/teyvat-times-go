@@ -97,6 +97,11 @@ func (serv *authService) GetUserByReferralCode(refCode string) (*models.User, er
 }
 
 func (serv *authService) AddUser(u *models.User) (*dto.SignUpRes, error) {
+	errDuplicate := serv.userRepository.CheckUsernameAndEmail(u)
+	if errDuplicate != nil {
+		return nil, errDuplicate
+	}
+
 	for {
 		newRefCode := serv.generateReferralCode(6)
 		if _, err := serv.userRepository.FindUserByReferralCode(newRefCode); err != nil {
@@ -105,11 +110,8 @@ func (serv *authService) AddUser(u *models.User) (*dto.SignUpRes, error) {
 		}
 	}
 
-	user, rowsAffected, err := serv.userRepository.Save(u)
-	if err == nil && rowsAffected == 0 {
-		return nil, httperror.BadRequestError("Duplicate email", "DUPLICATE_EMAIL")
-	}
-	return new(dto.SignUpRes).FromUser(user), nil
+	user, err := serv.userRepository.Save(u)
+	return new(dto.SignUpRes).FromUser(user), err
 }
 
 func (serv *authService) AddUserReferral(userRef *models.UserReferral) error {
