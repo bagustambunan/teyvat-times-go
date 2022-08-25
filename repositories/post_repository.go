@@ -116,11 +116,7 @@ func (repo *postRepository) FindPostBySlug(slug string) (*models.Post, error) {
 }
 
 func (repo *postRepository) FindPostActivityInfo(post *models.Post) (*models.Post, error) {
-	type Info struct {
-		TotalLike  int `json:"totalLike"`
-		TotalShare int `json:"totalShare"`
-	}
-	var info Info
+	var info *models.PostInfo
 
 	result1 := repo.db.
 		Raw("SELECT COUNT(*) AS total_like FROM user_post_activities WHERE post_id = ? AND is_liked = ?", post.ID, 1).
@@ -128,7 +124,6 @@ func (repo *postRepository) FindPostActivityInfo(post *models.Post) (*models.Pos
 	if result1.Error != nil {
 		return nil, result1.Error
 	}
-
 	result2 := repo.db.
 		Raw("SELECT COUNT(*) AS total_share FROM user_post_activities WHERE post_id = ? AND is_shared = ?", post.ID, 1).
 		Scan(&info)
@@ -187,6 +182,20 @@ func (repo *postRepository) UpdateActivity(act *models.UserPostActivities) (*mod
 func (repo *postRepository) Save(post *models.Post) (*models.Post, int, error) {
 	result := repo.db.
 		Clauses(clause.OnConflict{DoNothing: true}).
+		Select(
+			"PostTierID",
+			"PostTier",
+			"PostCategoryID",
+			"PostCategory",
+			"Title",
+			"Content",
+			"Slug",
+			"Summary",
+			"CreatedByID",
+			"CreatedBy",
+			"UpdatedByID",
+			"UpdatedBy",
+		).
 		Create(post)
 	return post, int(result.RowsAffected), result.Error
 }
