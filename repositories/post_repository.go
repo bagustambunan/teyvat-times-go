@@ -107,7 +107,38 @@ func (repo *postRepository) FindPostBySlug(slug string) (*models.Post, error) {
 		Joins("UpdatedBy").
 		Where("slug = ?", slug).
 		First(&post)
-	return post, result.Error
+	if result.Error != nil {
+		return nil, result.Error
+	}
+
+	postWithInfo, err := repo.FindPostActivityInfo(post)
+	return postWithInfo, err
+}
+
+func (repo *postRepository) FindPostActivityInfo(post *models.Post) (*models.Post, error) {
+	type Info struct {
+		TotalLike  int `json:"totalLike"`
+		TotalShare int `json:"totalShare"`
+	}
+	var info Info
+
+	result1 := repo.db.
+		Raw("SELECT COUNT(*) AS total_like FROM user_post_activities WHERE post_id = ? AND is_liked = ?", post.ID, 1).
+		Scan(&info)
+	if result1.Error != nil {
+		return nil, result1.Error
+	}
+
+	result2 := repo.db.
+		Raw("SELECT COUNT(*) AS total_share FROM user_post_activities WHERE post_id = ? AND is_shared = ?", post.ID, 1).
+		Scan(&info)
+	if result2.Error != nil {
+		return nil, result2.Error
+	}
+
+	post.TotalLike = info.TotalLike
+	post.TotalShare = info.TotalShare
+	return post, nil
 }
 
 func (repo *postRepository) FindUnlock(unlock *models.PostUnlock) (*models.PostUnlock, error) {

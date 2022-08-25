@@ -18,6 +18,8 @@ type GetPostRes struct {
 	UpdatedBy    *models.User         `json:"updatedBy"`
 	CreatedAt    string               `json:"createdAt"`
 	UpdatedAt    string               `json:"updatedAt"`
+	TotalLike    int                  `json:"totalLike"`
+	TotalShare   int                  `json:"totalShare"`
 }
 
 func (_ *GetPostRes) FromPost(p *models.Post) *GetPostRes {
@@ -35,5 +37,7 @@ func (_ *GetPostRes) FromPost(p *models.Post) *GetPostRes {
 		UpdatedBy:    p.UpdatedBy,
 		CreatedAt:    p.CreatedAt,
 		UpdatedAt:    p.UpdatedAt,
+		TotalLike:    p.TotalLike,
+		TotalShare:   p.TotalShare,
 	}
 }

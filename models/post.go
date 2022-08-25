@@ -21,8 +21,10 @@ type Post struct {
 	CreatedBy      *User         `json:"-"`
 	UpdatedByID    int           `json:"updatedByID"`
 	UpdatedBy      *User         `json:"-"`
-	CreatedAt      string        `json:"createdAt"`
-	UpdatedAt      string        `json:"updatedAt"`
+	CreatedAt      string        `json:"createdAt" gorm:"-"`
+	UpdatedAt      string        `json:"updatedAt" gorm:"-"`
+	TotalLike      int           `json:"totalLike" gorm:"-"`
+	TotalShare     int           `json:"totalShare" gorm:"-"`
 }
 
 func (p *Post) GetCoinsRequired() int {

@@ -166,6 +166,8 @@ func (serv *postService) GetPostBySlug(slug string) (*models.Post, error) {
 		return nil, err
 	}
 
+	// Get post activity info
+
 	return fetchedPost, nil
 }
 
