@@ -16,7 +16,6 @@ func (h *Handler) GetUser(c *gin.Context) {
 		_ = c.Error(idErr)
 		return
 	}
-
 	if user.ID != userID {
 		_ = c.Error(httperror.ForbiddenError())
 		return
@@ -28,4 +27,24 @@ func (h *Handler) GetUser(c *gin.Context) {
 		return
 	}
 	helpers.StandardResponse(c, http.StatusOK, userRes)
+}
+
+func (h *Handler) GetUserDownLines(c *gin.Context) {
+	user := h.GetUserFromToken(c)
+	userID, idErr := strconv.Atoi(c.Param("userID"))
+	if idErr != nil {
+		_ = c.Error(idErr)
+		return
+	}
+	if user.ID != userID {
+		_ = c.Error(httperror.ForbiddenError())
+		return
+	}
+
+	result, fetchErr := h.userService.GetUserDownLines(&models.User{ID: userID})
+	if fetchErr != nil {
+		_ = c.Error(fetchErr)
+		return
+	}
+	helpers.StandardResponse(c, http.StatusOK, result)
 }

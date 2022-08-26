@@ -7,7 +7,6 @@ import (
 	"final-project-backend/services"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	"time"
 )
 
 type RouterConfig struct {
@@ -21,13 +20,18 @@ type RouterConfig struct {
 
 func NewRouter(conf *RouterConfig) *gin.Engine {
 	router := gin.Default()
-	router.Use(cors.New(cors.Config{
-		AllowOrigins: []string{"*"},
-		AllowMethods: []string{"GET", "POST", "PATCH", "DELETE", "OPTIONS"},
-		AllowHeaders: []string{"Origin", "Content-Type", "X-Auth-Token", "Access-Control-Allow-Headers", "Access-Control-Allow-Origin", "Authorization"},
-		MaxAge:       12 * time.Hour,
-	}))
+	//router.Use(cors.New(cors.Config{
+	//	AllowOrigins: []string{"*"},
+	//	AllowMethods: []string{"GET", "POST", "PATCH", "DELETE", "OPTIONS"},
+	//	AllowHeaders: []string{"Origin", "Content-Type", "X-Auth-Token", "Access-Control-Allow-Headers", "Access-Control-Allow-Origin", "Authorization"},
+	//	MaxAge:       12 * time.Hour,
+	//}))
 	//router.Use(cors.Default())
+	config := cors.DefaultConfig()
+	//config.AllowOrigins = []string{"*"}
+	config.AllowAllOrigins = true
+	config.AllowHeaders = []string{"Origin", "Authorization", "Content-Type"}
+	router.Use(cors.New(config))
 
 	h := handlers.New(&handlers.HandlerConfig{
 		AuthService:         conf.AuthService,
@@ -103,6 +107,18 @@ func NewRouter(conf *RouterConfig) *gin.Engine {
 		middlewares.AuthorizeInternal,
 		middlewares.RequestValidator(&dto.PostReq{}),
 		h.AddPost,
+	)
+
+	// PUBLIC > USER
+	router.GET(
+		"/pub/users/:userID",
+		middlewares.AuthorizePublic,
+		h.GetUser,
+	)
+	router.GET(
+		"/pub/users/:userID/downlines",
+		middlewares.AuthorizePublic,
+		h.GetUserDownLines,
 	)
 
 	// PUBLIC > POST

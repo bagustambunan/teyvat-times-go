@@ -9,6 +9,7 @@ import (
 type UserService interface {
 	UpdateUserCoins(user *models.User, coins int) (*models.User, error)
 	GetUser(user *models.User) (*dto.GetUserRes, error)
+	GetUserDownLines(user *models.User) ([]*models.User, error)
 }
 
 type userService struct {
@@ -35,4 +36,8 @@ func (serv *userService) GetUser(user *models.User) (*dto.GetUserRes, error) {
 		return nil, fetchErr
 	}
 	return new(dto.GetUserRes).FromUser(fetchedUser), nil
+}
+
+func (serv *userService) GetUserDownLines(user *models.User) ([]*models.User, error) {
+	return serv.userRepository.GetUserDownLines(user)
 }

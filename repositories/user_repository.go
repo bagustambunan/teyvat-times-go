@@ -15,6 +15,7 @@ type UserRepository interface {
 	Save(user *models.User) (*models.User, error)
 	SaveUserReferral(userRef *models.UserReferral) error
 	UpdateCoins(user *models.User, coins int) (*models.User, error)
+	GetUserDownLines(user *models.User) ([]*models.User, error)
 }
 
 type userRepository struct {
@@ -97,4 +98,12 @@ func (repo *userRepository) UpdateCoins(user *models.User, coins int) (*models.U
 		Model(&user).
 		UpdateColumn("coins", gorm.Expr("coins + ?", coins))
 	return user, result.Error
+}
+
+func (repo *userRepository) GetUserDownLines(user *models.User) ([]*models.User, error) {
+	var users []*models.User
+	result := repo.db.
+		Raw("SELECT * FROM user_referrals JOIN users ON users.id = user_referrals.user_id").
+		Scan(&users)
+	return users, result.Error
 }
