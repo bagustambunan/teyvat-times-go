@@ -25,8 +25,8 @@ func NewTransactionsOption(params map[string][]string) (*GetTransactionsOption, 
 			return nil, err
 		}
 	}
-	if params["statusID"] != nil {
-		statusIDVal, err = strconv.Atoi(params["statusID"][0])
+	if params["status"] != nil {
+		statusIDVal, err = strconv.Atoi(params["status"][0])
 		if err != nil {
 			return nil, err
 		}

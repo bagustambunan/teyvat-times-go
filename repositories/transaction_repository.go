@@ -10,6 +10,7 @@ import (
 type TransactionRepository interface {
 	FindTransactions(opt *models.GetTransactionsOption) (*dto.TransactionsRes, error)
 	SaveTransaction(transaction *models.Transaction) (*models.Transaction, error)
+	FindTransactionStatuses() ([]*models.TransactionStatus, error)
 }
 
 type transactionRepository struct {
@@ -73,4 +74,11 @@ func (repo *transactionRepository) SaveTransaction(transaction *models.Transacti
 		Select("UserID", "SubscriptionID", "StatusID", "GrossTotal", "NetTotal", "UserVoucherID").
 		Create(transaction)
 	return transaction, result.Error
+}
+
+func (repo *transactionRepository) FindTransactionStatuses() ([]*models.TransactionStatus, error) {
+	var trStatuses []*models.TransactionStatus
+	result := repo.db.
+		Find(&trStatuses)
+	return trStatuses, result.Error
 }

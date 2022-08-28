@@ -10,6 +10,7 @@ type TransactionService interface {
 	GetTransactions(opt *models.GetTransactionsOption) (*dto.TransactionsRes, error)
 	GetUserTransactions(user *models.User) (*dto.TransactionsRes, error)
 	AddTransaction(user *models.User, req *dto.TransactionReq, discount int, subscription *models.Subscription) (*dto.TransactionRes, error)
+	GetTransactionStatuses() ([]*models.TransactionStatus, error)
 }
 
 type transactionService struct {
@@ -55,4 +56,8 @@ func (serv *transactionService) AddTransaction(user *models.User, req *dto.Trans
 
 	insertedTr, insertErr := serv.transactionRepository.SaveTransaction(transaction)
 	return new(dto.TransactionRes).FromTransaction(insertedTr), insertErr
+}
+
+func (serv *transactionService) GetTransactionStatuses() ([]*models.TransactionStatus, error) {
+	return serv.transactionRepository.FindTransactionStatuses()
 }

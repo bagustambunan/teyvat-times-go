@@ -82,3 +82,12 @@ func (h *Handler) GetUserTransactions(c *gin.Context) {
 	}
 	helpers.StandardResponse(c, http.StatusOK, trsRes)
 }
+
+func (h *Handler) GetTransactionStatuses(c *gin.Context) {
+	trStatuses, fetchErr := h.transactionService.GetTransactionStatuses()
+	if fetchErr != nil {
+		_ = c.Error(fetchErr)
+		return
+	}
+	helpers.StandardResponse(c, http.StatusOK, trStatuses)
+}
