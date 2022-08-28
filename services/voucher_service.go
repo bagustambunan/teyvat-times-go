@@ -7,6 +7,7 @@ import (
 )
 
 type VoucherService interface {
+	GetVouchers() ([]*models.Voucher, error)
 	GetUserVoucher(uv *models.UserVoucher) (*models.UserVoucher, error)
 	GetUserVoucherFromCode(user *models.User, code string) (*models.UserVoucher, error)
 	UseUserVoucher(uv *models.UserVoucher) (*models.UserVoucher, error)
@@ -24,6 +25,10 @@ func NewVoucherService(c *VSConfig) VoucherService {
 	return &voucherService{
 		voucherRepository: c.VoucherRepository,
 	}
+}
+
+func (serv *voucherService) GetVouchers() ([]*models.Voucher, error) {
+	return serv.voucherRepository.FindVouchers()
 }
 
 func (serv *voucherService) GetUserVoucher(uv *models.UserVoucher) (*models.UserVoucher, error) {

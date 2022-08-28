@@ -111,6 +111,13 @@ func NewRouter(conf *RouterConfig) *gin.Engine {
 		h.AddPost,
 	)
 
+	// ADMIN > VOUCHER
+	router.GET(
+		"/vouchers",
+		middlewares.AuthorizeInternal,
+		h.GetVouchers,
+	)
+
 	// PUBLIC > USER
 	router.GET(
 		"/pub/users/:userID",

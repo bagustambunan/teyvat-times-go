@@ -7,8 +7,8 @@ type Voucher struct {
 	ID          int    `json:"voucherID" gorm:"primaryKey"`
 	Name        string `json:"name"`
 	Description string `json:"description"`
-	ImageID     int    `json:"imageID"`
-	Image       Image  `json:"-"`
+	ImageID     int    `json:"-"`
+	Image       Image  `json:"image"`
 	Amount      int    `json:"amount"`
 	Code        string `json:"code"`
 }

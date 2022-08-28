@@ -7,6 +7,7 @@ import (
 )
 
 type VoucherRepository interface {
+	FindVouchers() ([]*models.Voucher, error)
 	FindUserVoucher(uv *models.UserVoucher) (*models.UserVoucher, error)
 	FindUserVoucherFromCode(user *models.User, code string) (*models.UserVoucher, error)
 	UpdateUserVoucher(uv *models.UserVoucher) (*models.UserVoucher, error)
@@ -22,6 +23,14 @@ type VRConfig struct {
 
 func NewVoucherRepository(c *VRConfig) VoucherRepository {
 	return &voucherRepository{db: c.DB}
+}
+
+func (repo *voucherRepository) FindVouchers() ([]*models.Voucher, error) {
+	var vouchers []*models.Voucher
+	result := repo.db.
+		Joins("Image").
+		Find(&vouchers)
+	return vouchers, result.Error
 }
 
 func (repo *voucherRepository) FindUserVoucher(uv *models.UserVoucher) (*models.UserVoucher, error) {

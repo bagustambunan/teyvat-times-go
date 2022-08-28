@@ -6,6 +6,15 @@ import (
 	"net/http"
 )
 
+func (h *Handler) GetVouchers(c *gin.Context) {
+	vouchers, fetchErr := h.voucherService.GetVouchers()
+	if fetchErr != nil {
+		_ = c.Error(fetchErr)
+		return
+	}
+	helpers.StandardResponse(c, http.StatusOK, vouchers)
+}
+
 func (h *Handler) GetUserVoucherFromCode(c *gin.Context) {
 	user := h.GetUserFromToken(c)
 	code := c.Param("code")
