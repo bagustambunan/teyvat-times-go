@@ -28,6 +28,11 @@ func Init() {
 		SubscriptionRepository: subscriptionRepository,
 	})
 
+	transactionRepository := repositories.NewTransactionRepository(&repositories.TRConfig{DB: db.Get()})
+	transactionService := services.NewTransactionService(&services.TSConfig{
+		TransactionRepository: transactionRepository,
+	})
+
 	voucherRepository := repositories.NewVoucherRepository(&repositories.VRConfig{DB: db.Get()})
 	voucherService := services.NewVoucherService(&services.VSConfig{
 		VoucherRepository: voucherRepository,
@@ -43,6 +48,7 @@ func Init() {
 		UserService:         userService,
 		PostService:         postService,
 		SubscriptionService: subscriptionService,
+		TransactionService:  transactionService,
 		VoucherService:      voucherService,
 		GiftService:         giftService,
 	})

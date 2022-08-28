@@ -3,6 +3,7 @@ package repositories
 import (
 	"final-project-backend/models"
 	"gorm.io/gorm"
+	"time"
 )
 
 type VoucherRepository interface {
@@ -32,12 +33,14 @@ func (repo *voucherRepository) FindUserVoucher(uv *models.UserVoucher) (*models.
 }
 
 func (repo *voucherRepository) FindUserVoucherFromCode(user *models.User, code string) (*models.UserVoucher, error) {
+	dateNow := time.Now()
 	var uv *models.UserVoucher
 	result := repo.db.
 		Joins("Voucher").
 		Where("code = ?", code).
 		Where("user_id = ?", user.ID).
 		Where("is_used = ?", 0).
+		Where("date_expired >= ?", dateNow.Format("2006-01-02")).
 		First(&uv)
 	return uv, result.Error
 }

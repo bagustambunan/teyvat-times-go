@@ -14,6 +14,7 @@ type RouterConfig struct {
 	UserService         services.UserService
 	PostService         services.PostService
 	SubscriptionService services.SubscriptionService
+	TransactionService  services.TransactionService
 	VoucherService      services.VoucherService
 	GiftService         services.GiftService
 }
@@ -38,6 +39,7 @@ func NewRouter(conf *RouterConfig) *gin.Engine {
 		UserService:         conf.UserService,
 		PostService:         conf.PostService,
 		SubscriptionService: conf.SubscriptionService,
+		TransactionService:  conf.TransactionService,
 		VoucherService:      conf.VoucherService,
 		GiftService:         conf.GiftService,
 	})

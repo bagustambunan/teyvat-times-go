@@ -9,7 +9,6 @@ type SubscriptionRepository interface {
 	FindSubscriptions() ([]*models.Subscription, error)
 	FindSubscription(subscription *models.Subscription) (*models.Subscription, error)
 	SaveUserSubscription(us *models.UserSubscription) (*models.UserSubscription, error)
-	SaveTransaction(transaction *models.Transaction) (*models.Transaction, error)
 	FindUserLatestSubscription(user *models.User) (*models.UserSubscription, error)
 }
 
@@ -50,15 +49,4 @@ func (repo *subscriptionRepository) SaveUserSubscription(us *models.UserSubscrip
 	result := repo.db.
 		Create(us)
 	return us, result.Error
-}
-
-func (repo *subscriptionRepository) SaveTransaction(transaction *models.Transaction) (*models.Transaction, error) {
-	result := repo.db
-	if transaction.UserVoucherID == 0 {
-		result = result.
-			Select("UserID", "SubscriptionID", "StatusID", "GrossTotal", "NetTotal")
-	}
-	result = result.
-		Create(transaction)
-	return transaction, result.Error
 }
