@@ -70,6 +70,7 @@ func (repo *transactionRepository) SaveTransaction(transaction *models.Transacti
 			Select("UserID", "SubscriptionID", "StatusID", "GrossTotal", "NetTotal")
 	}
 	result = result.
+		Select("UserID", "SubscriptionID", "StatusID", "GrossTotal", "NetTotal", "UserVoucherID").
 		Create(transaction)
 	return transaction, result.Error
 }
