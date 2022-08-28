@@ -8,6 +8,7 @@ import (
 
 type VoucherService interface {
 	GetUserVoucher(uv *models.UserVoucher) (*models.UserVoucher, error)
+	GetUserVoucherFromCode(user *models.User, code string) (*models.UserVoucher, error)
 	UseUserVoucher(uv *models.UserVoucher) (*models.UserVoucher, error)
 }
 
@@ -35,4 +36,8 @@ func (serv *voucherService) GetUserVoucher(uv *models.UserVoucher) (*models.User
 
 func (serv *voucherService) UseUserVoucher(uv *models.UserVoucher) (*models.UserVoucher, error) {
 	return serv.voucherRepository.UpdateUserVoucher(uv)
+}
+
+func (serv *voucherService) GetUserVoucherFromCode(user *models.User, code string) (*models.UserVoucher, error) {
+	return serv.voucherRepository.FindUserVoucherFromCode(user, code)
 }

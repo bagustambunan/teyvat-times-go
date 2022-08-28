@@ -189,6 +189,13 @@ func NewRouter(conf *RouterConfig) *gin.Engine {
 		h.AddTransaction,
 	)
 
+	// PUBLIC > VOUCHER
+	router.GET(
+		"/pub/user_voucher/:code",
+		middlewares.AuthorizePublic,
+		h.GetUserVoucherFromCode,
+	)
+
 	// PUBLIC > GIFT
 	router.GET(
 		"/pub/gifts/",

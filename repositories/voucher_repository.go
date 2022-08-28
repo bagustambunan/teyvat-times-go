@@ -7,6 +7,7 @@ import (
 
 type VoucherRepository interface {
 	FindUserVoucher(uv *models.UserVoucher) (*models.UserVoucher, error)
+	FindUserVoucherFromCode(user *models.User, code string) (*models.UserVoucher, error)
 	UpdateUserVoucher(uv *models.UserVoucher) (*models.UserVoucher, error)
 }
 
@@ -26,6 +27,17 @@ func (repo *voucherRepository) FindUserVoucher(uv *models.UserVoucher) (*models.
 	result := repo.db.
 		Joins("User").
 		Joins("Voucher").
+		First(&uv)
+	return uv, result.Error
+}
+
+func (repo *voucherRepository) FindUserVoucherFromCode(user *models.User, code string) (*models.UserVoucher, error) {
+	var uv *models.UserVoucher
+	result := repo.db.
+		Joins("Voucher").
+		Where("code = ?", code).
+		Where("user_id = ?", user.ID).
+		Where("is_used = ?", 0).
 		First(&uv)
 	return uv, result.Error
 }

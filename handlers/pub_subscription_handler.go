@@ -60,11 +60,11 @@ func (h *Handler) AddTransaction(c *gin.Context) {
 			return
 		}
 		discount = uv.GetVoucherAmount()
-		_, updateErr := h.voucherService.UseUserVoucher(uv)
-		if updateErr != nil {
-			_ = c.Error(updateErr)
-			return
-		}
+		//_, updateErr := h.voucherService.UseUserVoucher(uv)
+		//if updateErr != nil {
+		//	_ = c.Error(updateErr)
+		//	return
+		//}
 	}
 
 	trRes, resErr := h.subscriptionService.AddTransaction(user, trReq, discount)

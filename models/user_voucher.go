@@ -7,8 +7,8 @@ type UserVoucher struct {
 	ID          int     `json:"userVoucherID" gorm:"primaryKey"`
 	UserID      int     `json:"userID"`
 	User        User    `json:"-"`
-	VoucherID   int     `json:"voucherID"`
-	Voucher     Voucher `json:"-"`
+	VoucherID   int     `json:"-"`
+	Voucher     Voucher `json:"voucher"`
 	DateExpired string  `json:"dateExpired"`
 	IsUsed      int     `json:"isUsed"`
 }
