@@ -190,6 +190,11 @@ func NewRouter(conf *RouterConfig) *gin.Engine {
 		middlewares.RequestValidator(&dto.TransactionReq{}),
 		h.AddTransaction,
 	)
+	router.GET(
+		"/pub/transactions/",
+		middlewares.AuthorizePublic,
+		h.GetUserTransactions,
+	)
 
 	// PUBLIC > VOUCHER
 	router.GET(

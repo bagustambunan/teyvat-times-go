@@ -57,3 +57,13 @@ func (h *Handler) AddTransaction(c *gin.Context) {
 
 	helpers.StandardResponse(c, http.StatusCreated, trRes)
 }
+
+func (h *Handler) GetUserTransactions(c *gin.Context) {
+	user := h.GetUserFromToken(c)
+	trsRes, fetchErr := h.transactionService.GetUserTransactions(user)
+	if fetchErr != nil {
+		_ = c.Error(fetchErr)
+		return
+	}
+	helpers.StandardResponse(c, http.StatusOK, trsRes)
+}

@@ -7,6 +7,7 @@ import (
 )
 
 type TransactionService interface {
+	GetUserTransactions(user *models.User) (*dto.TransactionsRes, error)
 	AddTransaction(user *models.User, req *dto.TransactionReq, discount int, subscription *models.Subscription) (*dto.TransactionRes, error)
 }
 
@@ -22,6 +23,15 @@ func NewTransactionService(c *TSConfig) TransactionService {
 	return &transactionService{
 		transactionRepository: c.TransactionRepository,
 	}
+}
+
+func (serv *transactionService) GetUserTransactions(user *models.User) (*dto.TransactionsRes, error) {
+	return serv.transactionRepository.FindTransactions(&models.GetTransactionsOption{
+		UserID:   user.ID,
+		StatusID: 0,
+		Limit:    10,
+		Page:     1,
+	})
 }
 
 func (serv *transactionService) AddTransaction(user *models.User, req *dto.TransactionReq, discount int, subscription *models.Subscription) (*dto.TransactionRes, error) {
