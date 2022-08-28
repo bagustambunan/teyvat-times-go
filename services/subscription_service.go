@@ -12,6 +12,7 @@ type SubscriptionService interface {
 	GetSubscriptions() ([]*models.Subscription, error)
 	GetSubscription(subscription *models.Subscription) (*models.Subscription, error)
 	AddTransaction(user *models.User, req *dto.TransactionReq, discount int) (*dto.TransactionRes, error)
+	GetUserNewSubscriptionDate(user *models.User) (string, string)
 	AddUserSubscription(user *models.User, subscription *models.Subscription) (*models.UserSubscription, error)
 }
 
@@ -70,21 +71,26 @@ func (serv *subscriptionService) GetUserLatestSubscription(user *models.User) *m
 	return us
 }
 
-func (serv *subscriptionService) AddUserSubscription(user *models.User, subscription *models.Subscription) (*models.UserSubscription, error) {
+func (serv *subscriptionService) GetUserNewSubscriptionDate(user *models.User) (string, string) {
 	dateStart := time.Now()
-
 	if latestUs := serv.GetUserLatestSubscription(user); latestUs != nil {
 		latestUsEnded, _ := time.Parse("2006-01-02T00:00:00Z", latestUs.DateEnded)
 		if latestUsEnded.After(dateStart) {
 			dateStart = latestUsEnded.AddDate(0, 0, 1)
 		}
 	}
+	dateEnded := dateStart.AddDate(0, 1, 0)
+	return dateStart.Format("2006-01-02"), dateEnded.Format("2006-01-02")
+}
+
+func (serv *subscriptionService) AddUserSubscription(user *models.User, subscription *models.Subscription) (*models.UserSubscription, error) {
+	dateStart, dateEnded := serv.GetUserNewSubscriptionDate(user)
 
 	us := &models.UserSubscription{
 		UserID:         user.ID,
 		SubscriptionID: subscription.ID,
-		DateStart:      dateStart.Format("2006-01-02"),
-		DateEnded:      dateStart.AddDate(0, 1, 0).Format("2006-01-02"),
+		DateStart:      dateStart,
+		DateEnded:      dateEnded,
 	}
 	return serv.subscriptionRepository.SaveUserSubscription(us)
 }

@@ -76,6 +76,16 @@ func (h *Handler) AddTransaction(c *gin.Context) {
 	helpers.StandardResponse(c, http.StatusCreated, trRes)
 }
 
+func (h *Handler) GetUserNewSubscriptionDate(c *gin.Context) {
+	user := h.GetUserFromToken(c)
+	dateStart, dateEnded := h.subscriptionService.GetUserNewSubscriptionDate(user)
+	newDate := &dto.UserNewSubscriptionDateRes{
+		DateStart: dateStart,
+		DateEnded: dateEnded,
+	}
+	helpers.StandardResponse(c, http.StatusOK, newDate)
+}
+
 // TODO: delete this handler
 func (h *Handler) TestAddUserSubscription(c *gin.Context) {
 	user := h.GetUserFromToken(c)

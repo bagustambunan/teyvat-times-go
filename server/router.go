@@ -177,6 +177,11 @@ func NewRouter(conf *RouterConfig) *gin.Engine {
 	)
 
 	// PUBLIC > TRANSACTION
+	router.GET(
+		"/pub/user_subscriptions/date/new",
+		middlewares.AuthorizePublic,
+		h.GetUserNewSubscriptionDate,
+	)
 	router.POST(
 		"/pub/transactions",
 		middlewares.AuthorizePublic,
