@@ -7,6 +7,7 @@ import (
 	"final-project-backend/models"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"strconv"
 	"time"
 )
 
@@ -90,4 +91,19 @@ func (h *Handler) GetTransactionStatuses(c *gin.Context) {
 		return
 	}
 	helpers.StandardResponse(c, http.StatusOK, trStatuses)
+}
+
+func (h *Handler) GetTransactionDetail(c *gin.Context) {
+	transactionID, idErr := strconv.Atoi(c.Param("transactionID"))
+	if idErr != nil {
+		_ = c.Error(idErr)
+		return
+	}
+
+	tr, fetchErr := h.transactionService.GetTransaction(&models.Transaction{ID: transactionID})
+	if fetchErr != nil {
+		_ = c.Error(fetchErr)
+		return
+	}
+	helpers.StandardResponse(c, http.StatusOK, tr)
 }

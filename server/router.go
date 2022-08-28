@@ -214,6 +214,11 @@ func NewRouter(conf *RouterConfig) *gin.Engine {
 		middlewares.AuthorizePublic,
 		h.GetUserTransactions,
 	)
+	router.GET(
+		"/pub/transactions/:transactionID",
+		middlewares.AuthorizePublic,
+		h.GetTransactionDetail,
+	)
 
 	// PUBLIC > VOUCHER
 	router.GET(

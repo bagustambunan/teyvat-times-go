@@ -11,6 +11,7 @@ type TransactionRepository interface {
 	FindTransactions(opt *models.GetTransactionsOption) (*dto.TransactionsRes, error)
 	SaveTransaction(transaction *models.Transaction) (*models.Transaction, error)
 	FindTransactionStatuses() ([]*models.TransactionStatus, error)
+	FindTransaction(transaction *models.Transaction) (*models.Transaction, error)
 }
 
 type transactionRepository struct {
@@ -32,7 +33,6 @@ func (repo *transactionRepository) FindTransactions(opt *models.GetTransactionsO
 		Joins("User").
 		Joins("Subscription").
 		Joins("Status")
-	//Joins("UserVoucher")
 
 	if opt.UserID != 0 {
 		result = result.
@@ -81,4 +81,14 @@ func (repo *transactionRepository) FindTransactionStatuses() ([]*models.Transact
 	result := repo.db.
 		Find(&trStatuses)
 	return trStatuses, result.Error
+}
+
+func (repo *transactionRepository) FindTransaction(transaction *models.Transaction) (*models.Transaction, error) {
+	result := repo.db.
+		Joins("User").
+		Joins("Subscription").
+		Joins("Status").
+		Joins("UserVoucher").
+		First(&transaction)
+	return transaction, result.Error
 }
