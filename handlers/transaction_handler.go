@@ -58,6 +58,21 @@ func (h *Handler) AddTransaction(c *gin.Context) {
 	helpers.StandardResponse(c, http.StatusCreated, trRes)
 }
 
+func (h *Handler) GetTransactions(c *gin.Context) {
+	opt, parsingErr := models.NewTransactionsOption(c.Request.URL.Query())
+	if parsingErr != nil {
+		_ = c.Error(parsingErr)
+		return
+	}
+
+	trsRes, fetchErr := h.transactionService.GetTransactions(opt)
+	if fetchErr != nil {
+		_ = c.Error(fetchErr)
+		return
+	}
+	helpers.StandardResponse(c, http.StatusOK, trsRes)
+}
+
 func (h *Handler) GetUserTransactions(c *gin.Context) {
 	user := h.GetUserFromToken(c)
 	trsRes, fetchErr := h.transactionService.GetUserTransactions(user)
