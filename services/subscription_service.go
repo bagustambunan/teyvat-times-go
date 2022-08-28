@@ -9,6 +9,8 @@ import (
 )
 
 type SubscriptionService interface {
+	GetSubscriptions() ([]*models.Subscription, error)
+	GetSubscription(subscription *models.Subscription) (*models.Subscription, error)
 	AddTransaction(user *models.User, req *dto.TransactionReq, discount int) (*dto.TransactionRes, error)
 	AddUserSubscription(user *models.User, subscription *models.Subscription) (*models.UserSubscription, error)
 }
@@ -25,6 +27,14 @@ func NewSubscriptionService(c *SSConfig) SubscriptionService {
 	return &subscriptionService{
 		subscriptionRepository: c.SubscriptionRepository,
 	}
+}
+
+func (serv *subscriptionService) GetSubscriptions() ([]*models.Subscription, error) {
+	return serv.subscriptionRepository.FindSubscriptions()
+}
+
+func (serv *subscriptionService) GetSubscription(subscription *models.Subscription) (*models.Subscription, error) {
+	return serv.subscriptionRepository.FindSubscription(subscription)
 }
 
 func (serv *subscriptionService) AddTransaction(user *models.User, req *dto.TransactionReq, discount int) (*dto.TransactionRes, error) {

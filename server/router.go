@@ -160,16 +160,28 @@ func NewRouter(conf *RouterConfig) *gin.Engine {
 	)
 
 	// PUBLIC > SUBSCRIPTION
+	router.GET(
+		"/pub/subscriptions/",
+		middlewares.AuthorizePublic,
+		h.GetSubscriptions,
+	)
+	router.GET(
+		"/pub/subscriptions/:subscriptionID",
+		middlewares.AuthorizePublic,
+		h.GetSubscription,
+	)
+	router.POST(
+		"/pub/user_subscriptions",
+		middlewares.AuthorizePublic,
+		h.TestAddUserSubscription,
+	)
+
+	// PUBLIC > TRANSACTION
 	router.POST(
 		"/pub/transactions",
 		middlewares.AuthorizePublic,
 		middlewares.RequestValidator(&dto.TransactionReq{}),
 		h.AddTransaction,
-	)
-	router.POST(
-		"/pub/subscriptions",
-		middlewares.AuthorizePublic,
-		h.TestAddUserSubscription,
 	)
 
 	// PUBLIC > GIFT

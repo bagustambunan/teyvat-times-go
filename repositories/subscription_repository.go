@@ -6,6 +6,7 @@ import (
 )
 
 type SubscriptionRepository interface {
+	FindSubscriptions() ([]*models.Subscription, error)
 	FindSubscription(subscription *models.Subscription) (*models.Subscription, error)
 	SaveUserSubscription(us *models.UserSubscription) (*models.UserSubscription, error)
 	SaveTransaction(transaction *models.Transaction) (*models.Transaction, error)
@@ -22,6 +23,13 @@ type SRConfig struct {
 
 func NewSubscriptionRepository(c *SRConfig) SubscriptionRepository {
 	return &subscriptionRepository{db: c.DB}
+}
+
+func (repo *subscriptionRepository) FindSubscriptions() ([]*models.Subscription, error) {
+	var subscriptions []*models.Subscription
+	result := repo.db.
+		Find(&subscriptions)
+	return subscriptions, result.Error
 }
 
 func (repo *subscriptionRepository) FindSubscription(subscription *models.Subscription) (*models.Subscription, error) {
