@@ -100,10 +100,11 @@ func (repo *userRepository) UpdateCoins(user *models.User, coins int) (*models.U
 	return user, result.Error
 }
 
+// TODO : get user spending
 func (repo *userRepository) GetUserDownLines(user *models.User) ([]*models.User, error) {
 	var users []*models.User
 	result := repo.db.
-		Raw("SELECT * FROM user_referrals JOIN users ON users.id = user_referrals.user_id").
+		Raw("SELECT * FROM user_referrals JOIN users ON users.id = user_referrals.user_id WHERE user_referrals.referrer_user_id = ?", user.ID).
 		Scan(&users)
 	return users, result.Error
 }
