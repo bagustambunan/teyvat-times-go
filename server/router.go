@@ -169,7 +169,12 @@ func NewRouter(conf *RouterConfig) *gin.Engine {
 		h.GetPosts,
 	)
 	router.GET(
-		"/pub/posts/slug/:slug",
+		"/pub/posts/overview/:slug",
+		middlewares.AuthorizePublic,
+		h.PubGetOverviewPost,
+	)
+	router.GET(
+		"/pub/posts/read/:slug",
 		middlewares.AuthorizePublic,
 		h.PubReadPost,
 	)

@@ -36,6 +36,21 @@ func (h *Handler) PubPostUnlock(c *gin.Context) {
 	helpers.StandardResponse(c, http.StatusOK, postUnlock)
 }
 
+func (h *Handler) PubGetOverviewPost(c *gin.Context) {
+	slug := c.Param("slug")
+	if slug == "" {
+		_ = c.Error(httperror.BadRequestError("Slug is invalid", "INVALID_SLUG"))
+		return
+	}
+	fetchedPost, fetchErr := h.postService.GetPostBySlug(slug)
+	if fetchErr != nil {
+		_ = c.Error(fetchErr)
+		return
+	}
+	postRes := new(dto.PostOverviewRes).FromPost(fetchedPost)
+	helpers.StandardResponse(c, http.StatusOK, postRes)
+}
+
 func (h *Handler) PubReadPost(c *gin.Context) {
 	user := h.GetUserFromToken(c)
 	slug := c.Param("slug")
