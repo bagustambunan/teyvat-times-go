@@ -74,11 +74,11 @@ func (serv *postService) CanUserAccessThisPost(user *models.User, post *models.P
 	if post.PostTierID != 1 {
 		latestUs, usErr := serv.postRepository.FindUserLatestSubscription(user)
 		if usErr != nil {
-			return httperror.BadRequestError("User has no active subscription", "NO_ACTIVE_SUBSCRIPTION")
+			return httperror.BadRequestError("You have no active subscription", "NO_ACTIVE_SUBSCRIPTION")
 		}
 		latestUsEnded, _ := time.Parse("2006-01-02T00:00:00Z", latestUs.DateEnded)
 		if latestUsEnded.Before(time.Now()) {
-			return httperror.BadRequestError("User has no active subscription", "NO_ACTIVE_SUBSCRIPTION")
+			return httperror.BadRequestError("You have no active subscription", "NO_ACTIVE_SUBSCRIPTION")
 		}
 		unlock := &models.PostUnlock{
 			UserID: user.ID,
@@ -92,7 +92,24 @@ func (serv *postService) CanUserAccessThisPost(user *models.User, post *models.P
 	return nil
 }
 
+func (serv *postService) DoesUserHaveAnActiveSubscription(user *models.User) error {
+	latestUs, usErr := serv.postRepository.FindUserLatestSubscription(user)
+	if usErr != nil {
+		return httperror.BadRequestError("You have no active subscription", "NO_ACTIVE_SUBSCRIPTION")
+	}
+	latestUsEnded, _ := time.Parse("2006-01-02T00:00:00Z", latestUs.DateEnded)
+	if latestUsEnded.Before(time.Now()) {
+		return httperror.BadRequestError("You have no active subscription", "NO_ACTIVE_SUBSCRIPTION")
+	}
+	return nil
+}
+
 func (serv *postService) UnlockAPost(user *models.User, post *models.Post) (*models.PostUnlock, error) {
+	subErr := serv.DoesUserHaveAnActiveSubscription(user)
+	if subErr != nil {
+		return nil, subErr
+	}
+
 	unlock := &models.PostUnlock{
 		UserID: user.ID,
 		PostID: post.ID,
@@ -165,8 +182,6 @@ func (serv *postService) GetPostBySlug(slug string) (*models.Post, error) {
 	if err != nil {
 		return nil, err
 	}
-
-	// Get post activity info
 
 	return fetchedPost, nil
 }

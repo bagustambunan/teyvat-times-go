@@ -141,6 +141,15 @@ func (h *Handler) ApproveTransaction(c *gin.Context) {
 		}
 	}
 
+	_, updateCoinErr := h.userService.UpdateUserCoins(
+		&models.User{ID: fetchedTr.UserID},
+		fetchedTr.Subscription.CoinsAmount,
+	)
+	if updateCoinErr != nil {
+		_ = c.Error(updateCoinErr)
+		return
+	}
+
 	_, usErr := h.subscriptionService.AddUserSubscription(
 		&models.User{ID: fetchedTr.UserID},
 		&models.Subscription{ID: fetchedTr.SubscriptionID},
