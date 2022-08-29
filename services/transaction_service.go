@@ -51,7 +51,7 @@ func (serv *transactionService) AddTransaction(user *models.User, req *dto.Trans
 	transaction := &models.Transaction{
 		UserID:         user.ID,
 		SubscriptionID: req.SubscriptionID,
-		StatusID:       2,
+		StatusID:       1,
 		GrossTotal:     subscription.Price,
 		NetTotal:       netTotal,
 		UserVoucherID:  req.UserVoucherID,

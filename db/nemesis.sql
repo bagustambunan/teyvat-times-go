@@ -1,16 +1,16 @@
 -- table images
 CREATE TABLE public.images (
     id bigserial NOT NULL,
-    url text NOT NULL,
+    blob text NOT NULL,
     alt_text character varying NOT NULL,
     created_at timestamp without time zone DEFAULT now() NOT NULL,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     deleted_at timestamp without time zone,
     PRIMARY KEY(id)
 );
-INSERT INTO public.images (url, alt_text) VALUES ('default-pic.png','Default profile pic');
-INSERT INTO public.images (url, alt_text) VALUES ('default-thumbnail.png','Default thumbnail');
-INSERT INTO public.images (url, alt_text) VALUES ('default-img.png','Default image');
+INSERT INTO public.images (blob, alt_text) VALUES ('default-profile.png','Default profile pic');
+INSERT INTO public.images (blob, alt_text) VALUES ('default-thumbnail.png','Default thumbnail');
+INSERT INTO public.images (blob, alt_text) VALUES ('default-img.png','Default image');
 
 -- table roles
 CREATE TABLE public.roles (
@@ -158,9 +158,11 @@ CREATE TABLE public.user_post_activities (
     id bigserial NOT NULL,
     user_id bigint NOT NULL,
     post_id bigint NOT NULL,
+    views_count int DEFAULT 0 NOT NULL,
     is_liked int DEFAULT 0 NOT NULL,
     is_shared int DEFAULT 0 NOT NULL,
-    views_count int DEFAULT 0 NOT NULL,
+    date_liked timestamp without time zone,
+    date_shared timestamp without time zone,
     created_at timestamp without time zone DEFAULT now() NOT NULL,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     deleted_at timestamp without time zone,
@@ -277,8 +279,8 @@ CREATE TABLE public.transaction_statuses (
     deleted_at timestamp without time zone,
     PRIMARY KEY(id)
 );
-INSERT INTO public.transaction_statuses (id, name) VALUES (1,'Draft');
-INSERT INTO public.transaction_statuses (id, name) VALUES (2,'Waiting for payment');
+INSERT INTO public.transaction_statuses (id, name) VALUES (1,'Waiting for payment');
+INSERT INTO public.transaction_statuses (id, name) VALUES (2,'Processing');
 INSERT INTO public.transaction_statuses (id, name) VALUES (3,'Completed');
 INSERT INTO public.transaction_statuses (id, name) VALUES (4,'Canceled');
 

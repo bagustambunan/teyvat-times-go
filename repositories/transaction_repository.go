@@ -71,8 +71,11 @@ func (repo *transactionRepository) SaveTransaction(transaction *models.Transacti
 		result = result.
 			Select("UserID", "SubscriptionID", "StatusID", "GrossTotal", "NetTotal")
 	}
+	if transaction.UserVoucherID != 0 {
+		result = result.
+			Select("UserID", "SubscriptionID", "StatusID", "GrossTotal", "NetTotal", "UserVoucherID")
+	}
 	result = result.
-		Select("UserID", "SubscriptionID", "StatusID", "GrossTotal", "NetTotal", "UserVoucherID").
 		Create(transaction)
 	return transaction, result.Error
 }
@@ -80,6 +83,7 @@ func (repo *transactionRepository) SaveTransaction(transaction *models.Transacti
 func (repo *transactionRepository) FindTransactionStatuses() ([]*models.TransactionStatus, error) {
 	var trStatuses []*models.TransactionStatus
 	result := repo.db.
+		Order("id ASC").
 		Find(&trStatuses)
 	return trStatuses, result.Error
 }

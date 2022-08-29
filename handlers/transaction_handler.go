@@ -127,10 +127,12 @@ func (h *Handler) ApproveTransaction(c *gin.Context) {
 		return
 	}
 
-	_, updateUvErr := h.voucherService.UseUserVoucher(&models.UserVoucher{ID: fetchedTr.UserVoucherID})
-	if updateUvErr != nil {
-		_ = c.Error(updateUvErr)
-		return
+	if fetchedTr.UserVoucherID != 0 {
+		_, updateUvErr := h.voucherService.UseUserVoucher(&models.UserVoucher{ID: fetchedTr.UserVoucherID})
+		if updateUvErr != nil {
+			_ = c.Error(updateUvErr)
+			return
+		}
 	}
 
 	_, usErr := h.subscriptionService.AddUserSubscription(
