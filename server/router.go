@@ -169,6 +169,11 @@ func NewRouter(conf *RouterConfig) *gin.Engine {
 		h.GetPosts,
 	)
 	router.GET(
+		"/pub/reading-history/",
+		middlewares.AuthorizePublic,
+		h.PubGetReadingHistory,
+	)
+	router.GET(
 		"/pub/posts/overview/:slug",
 		middlewares.AuthorizePublic,
 		h.PubGetOverviewPost,

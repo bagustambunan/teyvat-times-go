@@ -134,3 +134,33 @@ func (h *Handler) PubPostActivity(c *gin.Context) {
 
 	helpers.StandardResponse(c, http.StatusOK, act)
 }
+
+func (h *Handler) GetPosts(c *gin.Context) {
+	opt, parsingErr := models.NewGetPostsOption(c.Request.URL.Query())
+	if parsingErr != nil {
+		_ = c.Error(parsingErr)
+		return
+	}
+
+	postsRes, fetchErr := h.postService.GetPosts(opt)
+	if fetchErr != nil {
+		_ = c.Error(fetchErr)
+		return
+	}
+	helpers.StandardResponse(c, http.StatusOK, postsRes)
+}
+
+func (h *Handler) PubGetReadingHistory(c *gin.Context) {
+	user := h.GetUserFromToken(c)
+	opt, parsingErr := models.NewReadHistoryOption(c.Request.URL.Query())
+	if parsingErr != nil {
+		_ = c.Error(parsingErr)
+		return
+	}
+	postsRes, fetchErr := h.postService.GetReadingHistory(user, opt)
+	if fetchErr != nil {
+		_ = c.Error(fetchErr)
+		return
+	}
+	helpers.StandardResponse(c, http.StatusOK, postsRes)
+}

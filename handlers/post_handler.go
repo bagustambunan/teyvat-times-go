@@ -9,21 +9,6 @@ import (
 	"strconv"
 )
 
-func (h *Handler) GetPosts(c *gin.Context) {
-	opt, parsingErr := models.NewGetPostsOption(c.Request.URL.Query())
-	if parsingErr != nil {
-		_ = c.Error(parsingErr)
-		return
-	}
-
-	postsRes, fetchErr := h.postService.GetPosts(opt)
-	if fetchErr != nil {
-		_ = c.Error(fetchErr)
-		return
-	}
-	helpers.StandardResponse(c, http.StatusOK, postsRes)
-}
-
 func (h *Handler) GetPost(c *gin.Context) {
 	postID, idErr := strconv.Atoi(c.Param("postID"))
 	if idErr != nil {

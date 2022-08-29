@@ -13,6 +13,7 @@ import (
 type PostRepository interface {
 	FindPosts(opt *models.GetPostsOption) (*dto.GetPostsRes, error)
 	FindPost(post *models.Post) (*models.Post, error)
+	FindReadingHistory(user *models.User, opt *models.ReadHistoryOption) (*dto.GetPostsRes, error)
 	FindPostBySlug(slug string) (*models.Post, error)
 	Save(post *models.Post) (*models.Post, int, error)
 	UpdatePost(post *models.Post) (*models.Post, error)
@@ -94,6 +95,30 @@ func (repo *postRepository) FindPost(post *models.Post) (*models.Post, error) {
 		Joins("UpdatedBy").
 		First(&post)
 	return post, result.Error
+}
+
+func (repo *postRepository) FindReadingHistory(user *models.User, opt *models.ReadHistoryOption) (*dto.GetPostsRes, error) {
+	var posts []*models.Post
+	result := repo.db.
+		Raw("SELECT * FROM user_post_activities LEFT JOIN posts ON posts.id = user_post_activities.post_id WHERE user_post_activities.user_id = ?", user.ID).
+		Joins("PostTier").
+		Joins("PostCategory").
+		Joins("ImgThumbnail").
+		Joins("ImgContent").
+		Joins("CreatedBy").
+		Joins("UpdatedBy").
+		Scan(&posts)
+	totalData := int(result.RowsAffected)
+
+	result = result.
+		Limit(opt.Limit).
+		Offset((opt.Page - 1) * opt.Limit).
+		Scan(&posts)
+
+	postsRes := new(dto.GetPostsRes).FromPosts(posts)
+	totalPage := int(math.Ceil(float64(totalData) / float64(opt.Limit)))
+	postsRes.SetValues(int(result.RowsAffected), opt.Limit, opt.Page, totalPage, totalData)
+	return postsRes, result.Error
 }
 
 func (repo *postRepository) FindPostBySlug(slug string) (*models.Post, error) {

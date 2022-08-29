@@ -17,6 +17,7 @@ type PostService interface {
 	UnlockAPost(user *models.User, post *models.Post) (*models.PostUnlock, error)
 	GetPosts(opt *models.GetPostsOption) (*dto.GetPostsRes, error)
 	GetPost(post *models.Post) (*models.Post, error)
+	GetReadingHistory(user *models.User, opt *models.ReadHistoryOption) (*dto.GetPostsRes, error)
 	GetActivity(user *models.User, post *models.Post) (*models.UserPostActivities, error)
 	AddActivity(user *models.User, post *models.Post) (*models.UserPostActivities, error)
 	UpdateActivity(user *models.User, post *models.Post, actReq *dto.ActivityReq) (*models.UserPostActivities, error)
@@ -130,6 +131,14 @@ func (serv *postService) UnlockAPost(user *models.User, post *models.Post) (*mod
 
 func (serv *postService) GetPosts(opt *models.GetPostsOption) (*dto.GetPostsRes, error) {
 	postsRes, err := serv.postRepository.FindPosts(opt)
+	if err != nil {
+		return nil, err
+	}
+	return postsRes, nil
+}
+
+func (serv *postService) GetReadingHistory(user *models.User, opt *models.ReadHistoryOption) (*dto.GetPostsRes, error) {
+	postsRes, err := serv.postRepository.FindReadingHistory(user, opt)
 	if err != nil {
 		return nil, err
 	}
