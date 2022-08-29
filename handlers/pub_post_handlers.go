@@ -1,10 +1,10 @@
 package handlers
 
 import (
-	"final-project-backend/dto"
-	"final-project-backend/helpers"
-	"final-project-backend/httperror"
-	"final-project-backend/models"
+	"git.garena.com/sea-labs-id/batch-01/bagus-tambunan/final-project-backend/dto"
+	"git.garena.com/sea-labs-id/batch-01/bagus-tambunan/final-project-backend/helpers"
+	"git.garena.com/sea-labs-id/batch-01/bagus-tambunan/final-project-backend/httperror"
+	"git.garena.com/sea-labs-id/batch-01/bagus-tambunan/final-project-backend/models"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"

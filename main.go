@@ -1,9 +1,9 @@
 package main
 
 import (
+	"git.garena.com/sea-labs-id/batch-01/bagus-tambunan/final-project-backend/db"
+	"git.garena.com/sea-labs-id/batch-01/bagus-tambunan/final-project-backend/server"
 	"fmt"
-	"final-project-backend/db"
-	"final-project-backend/server"
 )
 
 func main() {

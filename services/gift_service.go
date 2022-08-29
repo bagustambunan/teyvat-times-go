@@ -1,8 +1,8 @@
 package services
 
 import (
-	"final-project-backend/models"
-	"final-project-backend/repositories"
+	"git.garena.com/sea-labs-id/batch-01/bagus-tambunan/final-project-backend/models"
+	"git.garena.com/sea-labs-id/batch-01/bagus-tambunan/final-project-backend/repositories"
 )
 
 type GiftService interface {

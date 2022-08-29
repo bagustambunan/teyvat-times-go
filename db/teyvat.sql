@@ -8,9 +8,9 @@ CREATE TABLE public.images (
     deleted_at timestamp without time zone,
     PRIMARY KEY(id)
 );
-INSERT INTO public.images (url, alt_text) VALUES ('default-profile.png','Default profile pic');
-INSERT INTO public.images (url, alt_text) VALUES ('default-thumbnail.png','Default thumbnail');
-INSERT INTO public.images (url, alt_text) VALUES ('default-img.png','Default image');
+INSERT INTO public.images (url, alt_text) VALUES ('https://i.ibb.co/z2BtNd3/default-profile.jpg','Default profile pic');
+INSERT INTO public.images (url, alt_text) VALUES ('https://i.ibb.co/hm4THWX/default-thumbnail.jpg','Default thumbnail');
+INSERT INTO public.images (url, alt_text) VALUES ('https://i.ibb.co/G9BDdyx/default-img.jpg','Default image');
 
 -- table roles
 CREATE TABLE public.roles (
@@ -66,7 +66,7 @@ CREATE TABLE public.users (
         FOREIGN KEY(profile_pic_id)
             REFERENCES public.images(id)
 );
-INSERT INTO public.users (role_id, username, email, password, name, phone, address_id) VALUES (1,'jean','jean@mail.com','$2a$10$nbuYAZnJXsMjFIP4WkdqQ.BazePvRTc4705hq9CP1T1oRwcCQa2wm','Jean Gunnhildr','0199901',1);
+INSERT INTO public.users (role_id, username, email, password, name, phone, address_id, referral_code) VALUES (1,'jean','jean@mail.com','$2a$10$nbuYAZnJXsMjFIP4WkdqQ.BazePvRTc4705hq9CP1T1oRwcCQa2wm','Jean Gunnhildr','0199901',1,'JEAN01');
 
 -- table user_referrals
 CREATE TABLE public.user_referrals (

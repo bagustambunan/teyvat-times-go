@@ -38,6 +38,6 @@ var Config = AppConfig{
 		DBPort:     getENV("DBPort", "5432"),
 		DBUser:     getENV("DBUser", "postgres"),
 		DBPassword: getENV("DBPassword", "123456"),
-		DBName:     getENV("DBName", "nemesis-4"),
+		DBName:     getENV("DBName", "teyvat-1"),
 	},
 }

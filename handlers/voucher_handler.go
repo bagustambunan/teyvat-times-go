@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	"final-project-backend/helpers"
+	"git.garena.com/sea-labs-id/batch-01/bagus-tambunan/final-project-backend/helpers"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
