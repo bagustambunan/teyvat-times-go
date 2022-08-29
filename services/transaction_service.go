@@ -2,6 +2,7 @@ package services
 
 import (
 	"final-project-backend/dto"
+	"final-project-backend/httperror"
 	"final-project-backend/models"
 	"final-project-backend/repositories"
 )
@@ -14,6 +15,7 @@ type TransactionService interface {
 	GetTransaction(transaction *models.Transaction) (*models.Transaction, error)
 	ApproveTransaction(transaction *models.Transaction) (*models.Transaction, error)
 	RejectTransaction(transaction *models.Transaction) (*models.Transaction, error)
+	ProcessPayment(transaction *models.Transaction, req *dto.PaymentReq) (*models.Transaction, error)
 }
 
 type transactionService struct {
@@ -75,4 +77,14 @@ func (serv *transactionService) ApproveTransaction(transaction *models.Transacti
 
 func (serv *transactionService) RejectTransaction(transaction *models.Transaction) (*models.Transaction, error) {
 	return serv.transactionRepository.UpdateTransactionStatus(transaction, 4)
+}
+
+func (serv *transactionService) ProcessPayment(transaction *models.Transaction, req *dto.PaymentReq) (*models.Transaction, error) {
+	if transaction.StatusID != 1 {
+		return nil, httperror.BadRequestError("This payment is invalid", "INVALID_PAYMENT")
+	}
+	if req.Amount != transaction.NetTotal {
+		return nil, httperror.BadRequestError("Payment amount doesn't match", "INVALID_AMOUNT")
+	}
+	return serv.transactionRepository.UpdateTransactionStatus(transaction, 2)
 }

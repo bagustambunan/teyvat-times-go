@@ -244,6 +244,13 @@ func NewRouter(conf *RouterConfig) *gin.Engine {
 		h.GetGift,
 	)
 
+	// OPEN > PAYMENT
+	router.POST(
+		"/open/payment",
+		middlewares.RequestValidator(&dto.PaymentReq{}),
+		h.ProcessPayment,
+	)
+
 	router.NoRoute(h.HandleNotFound)
 
 	return router

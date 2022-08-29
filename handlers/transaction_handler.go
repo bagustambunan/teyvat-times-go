@@ -168,3 +168,22 @@ func (h *Handler) RejectTransaction(c *gin.Context) {
 
 	helpers.StandardResponse(c, http.StatusOK, updatedTr)
 }
+
+func (h *Handler) ProcessPayment(c *gin.Context) {
+	payload, _ := c.Get("payload")
+	paymentReq, _ := payload.(*dto.PaymentReq)
+
+	fetchedTr, fetchTrErr := h.transactionService.GetTransaction(&models.Transaction{ID: paymentReq.TransactionID})
+	if fetchTrErr != nil {
+		_ = c.Error(fetchTrErr)
+		return
+	}
+
+	updatedTr, updateTrErr := h.transactionService.ProcessPayment(fetchedTr, paymentReq)
+	if updateTrErr != nil {
+		_ = c.Error(updateTrErr)
+		return
+	}
+
+	helpers.StandardResponse(c, http.StatusOK, updatedTr)
+}
