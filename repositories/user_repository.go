@@ -1,8 +1,8 @@
 package repositories
 
 import (
-	"git.garena.com/sea-labs-id/batch-01/bagus-tambunan/final-project-backend/httperror"
-	"git.garena.com/sea-labs-id/batch-01/bagus-tambunan/final-project-backend/models"
+	"final-project-backend/httperror"
+	"final-project-backend/models"
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 )

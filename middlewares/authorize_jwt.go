@@ -2,9 +2,9 @@ package middlewares
 
 import (
 	"encoding/json"
-	"git.garena.com/sea-labs-id/batch-01/bagus-tambunan/final-project-backend/config"
-	"git.garena.com/sea-labs-id/batch-01/bagus-tambunan/final-project-backend/httperror"
-	"git.garena.com/sea-labs-id/batch-01/bagus-tambunan/final-project-backend/models"
+	"final-project-backend/config"
+	"final-project-backend/httperror"
+	"final-project-backend/models"
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v4"
 	"strings"

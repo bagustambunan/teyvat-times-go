@@ -1,7 +1,7 @@
 package repositories
 
 import (
-	"git.garena.com/sea-labs-id/batch-01/bagus-tambunan/final-project-backend/models"
+	"final-project-backend/models"
 	"gorm.io/gorm"
 	"time"
 )

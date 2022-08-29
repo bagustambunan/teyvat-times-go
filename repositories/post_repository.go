@@ -2,8 +2,8 @@ package repositories
 
 import "C"
 import (
-	"git.garena.com/sea-labs-id/batch-01/bagus-tambunan/final-project-backend/dto"
-	"git.garena.com/sea-labs-id/batch-01/bagus-tambunan/final-project-backend/models"
+	"final-project-backend/dto"
+	"final-project-backend/models"
 	"fmt"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"

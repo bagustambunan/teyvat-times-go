@@ -1,10 +1,10 @@
 package server
 
 import (
-	"git.garena.com/sea-labs-id/batch-01/bagus-tambunan/final-project-backend/dto"
-	"git.garena.com/sea-labs-id/batch-01/bagus-tambunan/final-project-backend/handlers"
-	"git.garena.com/sea-labs-id/batch-01/bagus-tambunan/final-project-backend/middlewares"
-	"git.garena.com/sea-labs-id/batch-01/bagus-tambunan/final-project-backend/services"
+	"final-project-backend/dto"
+	"final-project-backend/handlers"
+	"final-project-backend/middlewares"
+	"final-project-backend/services"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )

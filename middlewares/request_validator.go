@@ -1,7 +1,7 @@
 package middlewares
 
 import (
-	"git.garena.com/sea-labs-id/batch-01/bagus-tambunan/final-project-backend/httperror"
+	"final-project-backend/httperror"
 	"github.com/gin-gonic/gin"
 	"reflect"
 )

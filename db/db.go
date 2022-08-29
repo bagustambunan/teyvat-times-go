@@ -1,7 +1,7 @@
 package db
 
 import (
-	"git.garena.com/sea-labs-id/batch-01/bagus-tambunan/final-project-backend/config"
+	"final-project-backend/config"
 	"fmt"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"

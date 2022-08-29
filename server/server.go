@@ -1,10 +1,10 @@
 package server
 
 import (
-	"git.garena.com/sea-labs-id/batch-01/bagus-tambunan/final-project-backend/config"
-	"git.garena.com/sea-labs-id/batch-01/bagus-tambunan/final-project-backend/db"
-	"git.garena.com/sea-labs-id/batch-01/bagus-tambunan/final-project-backend/repositories"
-	"git.garena.com/sea-labs-id/batch-01/bagus-tambunan/final-project-backend/services"
+	"final-project-backend/config"
+	"final-project-backend/db"
+	"final-project-backend/repositories"
+	"final-project-backend/services"
 	"fmt"
 )
 
