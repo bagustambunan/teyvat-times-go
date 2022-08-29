@@ -127,6 +127,11 @@ func NewRouter(conf *RouterConfig) *gin.Engine {
 		middlewares.AuthorizeInternal,
 		h.ApproveTransaction,
 	)
+	router.POST(
+		"transactions/:transactionID/reject",
+		middlewares.AuthorizeInternal,
+		h.RejectTransaction,
+	)
 
 	// ADMIN > VOUCHER
 	router.GET(
@@ -195,11 +200,6 @@ func NewRouter(conf *RouterConfig) *gin.Engine {
 		"/pub/subscriptions/:subscriptionID",
 		middlewares.AuthorizePublic,
 		h.GetSubscription,
-	)
-	router.POST(
-		"/pub/user_subscriptions",
-		middlewares.AuthorizePublic,
-		h.TestAddUserSubscription,
 	)
 
 	// PUBLIC > TRANSACTION

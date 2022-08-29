@@ -142,5 +142,27 @@ func (h *Handler) ApproveTransaction(c *gin.Context) {
 		return
 	}
 
-	helpers.StandardResponse(c, http.StatusCreated, updatedTr)
+	helpers.StandardResponse(c, http.StatusOK, updatedTr)
+}
+
+func (h *Handler) RejectTransaction(c *gin.Context) {
+	transactionID, idErr := strconv.Atoi(c.Param("transactionID"))
+	if idErr != nil {
+		_ = c.Error(idErr)
+		return
+	}
+
+	fetchedTr, fetchTrErr := h.transactionService.GetTransaction(&models.Transaction{ID: transactionID})
+	if fetchTrErr != nil {
+		_ = c.Error(fetchTrErr)
+		return
+	}
+
+	updatedTr, updateTrErr := h.transactionService.RejectTransaction(fetchedTr)
+	if updateTrErr != nil {
+		_ = c.Error(updateTrErr)
+		return
+	}
+
+	helpers.StandardResponse(c, http.StatusOK, updatedTr)
 }

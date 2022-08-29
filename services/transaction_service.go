@@ -13,6 +13,7 @@ type TransactionService interface {
 	GetTransactionStatuses() ([]*models.TransactionStatus, error)
 	GetTransaction(transaction *models.Transaction) (*models.Transaction, error)
 	ApproveTransaction(transaction *models.Transaction) (*models.Transaction, error)
+	RejectTransaction(transaction *models.Transaction) (*models.Transaction, error)
 }
 
 type transactionService struct {
@@ -69,6 +70,9 @@ func (serv *transactionService) GetTransaction(transaction *models.Transaction) 
 }
 
 func (serv *transactionService) ApproveTransaction(transaction *models.Transaction) (*models.Transaction, error) {
-	transaction.StatusID = 3
-	return serv.transactionRepository.UpdateTransactionStatus(transaction)
+	return serv.transactionRepository.UpdateTransactionStatus(transaction, 3)
+}
+
+func (serv *transactionService) RejectTransaction(transaction *models.Transaction) (*models.Transaction, error) {
+	return serv.transactionRepository.UpdateTransactionStatus(transaction, 4)
 }

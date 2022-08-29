@@ -12,7 +12,7 @@ type TransactionRepository interface {
 	SaveTransaction(transaction *models.Transaction) (*models.Transaction, error)
 	FindTransactionStatuses() ([]*models.TransactionStatus, error)
 	FindTransaction(transaction *models.Transaction) (*models.Transaction, error)
-	UpdateTransactionStatus(transaction *models.Transaction) (*models.Transaction, error)
+	UpdateTransactionStatus(transaction *models.Transaction, statusID int) (*models.Transaction, error)
 }
 
 type transactionRepository struct {
@@ -94,10 +94,11 @@ func (repo *transactionRepository) FindTransaction(transaction *models.Transacti
 	return transaction, result.Error
 }
 
-func (repo *transactionRepository) UpdateTransactionStatus(transaction *models.Transaction) (*models.Transaction, error) {
+func (repo *transactionRepository) UpdateTransactionStatus(transaction *models.Transaction, statusID int) (*models.Transaction, error) {
 	result := repo.db.
-		Model(&transaction).
-		Where("id = ?", transaction.ID).
-		UpdateColumn("status_id", transaction.StatusID)
+		//Model(&transaction).
+		//UpdateColumn("status_id", statusID).
+		Raw("UPDATE transactions SET status_id = ? WHERE deleted_at IS NULL AND id = ?", statusID, transaction.ID).
+		Scan(&transaction)
 	return transaction, result.Error
 }
