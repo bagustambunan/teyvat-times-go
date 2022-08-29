@@ -107,3 +107,40 @@ func (h *Handler) GetTransactionDetail(c *gin.Context) {
 	}
 	helpers.StandardResponse(c, http.StatusOK, tr)
 }
+
+func (h *Handler) ApproveTransaction(c *gin.Context) {
+	transactionID, idErr := strconv.Atoi(c.Param("transactionID"))
+	if idErr != nil {
+		_ = c.Error(idErr)
+		return
+	}
+
+	fetchedTr, fetchTrErr := h.transactionService.GetTransaction(&models.Transaction{ID: transactionID})
+	if fetchTrErr != nil {
+		_ = c.Error(fetchTrErr)
+		return
+	}
+
+	updatedTr, updateTrErr := h.transactionService.ApproveTransaction(fetchedTr)
+	if updateTrErr != nil {
+		_ = c.Error(updateTrErr)
+		return
+	}
+
+	_, updateUvErr := h.voucherService.UseUserVoucher(&models.UserVoucher{ID: fetchedTr.UserVoucherID})
+	if updateUvErr != nil {
+		_ = c.Error(updateUvErr)
+		return
+	}
+
+	_, usErr := h.subscriptionService.AddUserSubscription(
+		&models.User{ID: fetchedTr.UserID},
+		&models.Subscription{ID: fetchedTr.SubscriptionID},
+	)
+	if usErr != nil {
+		_ = c.Error(usErr)
+		return
+	}
+
+	helpers.StandardResponse(c, http.StatusCreated, updatedTr)
+}

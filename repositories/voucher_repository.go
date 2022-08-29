@@ -57,6 +57,7 @@ func (repo *voucherRepository) FindUserVoucherFromCode(user *models.User, code s
 func (repo *voucherRepository) UpdateUserVoucher(uv *models.UserVoucher) (*models.UserVoucher, error) {
 	result := repo.db.
 		Model(&uv).
+		Where("id = ?", uv.ID).
 		UpdateColumn("is_used", 1)
 	return uv, result.Error
 }

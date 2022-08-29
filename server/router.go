@@ -122,6 +122,11 @@ func NewRouter(conf *RouterConfig) *gin.Engine {
 		middlewares.AuthorizeInternal,
 		h.GetTransactionStatuses,
 	)
+	router.POST(
+		"transactions/:transactionID/approve",
+		middlewares.AuthorizeInternal,
+		h.ApproveTransaction,
+	)
 
 	// ADMIN > VOUCHER
 	router.GET(
