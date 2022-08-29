@@ -28,7 +28,7 @@ func (h *Handler) PubPostUnlock(c *gin.Context) {
 		_ = c.Error(err)
 		return
 	}
-	_, updateErr := h.userService.UpdateUserCoins(user, -fetchedPost.GetCoinsRequired())
+	_, updateErr := h.userService.UpdateUserMora(user, -fetchedPost.GetMoraRequired())
 	if updateErr != nil {
 		_ = c.Error(updateErr)
 		return

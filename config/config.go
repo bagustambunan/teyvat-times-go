@@ -32,12 +32,12 @@ var Config = AppConfig{
 	AppName:            "Project Nemesis - Prototype",
 	AppPort:            8080,
 	JWTSecretKey:       []byte("very-secret"),
-	JWTExpiryInMinutes: 15,
+	JWTExpiryInMinutes: 60,
 	DBConfig: dbConfig{
 		DBHost:     getENV("DBHost", "localhost"),
 		DBPort:     getENV("DBPort", "5432"),
 		DBUser:     getENV("DBUser", "postgres"),
 		DBPassword: getENV("DBPassword", "123456"),
-		DBName:     getENV("DBName", "nemesis-3"),
+		DBName:     getENV("DBName", "nemesis-4"),
 	},
 }

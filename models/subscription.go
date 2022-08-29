@@ -7,5 +7,5 @@ type Subscription struct {
 	ID          int    `json:"subscriptionID" gorm:"primaryKey"`
 	Name        string `json:"name"`
 	Price       int    `json:"price"`
-	CoinsAmount int    `json:"coinsAmount"`
+	MoraAmount int    `json:"moraAmount"`
 }

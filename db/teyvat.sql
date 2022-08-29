@@ -1,16 +1,16 @@
 -- table images
 CREATE TABLE public.images (
     id bigserial NOT NULL,
-    blob text NOT NULL,
+    url text NOT NULL,
     alt_text character varying NOT NULL,
     created_at timestamp without time zone DEFAULT now() NOT NULL,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     deleted_at timestamp without time zone,
     PRIMARY KEY(id)
 );
-INSERT INTO public.images (blob, alt_text) VALUES ('default-profile.png','Default profile pic');
-INSERT INTO public.images (blob, alt_text) VALUES ('default-thumbnail.png','Default thumbnail');
-INSERT INTO public.images (blob, alt_text) VALUES ('default-img.png','Default image');
+INSERT INTO public.images (url, alt_text) VALUES ('default-profile.png','Default profile pic');
+INSERT INTO public.images (url, alt_text) VALUES ('default-thumbnail.png','Default thumbnail');
+INSERT INTO public.images (url, alt_text) VALUES ('default-img.png','Default image');
 
 -- table roles
 CREATE TABLE public.roles (
@@ -51,7 +51,7 @@ CREATE TABLE public.users (
     address_id bigint,
     referral_code character varying NOT NULL UNIQUE,
     profile_pic_id bigint DEFAULT 1 NOT NULL,
-    coins int DEFAULT 0 NOT NULL,
+    mora int DEFAULT 0 NOT NULL,
     created_at timestamp without time zone DEFAULT now() NOT NULL,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     deleted_at timestamp without time zone,
@@ -89,16 +89,16 @@ CREATE TABLE public.user_referrals (
 CREATE TABLE public.post_tiers (
     id int NOT NULL,
     name character varying NOT NULL UNIQUE,
-    coins_required int NOT NULL,
+    mora_required int NOT NULL,
     color character varying,
     created_at timestamp without time zone DEFAULT now() NOT NULL,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     deleted_at timestamp without time zone,
     PRIMARY KEY(id)
 );
-INSERT INTO public.post_tiers (id, name, coins_required, color) VALUES (1,'Free',0,'black');
-INSERT INTO public.post_tiers (id, name, coins_required, color) VALUES (2,'Premium',1,'blue');
-INSERT INTO public.post_tiers (id, name, coins_required, color) VALUES (3,'VIP',2,'gold');
+INSERT INTO public.post_tiers (id, name, mora_required, color) VALUES (1,'Free',0,'black');
+INSERT INTO public.post_tiers (id, name, mora_required, color) VALUES (2,'Premium',1,'blue');
+INSERT INTO public.post_tiers (id, name, mora_required, color) VALUES (3,'VIP',2,'gold');
 
 -- table post_categories
 CREATE TABLE public.post_categories(
@@ -199,15 +199,15 @@ CREATE TABLE public.subscriptions(
     id int NOT NULL,
     name character varying NOT NULL UNIQUE,
     price int NOT NULL,
-    coins_amount int NOT NULL,
+    mora_amount int NOT NULL,
     created_at timestamp without time zone DEFAULT now() NOT NULL,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     deleted_at timestamp without time zone,
     PRIMARY KEY(id)
 );
-INSERT INTO public.subscriptions (id, name, price, coins_amount) VALUES (1,'Standard',30000,5);
-INSERT INTO public.subscriptions (id, name, price, coins_amount) VALUES (2,'Premium',50000,10);
-INSERT INTO public.subscriptions (id, name, price, coins_amount) VALUES (3,'Gold',90000,20);
+INSERT INTO public.subscriptions (id, name, price, mora_amount) VALUES (1,'Standard',30000,5);
+INSERT INTO public.subscriptions (id, name, price, mora_amount) VALUES (2,'Premium',50000,10);
+INSERT INTO public.subscriptions (id, name, price, mora_amount) VALUES (3,'Gold',90000,20);
 
 -- table user_subscriptions
 CREATE TABLE public.user_subscriptions (

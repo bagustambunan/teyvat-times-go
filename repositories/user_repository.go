@@ -14,7 +14,7 @@ type UserRepository interface {
 	CheckUsernameAndEmail(user *models.User) error
 	Save(user *models.User) (*models.User, error)
 	SaveUserReferral(userRef *models.UserReferral) error
-	UpdateCoins(user *models.User, coins int) (*models.User, error)
+	UpdateMora(user *models.User, mora int) (*models.User, error)
 	GetUserDownLines(user *models.User) ([]*models.User, error)
 }
 
@@ -93,10 +93,10 @@ func (repo *userRepository) SaveUserReferral(userRef *models.UserReferral) error
 	return result.Error
 }
 
-func (repo *userRepository) UpdateCoins(user *models.User, coins int) (*models.User, error) {
+func (repo *userRepository) UpdateMora(user *models.User, mora int) (*models.User, error) {
 	result := repo.db.
 		Model(&user).
-		UpdateColumn("coins", gorm.Expr("coins + ?", coins))
+		UpdateColumn("mora", gorm.Expr("mora + ?", mora))
 	return user, result.Error
 }
 

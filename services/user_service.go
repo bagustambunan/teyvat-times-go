@@ -7,7 +7,7 @@ import (
 )
 
 type UserService interface {
-	UpdateUserCoins(user *models.User, coins int) (*models.User, error)
+	UpdateUserMora(user *models.User, mora int) (*models.User, error)
 	GetUser(user *models.User) (*dto.GetUserRes, error)
 	GetUserDownLines(user *models.User) ([]*models.User, error)
 }
@@ -26,8 +26,8 @@ func NewUserService(c *USConfig) UserService {
 	}
 }
 
-func (serv *userService) UpdateUserCoins(user *models.User, coins int) (*models.User, error) {
-	return serv.userRepository.UpdateCoins(user, coins)
+func (serv *userService) UpdateUserMora(user *models.User, mora int) (*models.User, error) {
+	return serv.userRepository.UpdateMora(user, mora)
 }
 
 func (serv *userService) GetUser(user *models.User) (*dto.GetUserRes, error) {

@@ -141,12 +141,12 @@ func (h *Handler) ApproveTransaction(c *gin.Context) {
 		}
 	}
 
-	_, updateCoinErr := h.userService.UpdateUserCoins(
+	_, updateMoraErr := h.userService.UpdateUserMora(
 		&models.User{ID: fetchedTr.UserID},
-		fetchedTr.Subscription.CoinsAmount,
+		fetchedTr.Subscription.MoraAmount,
 	)
-	if updateCoinErr != nil {
-		_ = c.Error(updateCoinErr)
+	if updateMoraErr != nil {
+		_ = c.Error(updateMoraErr)
 		return
 	}
 

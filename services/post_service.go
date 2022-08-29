@@ -123,8 +123,8 @@ func (serv *postService) UnlockAPost(user *models.User, post *models.Post) (*mod
 		return nil, httperror.BadRequestError("Cannot unlock free tier post", "INVALID_UNLOCK")
 	}
 
-	if user.Coins < post.GetCoinsRequired() {
-		return nil, httperror.BadRequestError("Not enough coins", "COINS_NOT_ENOUGH")
+	if user.Mora < post.GetMoraRequired() {
+		return nil, httperror.BadRequestError("Not enough mora", "COINS_NOT_ENOUGH")
 	}
 	return serv.postRepository.SaveUnlock(unlock)
 }

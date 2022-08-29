@@ -17,5 +17,5 @@ type User struct {
 	ProfilePicID int      `json:"-"`
 	ProfilePic   *Image   `json:"-"`
 	Password     string   `json:"-"`
-	Coins        int      `json:"coins"`
+	Mora        int      `json:"mora"`
 }

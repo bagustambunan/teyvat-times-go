@@ -27,6 +27,6 @@ type Post struct {
 	TotalShare     int           `json:"totalShare" gorm:"-"`
 }
 
-func (p *Post) GetCoinsRequired() int {
-	return p.PostTier.CoinsRequired
+func (p *Post) GetMoraRequired() int {
+	return p.PostTier.MoraRequired
 }
