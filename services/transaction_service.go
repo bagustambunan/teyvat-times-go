@@ -9,7 +9,7 @@ import (
 
 type TransactionService interface {
 	GetTransactions(opt *models.GetTransactionsOption) (*dto.TransactionsRes, error)
-	GetUserTransactions(user *models.User) (*dto.TransactionsRes, error)
+	GetUserTransactions(user *models.User, opt *models.GetTransactionsOption) (*dto.TransactionsRes, error)
 	AddTransaction(user *models.User, req *dto.TransactionReq, discount int, subscription *models.Subscription) (*dto.TransactionRes, error)
 	GetTransactionStatuses() ([]*models.TransactionStatus, error)
 	GetTransaction(transaction *models.Transaction) (*models.Transaction, error)
@@ -36,13 +36,9 @@ func (serv *transactionService) GetTransactions(opt *models.GetTransactionsOptio
 	return serv.transactionRepository.FindTransactions(opt)
 }
 
-func (serv *transactionService) GetUserTransactions(user *models.User) (*dto.TransactionsRes, error) {
-	return serv.transactionRepository.FindTransactions(&models.GetTransactionsOption{
-		UserID:   user.ID,
-		StatusID: 0,
-		Limit:    10,
-		Page:     1,
-	})
+func (serv *transactionService) GetUserTransactions(user *models.User, opt *models.GetTransactionsOption) (*dto.TransactionsRes, error) {
+	opt.UserID = user.ID
+	return serv.transactionRepository.FindTransactions(opt)
 }
 
 func (serv *transactionService) AddTransaction(user *models.User, req *dto.TransactionReq, discount int, subscription *models.Subscription) (*dto.TransactionRes, error) {

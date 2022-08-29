@@ -76,7 +76,13 @@ func (h *Handler) GetTransactions(c *gin.Context) {
 
 func (h *Handler) GetUserTransactions(c *gin.Context) {
 	user := h.GetUserFromToken(c)
-	trsRes, fetchErr := h.transactionService.GetUserTransactions(user)
+	opt, parsingErr := models.NewTransactionsOption(c.Request.URL.Query())
+	if parsingErr != nil {
+		_ = c.Error(parsingErr)
+		return
+	}
+
+	trsRes, fetchErr := h.transactionService.GetUserTransactions(user, opt)
 	if fetchErr != nil {
 		_ = c.Error(fetchErr)
 		return
