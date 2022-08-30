@@ -2,6 +2,7 @@ package services
 
 import (
 	"final-project-backend/dto"
+	"final-project-backend/httperror"
 	"final-project-backend/models"
 	"final-project-backend/repositories"
 	"time"
@@ -11,6 +12,7 @@ type SubscriptionService interface {
 	GetSubscriptions() ([]*models.Subscription, error)
 	GetSubscription(subscription *models.Subscription) (*models.Subscription, error)
 	GetUserNewSubscriptionDate(user *models.User) (string, string)
+	GetUserActiveSubscription(user *models.User) (*models.UserSubscription, error)
 	AddUserSubscription(user *models.User, subscription *models.Subscription) (*models.UserSubscription, error)
 	GetUserSubscriptions(user *models.User, opt *models.GetUserSubscriptionsOption) (*dto.UserSubscriptionsRes, error)
 }
@@ -55,6 +57,17 @@ func (serv *subscriptionService) GetUserNewSubscriptionDate(user *models.User) (
 	}
 	dateEnded := dateStart.AddDate(0, 1, 0)
 	return dateStart.Format("2006-01-02"), dateEnded.Format("2006-01-02")
+}
+
+func (serv *subscriptionService) GetUserActiveSubscription(user *models.User) (*models.UserSubscription, error) {
+	dateNow := time.Now()
+	if latestUs := serv.GetUserLatestSubscription(user); latestUs != nil {
+		latestUsEnded, _ := time.Parse("2006-01-02T00:00:00Z", latestUs.DateEnded)
+		if latestUsEnded.After(dateNow) {
+			return latestUs, nil
+		}
+	}
+	return nil, httperror.NoContent()
 }
 
 func (serv *subscriptionService) AddUserSubscription(user *models.User, subscription *models.Subscription) (*models.UserSubscription, error) {

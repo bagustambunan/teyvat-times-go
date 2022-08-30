@@ -56,3 +56,11 @@ func NotFoundError() AppError {
 		StatusCode: http.StatusNotFound,
 	}
 }
+
+func NoContent() AppError {
+	return AppError{
+		Code:       "NO_CONTENT",
+		Message:    "No content",
+		StatusCode: http.StatusNoContent,
+	}
+}

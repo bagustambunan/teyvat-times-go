@@ -56,3 +56,13 @@ func (h *Handler) GetUserSubscriptions(c *gin.Context) {
 	}
 	helpers.StandardResponse(c, http.StatusOK, ussRes)
 }
+
+func (h *Handler) GetUserActiveSubscription(c *gin.Context) {
+	user := h.GetUserFromToken(c)
+	activeUs, err := h.subscriptionService.GetUserActiveSubscription(user)
+	if err != nil {
+		_ = c.Error(err)
+		return
+	}
+	helpers.StandardResponse(c, http.StatusOK, activeUs)
+}
