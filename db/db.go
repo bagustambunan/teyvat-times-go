@@ -1,7 +1,6 @@
 package db
 
 import (
-	"database/sql"
 	"final-project-backend/config"
 	"fmt"
 	"gorm.io/driver/postgres"
@@ -27,13 +26,7 @@ func getLogger() logger.Interface {
 
 func Connect() (err error) {
 	if config.GetENV("DATABASE_URL", "") != "" {
-		sqlDB, dbErr := sql.Open("postgres", config.GetENV("DATABASE_URL", ""))
-		if dbErr != nil {
-			return dbErr
-		}
-		db, err = gorm.Open(postgres.New(postgres.Config{
-			Conn: sqlDB,
-		}), &gorm.Config{
+		db, err = gorm.Open(postgres.Open(config.GetENV("DATABASE_URL", "")), &gorm.Config{
 			Logger: getLogger(),
 		})
 		return err
