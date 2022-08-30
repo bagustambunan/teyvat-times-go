@@ -1,8 +1,10 @@
 package repositories
 
 import (
+	"final-project-backend/dto"
 	"final-project-backend/models"
 	"gorm.io/gorm"
+	"math"
 )
 
 type SubscriptionRepository interface {
@@ -10,6 +12,7 @@ type SubscriptionRepository interface {
 	FindSubscription(subscription *models.Subscription) (*models.Subscription, error)
 	SaveUserSubscription(us *models.UserSubscription) (*models.UserSubscription, error)
 	FindUserLatestSubscription(user *models.User) (*models.UserSubscription, error)
+	FindUserSubscriptions(opt *models.GetUserSubscriptionsOption) (*dto.UserSubscriptionsRes, error)
 }
 
 type subscriptionRepository struct {
@@ -49,4 +52,37 @@ func (repo *subscriptionRepository) SaveUserSubscription(us *models.UserSubscrip
 	result := repo.db.
 		Create(us)
 	return us, result.Error
+}
+
+func (repo *subscriptionRepository) FindUserSubscriptions(opt *models.GetUserSubscriptionsOption) (*dto.UserSubscriptionsRes, error) {
+	var uss []*models.UserSubscription
+	result := repo.db.
+		Joins("User").
+		Joins("Subscription")
+
+	if opt.UserID != 0 {
+		result = result.
+			Where("user_id = ?", opt.UserID)
+	}
+
+	result = result.
+		Order("created_at DESC").
+		Find(&uss)
+	totalData := int(result.RowsAffected)
+
+	result = result.
+		Limit(opt.Limit).
+		Offset((opt.Page - 1) * opt.Limit).
+		Find(&uss)
+
+	totalPage := int(math.Ceil(float64(totalData) / float64(opt.Limit)))
+	ussRes := &dto.UserSubscriptionsRes{
+		Count:             int(result.RowsAffected),
+		Limit:             opt.Limit,
+		Page:              opt.Page,
+		TotalPage:         totalPage,
+		TotalData:         totalData,
+		UserSubscriptions: uss,
+	}
+	return ussRes, result.Error
 }

@@ -1,6 +1,7 @@
 package services
 
 import (
+	"final-project-backend/dto"
 	"final-project-backend/models"
 	"final-project-backend/repositories"
 	"time"
@@ -11,6 +12,7 @@ type SubscriptionService interface {
 	GetSubscription(subscription *models.Subscription) (*models.Subscription, error)
 	GetUserNewSubscriptionDate(user *models.User) (string, string)
 	AddUserSubscription(user *models.User, subscription *models.Subscription) (*models.UserSubscription, error)
+	GetUserSubscriptions(user *models.User, opt *models.GetUserSubscriptionsOption) (*dto.UserSubscriptionsRes, error)
 }
 
 type subscriptionService struct {
@@ -34,8 +36,6 @@ func (serv *subscriptionService) GetSubscriptions() ([]*models.Subscription, err
 func (serv *subscriptionService) GetSubscription(subscription *models.Subscription) (*models.Subscription, error) {
 	return serv.subscriptionRepository.FindSubscription(subscription)
 }
-
-// TODO: method to finish payment a transaction
 
 func (serv *subscriptionService) GetUserLatestSubscription(user *models.User) *models.UserSubscription {
 	us, err := serv.subscriptionRepository.FindUserLatestSubscription(user)
@@ -67,4 +67,9 @@ func (serv *subscriptionService) AddUserSubscription(user *models.User, subscrip
 		DateEnded:      dateEnded,
 	}
 	return serv.subscriptionRepository.SaveUserSubscription(us)
+}
+
+func (serv *subscriptionService) GetUserSubscriptions(user *models.User, opt *models.GetUserSubscriptionsOption) (*dto.UserSubscriptionsRes, error) {
+	opt.UserID = user.ID
+	return serv.subscriptionRepository.FindUserSubscriptions(opt)
 }

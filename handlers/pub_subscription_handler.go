@@ -41,3 +41,18 @@ func (h *Handler) GetUserNewSubscriptionDate(c *gin.Context) {
 	}
 	helpers.StandardResponse(c, http.StatusOK, newDate)
 }
+
+func (h *Handler) GetUserSubscriptions(c *gin.Context) {
+	user := h.GetUserFromToken(c)
+	opt, parsingErr := models.NewGetUserSubscriptionsOption(c.Request.URL.Query())
+	if parsingErr != nil {
+		_ = c.Error(parsingErr)
+		return
+	}
+	ussRes, fetchErr := h.subscriptionService.GetUserSubscriptions(user, opt)
+	if fetchErr != nil {
+		_ = c.Error(fetchErr)
+		return
+	}
+	helpers.StandardResponse(c, http.StatusOK, ussRes)
+}

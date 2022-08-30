@@ -211,13 +211,13 @@ func NewRouter(conf *RouterConfig) *gin.Engine {
 		middlewares.AuthorizePublic,
 		h.GetSubscription,
 	)
+	router.GET(
+		"/pub/user-subscriptions/",
+		middlewares.AuthorizePublic,
+		h.GetUserSubscriptions,
+	)
 
 	// PUBLIC > TRANSACTION
-	router.GET(
-		"/pub/user_subscriptions/date/new",
-		middlewares.AuthorizePublic,
-		h.GetUserNewSubscriptionDate,
-	)
 	router.POST(
 		"/pub/transactions",
 		middlewares.AuthorizePublic,
