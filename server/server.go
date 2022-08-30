@@ -53,7 +53,7 @@ func Init() {
 		GiftService:         giftService,
 	})
 
-	err := router.Run(fmt.Sprintf(":%d", config.Config.AppPort))
+	err := router.Run(fmt.Sprintf(":%v", config.Config.AppPort))
 	if err != nil {
 		fmt.Println("server error: ", err)
 	}

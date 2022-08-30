@@ -1,6 +1,8 @@
 package config
 
-import "os"
+import (
+	"os"
+)
 
 type dbConfig struct {
 	DBHost     string
@@ -13,7 +15,7 @@ type dbConfig struct {
 type AppConfig struct {
 	ENV                string
 	AppName            string
-	AppPort            int
+	AppPort            string
 	JWTSecretKey       []byte
 	JWTExpiryInMinutes int64
 	DBConfig           dbConfig
@@ -30,7 +32,7 @@ func GetENV(key, defaultVal string) string {
 var Config = AppConfig{
 	ENV:                GetENV("ENV", "testing"),
 	AppName:            "Teyvat Times - API",
-	AppPort:            8080,
+	AppPort:            GetENV("PORT", "8080"),
 	JWTSecretKey:       []byte("very-secret"),
 	JWTExpiryInMinutes: 60,
 	DBConfig: dbConfig{
