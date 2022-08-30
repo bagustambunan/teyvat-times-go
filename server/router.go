@@ -160,19 +160,6 @@ func NewRouter(conf *RouterConfig) *gin.Engine {
 		h.GetTiers,
 	)
 	router.GET(
-		"/ping",
-		middlewares.AuthorizePublic,
-		//func(c *gin.Context) {
-		//	c.JSON(http.StatusOK, gin.H{"message": "pong, but via final-project"})
-		//},
-		h.TestPing,
-	)
-	router.GET(
-		"/pung",
-		middlewares.AuthorizePublic,
-		h.GetPosts,
-	)
-	router.GET(
 		"/pub/categories",
 		middlewares.AuthorizePublic,
 		h.GetCategories,
