@@ -13,9 +13,9 @@ type User struct {
 	Phone        string   `json:"-"`
 	AddressID    int      `json:"-"`
 	Address      *Address `json:"-"`
-	ReferralCode string   `json:"-"`
+	ReferralCode string   `json:"referralCode"`
 	ProfilePicID int      `json:"-"`
 	ProfilePic   *Image   `json:"-"`
 	Password     string   `json:"-"`
-	Mora        int      `json:"mora"`
+	Mora         int      `json:"mora"`
 }
