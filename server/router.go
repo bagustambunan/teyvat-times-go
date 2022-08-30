@@ -7,6 +7,7 @@ import (
 	"final-project-backend/services"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	"time"
 )
 
 type RouterConfig struct {
@@ -21,18 +22,18 @@ type RouterConfig struct {
 
 func NewRouter(conf *RouterConfig) *gin.Engine {
 	router := gin.Default()
-	//router.Use(cors.New(cors.Config{
-	//	AllowOrigins: []string{"*"},
-	//	AllowMethods: []string{"GET", "POST", "PATCH", "DELETE", "OPTIONS"},
-	//	AllowHeaders: []string{"Origin", "Content-Type", "X-Auth-Token", "Access-Control-Allow-Headers", "Access-Control-Allow-Origin", "Authorization"},
-	//	MaxAge:       12 * time.Hour,
-	//}))
-	//router.Use(cors.Default())
-	config := cors.DefaultConfig()
-	//config.AllowOrigins = []string{"*"}
-	config.AllowAllOrigins = true
-	config.AllowHeaders = []string{"Origin", "Authorization", "Content-Type"}
-	router.Use(cors.New(config))
+
+	corsConfig := cors.New(cors.Config{
+		//AllowOrigins: []string{
+		//	"*",
+		//	"http://localhost:8080",
+		//},
+		AllowAllOrigins: true,
+		AllowMethods:    []string{"GET", "POST", "PATCH", "DELETE", "OPTIONS"},
+		AllowHeaders:    []string{"Origin", "Content-Type", "X-Auth-Token", "Access-Control-Allow-Headers", "Access-Control-Allow-Origin", "Authorization"},
+		MaxAge:          12 * time.Hour,
+	})
+	router.Use(corsConfig)
 
 	h := handlers.New(&handlers.HandlerConfig{
 		AuthService:         conf.AuthService,
@@ -84,7 +85,7 @@ func NewRouter(conf *RouterConfig) *gin.Engine {
 		h.GetTier,
 	)
 	router.GET(
-		"/posts/",
+		"/posts",
 		middlewares.AuthorizeInternal,
 		h.GetPosts,
 	)
@@ -113,12 +114,12 @@ func NewRouter(conf *RouterConfig) *gin.Engine {
 
 	// ADMIN > TRANSACTION
 	router.GET(
-		"transactions/",
+		"transactions",
 		middlewares.AuthorizeInternal,
 		h.GetTransactions,
 	)
 	router.GET(
-		"transaction-statuses/",
+		"transaction-statuses",
 		middlewares.AuthorizeInternal,
 		h.GetTransactionStatuses,
 	)
@@ -154,22 +155,35 @@ func NewRouter(conf *RouterConfig) *gin.Engine {
 
 	// PUBLIC > POST
 	router.GET(
-		"/pub/tiers/",
+		"/pub/tiers",
 		middlewares.AuthorizePublic,
 		h.GetTiers,
 	)
 	router.GET(
-		"/pub/categories/",
+		"/ping",
 		middlewares.AuthorizePublic,
-		h.GetCategories,
+		//func(c *gin.Context) {
+		//	c.JSON(http.StatusOK, gin.H{"message": "pong, but via final-project"})
+		//},
+		h.TestPing,
 	)
 	router.GET(
-		"/pub/posts/",
+		"/pung",
 		middlewares.AuthorizePublic,
 		h.GetPosts,
 	)
 	router.GET(
-		"/pub/reading-history/",
+		"/pub/categories",
+		middlewares.AuthorizePublic,
+		h.GetCategories,
+	)
+	router.GET(
+		"/pub/posts",
+		middlewares.AuthorizePublic,
+		h.GetPosts,
+	)
+	router.GET(
+		"/pub/reading-history",
 		middlewares.AuthorizePublic,
 		h.PubGetReadingHistory,
 	)
@@ -202,7 +216,7 @@ func NewRouter(conf *RouterConfig) *gin.Engine {
 
 	// PUBLIC > SUBSCRIPTION
 	router.GET(
-		"/pub/subscriptions/",
+		"/pub/subscriptions",
 		middlewares.AuthorizePublic,
 		h.GetSubscriptions,
 	)
@@ -212,7 +226,7 @@ func NewRouter(conf *RouterConfig) *gin.Engine {
 		h.GetSubscription,
 	)
 	router.GET(
-		"/pub/user-subscriptions/",
+		"/pub/user-subscriptions",
 		middlewares.AuthorizePublic,
 		h.GetUserSubscriptions,
 	)
@@ -230,7 +244,7 @@ func NewRouter(conf *RouterConfig) *gin.Engine {
 		h.AddTransaction,
 	)
 	router.GET(
-		"/pub/transactions/",
+		"/pub/transactions",
 		middlewares.AuthorizePublic,
 		h.GetUserTransactions,
 	)
@@ -249,7 +263,7 @@ func NewRouter(conf *RouterConfig) *gin.Engine {
 
 	// PUBLIC > GIFT
 	router.GET(
-		"/pub/gifts/",
+		"/pub/gifts",
 		middlewares.AuthorizePublic,
 		h.GetGifts,
 	)
