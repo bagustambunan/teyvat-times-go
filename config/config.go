@@ -19,7 +19,7 @@ type AppConfig struct {
 	DBConfig           dbConfig
 }
 
-func getENV(key, defaultVal string) string {
+func GetENV(key, defaultVal string) string {
 	envVal := os.Getenv(key)
 	if envVal == "" {
 		return defaultVal
@@ -28,16 +28,16 @@ func getENV(key, defaultVal string) string {
 }
 
 var Config = AppConfig{
-	ENV:                getENV("ENV", "testing"),
+	ENV:                GetENV("ENV", "testing"),
 	AppName:            "Teyvat Times - API",
 	AppPort:            8080,
 	JWTSecretKey:       []byte("very-secret"),
 	JWTExpiryInMinutes: 60,
 	DBConfig: dbConfig{
-		DBHost:     getENV("DBHost", "localhost"),
-		DBPort:     getENV("DBPort", "5432"),
-		DBUser:     getENV("DBUser", "postgres"),
-		DBPassword: getENV("DBPassword", "123456"),
-		DBName:     getENV("DBName", "teyvat-1"),
+		DBHost:     GetENV("DBHost", "localhost"),
+		DBPort:     GetENV("DBPort", "5432"),
+		DBUser:     GetENV("DBUser", "postgres"),
+		DBPassword: GetENV("DBPassword", "123456"),
+		DBName:     GetENV("DBName", "teyvat-1"),
 	},
 }
