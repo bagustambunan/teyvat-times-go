@@ -29,7 +29,7 @@ func getENV(key, defaultVal string) string {
 
 var Config = AppConfig{
 	ENV:                getENV("ENV", "testing"),
-	AppName:            "Project Nemesis - Prototype",
+	AppName:            "Teyvat Times - API",
 	AppPort:            8080,
 	JWTSecretKey:       []byte("very-secret"),
 	JWTExpiryInMinutes: 60,
