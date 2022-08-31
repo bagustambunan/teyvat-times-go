@@ -195,11 +195,6 @@ func NewRouter(conf *RouterConfig) *gin.Engine {
 		middlewares.RequestValidator(&dto.ActivityReq{}),
 		h.PubPostActivity,
 	)
-	router.POST(
-		"/pub/posts/:postID/unlocks",
-		middlewares.AuthorizePublic,
-		h.PubPostUnlock,
-	)
 
 	// PUBLIC > SUBSCRIPTION
 	router.GET(

@@ -73,21 +73,9 @@ func (serv *postService) CanUserAccessThisPost(user *models.User, post *models.P
 	//	return nil
 	//}
 	if post.PostTierID != 1 {
-		latestUs, usErr := serv.postRepository.FindUserLatestSubscription(user)
-		if usErr != nil {
-			return httperror.BadRequestError("You have no active subscription", "NO_ACTIVE_SUBSCRIPTION")
-		}
-		latestUsEnded, _ := time.Parse("2006-01-02T00:00:00Z", latestUs.DateEnded)
-		if latestUsEnded.Before(time.Now()) {
-			return httperror.BadRequestError("You have no active subscription", "NO_ACTIVE_SUBSCRIPTION")
-		}
-		unlock := &models.PostUnlock{
-			UserID: user.ID,
-			PostID: post.ID,
-		}
-		_, fetchErr := serv.postRepository.FindUnlock(unlock)
-		if fetchErr != nil {
-			return httperror.BadRequestError("Post is locked", "UNLOCKED_POST")
+		subErr := serv.DoesUserHaveAnActiveSubscription(user)
+		if subErr != nil {
+			return subErr
 		}
 	}
 	return nil
@@ -114,10 +102,6 @@ func (serv *postService) UnlockAPost(user *models.User, post *models.Post) (*mod
 	unlock := &models.PostUnlock{
 		UserID: user.ID,
 		PostID: post.ID,
-	}
-	_, fetchErr := serv.postRepository.FindUnlock(unlock)
-	if fetchErr == nil {
-		return nil, httperror.BadRequestError("Post already unlocked", "POST_ALREADY_UNLOCKED")
 	}
 	if post.PostTierID == 1 {
 		return nil, httperror.BadRequestError("Cannot unlock free tier post", "INVALID_UNLOCK")

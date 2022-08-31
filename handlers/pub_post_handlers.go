@@ -10,32 +10,6 @@ import (
 	"strconv"
 )
 
-func (h *Handler) PubPostUnlock(c *gin.Context) {
-	user := h.GetUserFromToken(c)
-	postID, idErr := strconv.Atoi(c.Param("postID"))
-	if idErr != nil {
-		_ = c.Error(idErr)
-		return
-	}
-	fetchedPost, fetchErr := h.postService.GetPost(&models.Post{ID: postID})
-	if fetchErr != nil {
-		_ = c.Error(fetchErr)
-		return
-	}
-
-	postUnlock, err := h.postService.UnlockAPost(user, fetchedPost)
-	if err != nil {
-		_ = c.Error(err)
-		return
-	}
-	_, updateErr := h.userService.UpdateUserMora(user, -fetchedPost.GetMoraRequired())
-	if updateErr != nil {
-		_ = c.Error(updateErr)
-		return
-	}
-	helpers.StandardResponse(c, http.StatusOK, postUnlock)
-}
-
 func (h *Handler) PubGetOverviewPost(c *gin.Context) {
 	slug := c.Param("slug")
 	if slug == "" {
@@ -64,10 +38,25 @@ func (h *Handler) PubReadPost(c *gin.Context) {
 		return
 	}
 
-	accessErr := h.postService.CanUserAccessThisPost(user, fetchedPost)
-	if accessErr != nil {
-		_ = c.Error(accessErr)
-		return
+	//accessErr := h.postService.CanUserAccessThisPost(user, fetchedPost)
+	//if accessErr != nil {
+	//	_ = c.Error(accessErr)
+	//	return
+	//}
+
+	if fetchedPost.PostTierID != 1 {
+		// UNLOCK
+		_, unlockErr := h.postService.UnlockAPost(user, fetchedPost)
+		if unlockErr != nil {
+			_ = c.Error(unlockErr)
+			return
+		}
+		// DECREASE MORA
+		_, updateErr := h.userService.UpdateUserMora(user, -fetchedPost.GetMoraRequired())
+		if updateErr != nil {
+			_ = c.Error(updateErr)
+			return
+		}
 	}
 
 	_, actErr := h.postService.AddActivity(user, fetchedPost)
