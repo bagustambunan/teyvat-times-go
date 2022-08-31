@@ -7,7 +7,6 @@ import (
 	"final-project-backend/services"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	"time"
 )
 
 type RouterConfig struct {
@@ -23,17 +22,18 @@ type RouterConfig struct {
 func NewRouter(conf *RouterConfig) *gin.Engine {
 	router := gin.Default()
 
-	corsConfig := cors.New(cors.Config{
-		//AllowOrigins: []string{
-		//	"*",
-		//	"http://localhost:8080",
-		//},
-		AllowAllOrigins: true,
-		AllowMethods:    []string{"GET", "POST", "PATCH", "DELETE", "OPTIONS"},
-		AllowHeaders:    []string{"Origin", "Content-Type", "X-Auth-Token", "Access-Control-Allow-Headers", "Access-Control-Allow-Origin", "Authorization"},
-		MaxAge:          12 * time.Hour,
-	})
-	router.Use(corsConfig)
+	//corsConfig := cors.New(cors.Config{
+	//	AllowAllOrigins: true,
+	//	AllowMethods:    []string{"GET", "POST", "PATCH", "DELETE", "OPTIONS"},
+	//	AllowHeaders:    []string{"Origin", "Content-Type", "X-Auth-Token", "Access-Control-Allow-Headers", "Access-Control-Allow-Origin", "Authorization"},
+	//	MaxAge:          12 * time.Hour,
+	//})
+	//router.Use(corsConfig)
+
+	config := cors.DefaultConfig()
+	config.AllowAllOrigins = true
+	config.AllowHeaders = []string{"Origin", "Authorization", "Content-Type"}
+	router.Use(cors.New(config))
 
 	h := handlers.New(&handlers.HandlerConfig{
 		AuthService:         conf.AuthService,
@@ -234,6 +234,11 @@ func NewRouter(conf *RouterConfig) *gin.Engine {
 		"/pub/transactions/:transactionID",
 		middlewares.AuthorizePublic,
 		h.GetTransactionDetail,
+	)
+	router.GET(
+		"/pub/user-spending",
+		middlewares.AuthorizePublic,
+		h.GetUserSpending,
 	)
 
 	// PUBLIC > VOUCHER

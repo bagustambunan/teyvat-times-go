@@ -16,6 +16,7 @@ type TransactionService interface {
 	ApproveTransaction(transaction *models.Transaction) (*models.Transaction, error)
 	RejectTransaction(transaction *models.Transaction) (*models.Transaction, error)
 	ProcessPayment(transaction *models.Transaction, req *dto.PaymentReq) (*models.Transaction, error)
+	GetUserTotalSpending(user *models.User) (*models.UserSpending, error)
 }
 
 type transactionService struct {
@@ -83,4 +84,8 @@ func (serv *transactionService) ProcessPayment(transaction *models.Transaction, 
 		return nil, httperror.BadRequestError("Payment amount doesn't match", "INVALID_AMOUNT")
 	}
 	return serv.transactionRepository.UpdateTransactionStatus(transaction, 2)
+}
+
+func (serv *transactionService) GetUserTotalSpending(user *models.User) (*models.UserSpending, error) {
+	return serv.transactionRepository.FindUserTotalSpending(user)
 }

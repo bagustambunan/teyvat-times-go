@@ -13,6 +13,7 @@ type TransactionRepository interface {
 	FindTransactionStatuses() ([]*models.TransactionStatus, error)
 	FindTransaction(transaction *models.Transaction) (*models.Transaction, error)
 	UpdateTransactionStatus(transaction *models.Transaction, statusID int) (*models.Transaction, error)
+	FindUserTotalSpending(user *models.User) (*models.UserSpending, error)
 }
 
 type transactionRepository struct {
@@ -105,4 +106,25 @@ func (repo *transactionRepository) UpdateTransactionStatus(transaction *models.T
 		Raw("UPDATE transactions SET status_id = ? WHERE deleted_at IS NULL AND id = ?", statusID, transaction.ID).
 		Scan(&transaction)
 	return transaction, result.Error
+}
+
+func (repo *transactionRepository) FindUserTotalSpending(user *models.User) (*models.UserSpending, error) {
+	var uSpending *models.UserSpending
+	result := repo.db.
+		Raw("SELECT SUM(net_total) AS total_spending FROM transactions WHERE user_id = ? AND status_id = 3 GROUP BY user_id", user.ID).
+		Scan(&uSpending)
+
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	if uSpending == nil {
+		return &models.UserSpending{
+			User:          user,
+			TotalSpending: 0,
+		}, nil
+	}
+	return &models.UserSpending{
+		User:          user,
+		TotalSpending: uSpending.TotalSpending,
+	}, nil
 }
