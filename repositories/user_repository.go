@@ -16,7 +16,7 @@ type UserRepository interface {
 	Save(user *models.User) (*models.User, error)
 	SaveUserReferral(userRef *models.UserReferral) error
 	UpdateMora(user *models.User, mora int) (*models.User, error)
-	GetUserDownLines(user *models.User) ([]*models.User, error)
+	GetUserDownLines(user *models.User) ([]*models.UserSpending, error)
 }
 
 type userRepository struct {
@@ -109,11 +109,10 @@ func (repo *userRepository) UpdateMora(user *models.User, mora int) (*models.Use
 	return user, result.Error
 }
 
-// TODO : get user spending
-func (repo *userRepository) GetUserDownLines(user *models.User) ([]*models.User, error) {
-	var users []*models.User
+func (repo *userRepository) GetUserDownLines(user *models.User) ([]*models.UserSpending, error) {
+	var uSpending []*models.UserSpending
 	result := repo.db.
-		Raw("SELECT * FROM user_referrals JOIN users ON users.id = user_referrals.user_id WHERE user_referrals.referrer_user_id = ?", user.ID).
-		Scan(&users)
-	return users, result.Error
+		Raw("SELECT users.name AS user_name , COALESCE(SUM(transactions.net_total),0) AS total_spending FROM users LEFT OUTER JOIN transactions ON transactions.user_id = users.id AND transactions.status_id = 3 RIGHT JOIN user_referrals ON user_referrals.user_id = users.id AND user_referrals.referrer_user_id = ? GROUP BY users.id", user.ID).
+		Scan(&uSpending)
+	return uSpending, result.Error
 }

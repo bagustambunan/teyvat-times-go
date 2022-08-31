@@ -9,7 +9,7 @@ import (
 type UserService interface {
 	UpdateUserMora(user *models.User, mora int) (*models.User, error)
 	GetUser(user *models.User) (*dto.GetUserRes, error)
-	GetUserDownLines(user *models.User) ([]*models.User, error)
+	GetUserDownLines(user *models.User) ([]*models.UserSpending, error)
 	GetUserReferral(user *models.User) (*models.UserReferral, error)
 }
 
@@ -39,7 +39,7 @@ func (serv *userService) GetUser(user *models.User) (*dto.GetUserRes, error) {
 	return new(dto.GetUserRes).FromUser(fetchedUser), nil
 }
 
-func (serv *userService) GetUserDownLines(user *models.User) ([]*models.User, error) {
+func (serv *userService) GetUserDownLines(user *models.User) ([]*models.UserSpending, error) {
 	return serv.userRepository.GetUserDownLines(user)
 }
 

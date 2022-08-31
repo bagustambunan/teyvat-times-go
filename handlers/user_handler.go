@@ -41,10 +41,10 @@ func (h *Handler) GetUserDownLines(c *gin.Context) {
 		return
 	}
 
-	result, fetchErr := h.userService.GetUserDownLines(&models.User{ID: userID})
+	uSpending, fetchErr := h.userService.GetUserDownLines(&models.User{ID: userID})
 	if fetchErr != nil {
 		_ = c.Error(fetchErr)
 		return
 	}
-	helpers.StandardResponse(c, http.StatusOK, result)
+	helpers.StandardResponse(c, http.StatusOK, uSpending)
 }

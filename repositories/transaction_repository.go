@@ -120,12 +120,12 @@ func (repo *transactionRepository) FindUserTotalSpending(user *models.User) (*mo
 	}
 	if uSpending == nil {
 		return &models.UserSpending{
-			User:          user,
+			UserName:      user.Name,
 			TotalSpending: 0,
 		}, nil
 	}
 	return &models.UserSpending{
-		User:          user,
+		UserName:      user.Name,
 		TotalSpending: uSpending.TotalSpending,
 	}, nil
 }
