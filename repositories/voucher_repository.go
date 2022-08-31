@@ -48,6 +48,7 @@ func (repo *voucherRepository) FindUserVouchers(user *models.User) ([]*models.Us
 		Joins("User").
 		Joins("Voucher").
 		Where("user_id", user.ID).
+		Order("created_at DESC").
 		Find(&uvs)
 	return uvs, result.Error
 }
