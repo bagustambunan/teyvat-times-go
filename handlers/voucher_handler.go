@@ -15,6 +15,16 @@ func (h *Handler) GetVouchers(c *gin.Context) {
 	helpers.StandardResponse(c, http.StatusOK, vouchers)
 }
 
+func (h *Handler) GetUserVouchers(c *gin.Context) {
+	user := h.GetUserFromToken(c)
+	uvs, fetchErr := h.voucherService.GetUserVouchers(user)
+	if fetchErr != nil {
+		_ = c.Error(fetchErr)
+		return
+	}
+	helpers.StandardResponse(c, http.StatusOK, uvs)
+}
+
 func (h *Handler) GetUserVoucherFromCode(c *gin.Context) {
 	user := h.GetUserFromToken(c)
 	code := c.Param("code")

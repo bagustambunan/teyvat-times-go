@@ -243,7 +243,12 @@ func NewRouter(conf *RouterConfig) *gin.Engine {
 
 	// PUBLIC > VOUCHER
 	router.GET(
-		"/pub/user_voucher/:code",
+		"/pub/user-vouchers",
+		middlewares.AuthorizePublic,
+		h.GetUserVouchers,
+	)
+	router.GET(
+		"/pub/user-vouchers/:code",
 		middlewares.AuthorizePublic,
 		h.GetUserVoucherFromCode,
 	)

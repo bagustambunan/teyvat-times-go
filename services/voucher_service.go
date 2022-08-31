@@ -9,6 +9,7 @@ import (
 type VoucherService interface {
 	GetVouchers() ([]*models.Voucher, error)
 	GetUserVoucher(uv *models.UserVoucher) (*models.UserVoucher, error)
+	GetUserVouchers(user *models.User) ([]*models.UserVoucher, error)
 	GetUserVoucherFromCode(user *models.User, code string) (*models.UserVoucher, error)
 	UseUserVoucher(uv *models.UserVoucher) (*models.UserVoucher, error)
 }
@@ -37,6 +38,10 @@ func (serv *voucherService) GetUserVoucher(uv *models.UserVoucher) (*models.User
 		return nil, httperror.BadRequestError("Invalid user voucher", "INVALID_USER_VOUCHER")
 	}
 	return fetchedUv, nil
+}
+
+func (serv *voucherService) GetUserVouchers(user *models.User) ([]*models.UserVoucher, error) {
+	return serv.voucherRepository.FindUserVouchers(user)
 }
 
 func (serv *voucherService) UseUserVoucher(uv *models.UserVoucher) (*models.UserVoucher, error) {
