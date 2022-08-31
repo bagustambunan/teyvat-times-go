@@ -14,6 +14,7 @@ type TransactionRepository interface {
 	FindTransaction(transaction *models.Transaction) (*models.Transaction, error)
 	UpdateTransactionStatus(transaction *models.Transaction, statusID int) (*models.Transaction, error)
 	FindUserTotalSpending(user *models.User) (*models.UserSpending, error)
+	SaveUserVoucher(uv *models.UserVoucher) (*models.UserVoucher, error)
 }
 
 type transactionRepository struct {
@@ -127,4 +128,10 @@ func (repo *transactionRepository) FindUserTotalSpending(user *models.User) (*mo
 		User:          user,
 		TotalSpending: uSpending.TotalSpending,
 	}, nil
+}
+
+func (repo *transactionRepository) SaveUserVoucher(uv *models.UserVoucher) (*models.UserVoucher, error) {
+	result := repo.db.
+		Create(uv)
+	return uv, result.Error
 }

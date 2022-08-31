@@ -5,6 +5,7 @@ import (
 	"final-project-backend/httperror"
 	"final-project-backend/models"
 	"final-project-backend/repositories"
+	"time"
 )
 
 type TransactionService interface {
@@ -17,6 +18,7 @@ type TransactionService interface {
 	RejectTransaction(transaction *models.Transaction) (*models.Transaction, error)
 	ProcessPayment(transaction *models.Transaction, req *dto.PaymentReq) (*models.Transaction, error)
 	GetUserTotalSpending(user *models.User) (*models.UserSpending, error)
+	CheckVoucherReward(lastTrNetTotal int, user *models.User, referrerUser *models.User) error
 }
 
 type transactionService struct {
@@ -88,4 +90,34 @@ func (serv *transactionService) ProcessPayment(transaction *models.Transaction, 
 
 func (serv *transactionService) GetUserTotalSpending(user *models.User) (*models.UserSpending, error) {
 	return serv.transactionRepository.FindUserTotalSpending(user)
+}
+
+func (serv *transactionService) CheckVoucherReward(lastTrNetTotal int, user *models.User, referrerUser *models.User) error {
+	uSpending, _ := serv.GetUserTotalSpending(user)
+	lastSpend := uSpending.TotalSpending - lastTrNetTotal
+	currentSpend := uSpending.TotalSpending
+	if lastSpend <= 100000 && currentSpend > 100000 {
+		return serv.GiveVoucherToUser(referrerUser, &models.Voucher{ID: 1})
+	}
+	if lastSpend <= 200000 && currentSpend > 200000 {
+		return serv.GiveVoucherToUser(referrerUser, &models.Voucher{ID: 2})
+	}
+	if lastSpend <= 250000 && currentSpend > 250000 {
+		return serv.GiveVoucherToUser(referrerUser, &models.Voucher{ID: 3})
+	}
+	return nil
+}
+
+func (serv *transactionService) GiveVoucherToUser(referrerUser *models.User, voucher *models.Voucher) error {
+	dateNow := time.Now()
+	dateExpired := dateNow.AddDate(0, 1, 0)
+	_, uvErr := serv.transactionRepository.SaveUserVoucher(
+		&models.UserVoucher{
+			UserID:      referrerUser.ID,
+			VoucherID:   voucher.ID,
+			DateExpired: dateExpired.Format("2006-01-02"),
+			IsUsed:      0,
+		},
+	)
+	return uvErr
 }

@@ -159,6 +159,20 @@ func (h *Handler) ApproveTransaction(c *gin.Context) {
 		return
 	}
 
+	// VOUCHER REWARD SYSTEM
+	uRef, uRefErr := h.userService.GetUserReferral(&models.User{ID: fetchedTr.UserID})
+	if uRefErr == nil {
+		rewardErr := h.transactionService.CheckVoucherReward(
+			fetchedTr.NetTotal,
+			&models.User{ID: uRef.UserID},
+			&models.User{ID: uRef.ReferrerUserID},
+		)
+		if rewardErr != nil {
+			_ = c.Error(rewardErr)
+			return
+		}
+	}
+
 	helpers.StandardResponse(c, http.StatusOK, updatedTr)
 }
 

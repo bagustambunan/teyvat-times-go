@@ -11,6 +11,7 @@ type UserRepository interface {
 	MatchingCredential(email, password string) (*models.User, error)
 	FindUser(user *models.User) (*models.User, error)
 	FindUserByReferralCode(refCode string) (*models.User, error)
+	FindUserReferral(user *models.User) (*models.UserReferral, error)
 	CheckUsernameAndEmail(user *models.User) error
 	Save(user *models.User) (*models.User, error)
 	SaveUserReferral(userRef *models.UserReferral) error
@@ -60,6 +61,14 @@ func (repo *userRepository) FindUserByReferralCode(refCode string) (*models.User
 		Where("referral_code = ?", refCode).
 		First(&user)
 	return user, result.Error
+}
+
+func (repo *userRepository) FindUserReferral(user *models.User) (*models.UserReferral, error) {
+	var ur *models.UserReferral
+	result := repo.db.
+		Where("user_id", user.ID).
+		First(&ur)
+	return ur, result.Error
 }
 
 func (repo *userRepository) CheckUsernameAndEmail(user *models.User) error {

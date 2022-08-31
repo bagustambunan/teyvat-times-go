@@ -10,6 +10,7 @@ type UserService interface {
 	UpdateUserMora(user *models.User, mora int) (*models.User, error)
 	GetUser(user *models.User) (*dto.GetUserRes, error)
 	GetUserDownLines(user *models.User) ([]*models.User, error)
+	GetUserReferral(user *models.User) (*models.UserReferral, error)
 }
 
 type userService struct {
@@ -40,4 +41,8 @@ func (serv *userService) GetUser(user *models.User) (*dto.GetUserRes, error) {
 
 func (serv *userService) GetUserDownLines(user *models.User) ([]*models.User, error) {
 	return serv.userRepository.GetUserDownLines(user)
+}
+
+func (serv *userService) GetUserReferral(user *models.User) (*models.UserReferral, error) {
+	return serv.userRepository.FindUserReferral(user)
 }
