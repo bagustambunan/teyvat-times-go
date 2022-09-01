@@ -31,6 +31,7 @@ type PostService interface {
 	GetCategory(category *models.PostCategory) (*models.PostCategory, error)
 	AddCategory(req *dto.CategoryReq) (*models.PostCategory, error)
 	UpdateCategory(category *models.PostCategory) (*models.PostCategory, error)
+	GetTrending() (any, error)
 }
 
 type postService struct {
@@ -235,4 +236,8 @@ func (serv *postService) AddCategory(req *dto.CategoryReq) (*models.PostCategory
 func (serv *postService) UpdateCategory(category *models.PostCategory) (*models.PostCategory, error) {
 	cat, err := serv.postRepository.UpdateCategory(category)
 	return cat, err
+}
+
+func (serv *postService) GetTrending() (any, error) {
+	return serv.postRepository.FindTrending()
 }

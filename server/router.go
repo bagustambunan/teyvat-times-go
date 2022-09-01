@@ -195,6 +195,11 @@ func NewRouter(conf *RouterConfig) *gin.Engine {
 		middlewares.RequestValidator(&dto.ActivityReq{}),
 		h.PubPostActivity,
 	)
+	router.GET(
+		"/pub/trending-posts",
+		middlewares.AuthorizePublic,
+		h.PubGetTrending,
+	)
 
 	// PUBLIC > SUBSCRIPTION
 	router.GET(

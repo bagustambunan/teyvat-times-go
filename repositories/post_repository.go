@@ -31,6 +31,7 @@ type PostRepository interface {
 	FindCategory(category *models.PostCategory) (*models.PostCategory, error)
 	SaveCategory(category *models.PostCategory) (*models.PostCategory, error)
 	UpdateCategory(category *models.PostCategory) (*models.PostCategory, error)
+	FindTrending() (any, error)
 }
 
 type postRepository struct {
@@ -290,4 +291,21 @@ func (repo *postRepository) UpdateCategory(category *models.PostCategory) (*mode
 		UpdateColumn("name", category.Name).
 		UpdateColumn("color", category.Color)
 	return category, result.Error
+}
+
+func (repo *postRepository) FindTrending() (any, error) {
+	var activities []*models.UserPostActivity
+	result := repo.db.
+		//Preload("Post.PostTier").
+		//Preload("Post.PostCategory").
+		//Preload("Post.ImgThumbnail").
+		//Preload("Post.ImgContent").
+		//Preload("Post.CreatedBy").
+		//Preload("Post.UpdatedBy").
+		//Preload(clause.Associations).
+		Group("post_id").
+		Order("updated_at DESC").
+		Find(&activities)
+
+	return activities, result.Error
 }

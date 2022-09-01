@@ -153,3 +153,12 @@ func (h *Handler) PubGetReadingHistory(c *gin.Context) {
 	}
 	helpers.StandardResponse(c, http.StatusOK, readHistoryRes)
 }
+
+func (h *Handler) PubGetTrending(c *gin.Context) {
+	trending, fetchErr := h.postService.GetTrending()
+	if fetchErr != nil {
+		_ = c.Error(fetchErr)
+		return
+	}
+	helpers.StandardResponse(c, http.StatusOK, trending)
+}
