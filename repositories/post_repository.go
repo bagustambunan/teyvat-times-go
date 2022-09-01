@@ -108,13 +108,14 @@ func (repo *postRepository) FindReadingHistory(user *models.User, opt *models.Re
 		Preload("Post.UpdatedBy").
 		Preload(clause.Associations).
 		Where("user_id", user.ID).
+		Order("updated_at DESC").
 		Find(&activities)
 	totalData := int(result.RowsAffected)
 
-	//result = repo.db.
-	//	Limit(opt.Limit).
-	//	Offset((opt.Page - 1) * opt.Limit).
-	//	Find(&activities)
+	result = result.
+		Limit(opt.Limit).
+		Offset((opt.Page - 1) * opt.Limit).
+		Find(&activities)
 
 	readHistoryRes := new(dto.ReadHistoryRes).FromActivities(activities)
 	totalPage := int(math.Ceil(float64(totalData) / float64(opt.Limit)))
@@ -186,6 +187,7 @@ func (repo *postRepository) FindActivity(act *models.UserPostActivity) (*models.
 
 func (repo *postRepository) SaveActivity(act *models.UserPostActivity) (*models.UserPostActivity, error) {
 	result := repo.db.
+		Select("UserID", "PostID").
 		Create(act)
 	return act, result.Error
 }
@@ -193,15 +195,17 @@ func (repo *postRepository) SaveActivity(act *models.UserPostActivity) (*models.
 func (repo *postRepository) IncreaseViewsActivity(act *models.UserPostActivity) (*models.UserPostActivity, error) {
 	result := repo.db.
 		Model(&act).
-		UpdateColumn("views_count", gorm.Expr("views_count + ?", 1))
+		Update("views_count", gorm.Expr("views_count + ?", 1)).
+		Update("updated_at", gorm.Expr("now()"))
 	return act, result.Error
 }
 
 func (repo *postRepository) UpdateActivity(act *models.UserPostActivity) (*models.UserPostActivity, error) {
 	result := repo.db.
 		Model(&act).
-		UpdateColumn("is_liked", act.IsLiked).
-		UpdateColumn("is_shared", act.IsShared)
+		Update("is_liked", act.IsLiked).
+		Update("is_shared", act.IsShared).
+		Update("updated_at", gorm.Expr("now()"))
 	return act, result.Error
 }
 
