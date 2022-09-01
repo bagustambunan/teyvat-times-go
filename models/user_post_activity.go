@@ -2,13 +2,13 @@ package models
 
 import "gorm.io/gorm"
 
-type UserPostActivities struct {
+type UserPostActivity struct {
 	gorm.Model `json:"-"`
 	ID         int   `json:"userPostActivityID" gorm:"primaryKey"`
 	UserID     int   `json:"userID"`
-	User       *User `json:"-"`
+	User       *User `json:"user"`
 	PostID     int   `json:"postID"`
-	Post       *Post `json:"-"`
+	Post       *Post `json:"post"`
 	IsLiked    int   `json:"isLiked"`
 	IsShared   int   `json:"isShared"`
 	ViewsCount int   `json:"viewsCount"`

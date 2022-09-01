@@ -146,10 +146,10 @@ func (h *Handler) PubGetReadingHistory(c *gin.Context) {
 		_ = c.Error(parsingErr)
 		return
 	}
-	postsRes, fetchErr := h.postService.GetReadingHistory(user, opt)
+	readHistoryRes, fetchErr := h.postService.GetReadingHistory(user, opt)
 	if fetchErr != nil {
 		_ = c.Error(fetchErr)
 		return
 	}
-	helpers.StandardResponse(c, http.StatusOK, postsRes)
+	helpers.StandardResponse(c, http.StatusOK, readHistoryRes)
 }

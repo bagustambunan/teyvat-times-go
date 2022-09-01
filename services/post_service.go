@@ -17,10 +17,10 @@ type PostService interface {
 	UnlockAPost(user *models.User, post *models.Post) (*models.PostUnlock, error)
 	GetPosts(opt *models.GetPostsOption) (*dto.GetPostsRes, error)
 	GetPost(post *models.Post) (*models.Post, error)
-	GetReadingHistory(user *models.User, opt *models.ReadHistoryOption) (*dto.GetPostsRes, error)
-	GetActivity(user *models.User, post *models.Post) (*models.UserPostActivities, error)
-	AddActivity(user *models.User, post *models.Post) (*models.UserPostActivities, error)
-	UpdateActivity(user *models.User, post *models.Post, actReq *dto.ActivityReq) (*models.UserPostActivities, error)
+	GetReadingHistory(user *models.User, opt *models.ReadHistoryOption) (*dto.ReadHistoryRes, error)
+	GetActivity(user *models.User, post *models.Post) (*models.UserPostActivity, error)
+	AddActivity(user *models.User, post *models.Post) (*models.UserPostActivity, error)
+	UpdateActivity(user *models.User, post *models.Post, actReq *dto.ActivityReq) (*models.UserPostActivity, error)
 	GetPostBySlug(slug string) (*models.Post, error)
 	AddPost(post *models.Post) (*dto.GetPostRes, error)
 	UpdatePost(post *models.Post) (*dto.GetPostRes, error)
@@ -121,28 +121,28 @@ func (serv *postService) GetPosts(opt *models.GetPostsOption) (*dto.GetPostsRes,
 	return postsRes, nil
 }
 
-func (serv *postService) GetReadingHistory(user *models.User, opt *models.ReadHistoryOption) (*dto.GetPostsRes, error) {
-	postsRes, err := serv.postRepository.FindReadingHistory(user, opt)
+func (serv *postService) GetReadingHistory(user *models.User, opt *models.ReadHistoryOption) (*dto.ReadHistoryRes, error) {
+	readHistoryRes, err := serv.postRepository.FindReadingHistory(user, opt)
 	if err != nil {
 		return nil, err
 	}
-	return postsRes, nil
+	return readHistoryRes, nil
 }
 
 func (serv *postService) GetPost(post *models.Post) (*models.Post, error) {
 	return serv.postRepository.FindPost(post)
 }
 
-func (serv *postService) GetActivity(user *models.User, post *models.Post) (*models.UserPostActivities, error) {
-	act := &models.UserPostActivities{
+func (serv *postService) GetActivity(user *models.User, post *models.Post) (*models.UserPostActivity, error) {
+	act := &models.UserPostActivity{
 		UserID: user.ID,
 		PostID: post.ID,
 	}
 	return serv.postRepository.FindActivity(act)
 }
 
-func (serv *postService) AddActivity(user *models.User, post *models.Post) (*models.UserPostActivities, error) {
-	act := &models.UserPostActivities{
+func (serv *postService) AddActivity(user *models.User, post *models.Post) (*models.UserPostActivity, error) {
+	act := &models.UserPostActivity{
 		UserID: user.ID,
 		PostID: post.ID,
 	}
@@ -154,8 +154,8 @@ func (serv *postService) AddActivity(user *models.User, post *models.Post) (*mod
 	return updatedAct, updateErr
 }
 
-func (serv *postService) UpdateActivity(user *models.User, post *models.Post, actReq *dto.ActivityReq) (*models.UserPostActivities, error) {
-	act := &models.UserPostActivities{
+func (serv *postService) UpdateActivity(user *models.User, post *models.Post, actReq *dto.ActivityReq) (*models.UserPostActivity, error) {
+	act := &models.UserPostActivity{
 		UserID: user.ID,
 		PostID: post.ID,
 	}

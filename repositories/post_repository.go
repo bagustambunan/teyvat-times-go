@@ -13,17 +13,17 @@ import (
 type PostRepository interface {
 	FindPosts(opt *models.GetPostsOption) (*dto.GetPostsRes, error)
 	FindPost(post *models.Post) (*models.Post, error)
-	FindReadingHistory(user *models.User, opt *models.ReadHistoryOption) (*dto.GetPostsRes, error)
+	FindReadingHistory(user *models.User, opt *models.ReadHistoryOption) (*dto.ReadHistoryRes, error)
 	FindPostBySlug(slug string) (*models.Post, error)
 	Save(post *models.Post) (*models.Post, int, error)
 	UpdatePost(post *models.Post) (*models.Post, error)
 	DeletePost(post *models.Post) error
 	FindUnlock(unlock *models.PostUnlock) (*models.PostUnlock, error)
 	SaveUnlock(unlock *models.PostUnlock) (*models.PostUnlock, error)
-	FindActivity(act *models.UserPostActivities) (*models.UserPostActivities, error)
-	SaveActivity(act *models.UserPostActivities) (*models.UserPostActivities, error)
-	IncreaseViewsActivity(act *models.UserPostActivities) (*models.UserPostActivities, error)
-	UpdateActivity(act *models.UserPostActivities) (*models.UserPostActivities, error)
+	FindActivity(act *models.UserPostActivity) (*models.UserPostActivity, error)
+	SaveActivity(act *models.UserPostActivity) (*models.UserPostActivity, error)
+	IncreaseViewsActivity(act *models.UserPostActivity) (*models.UserPostActivity, error)
+	UpdateActivity(act *models.UserPostActivity) (*models.UserPostActivity, error)
 	FindUserLatestSubscription(user *models.User) (*models.UserSubscription, error)
 	FindTiers() ([]*models.PostTier, error)
 	FindCategories() ([]*models.PostCategory, error)
@@ -97,28 +97,29 @@ func (repo *postRepository) FindPost(post *models.Post) (*models.Post, error) {
 	return post, result.Error
 }
 
-func (repo *postRepository) FindReadingHistory(user *models.User, opt *models.ReadHistoryOption) (*dto.GetPostsRes, error) {
-	var posts []*models.Post
+func (repo *postRepository) FindReadingHistory(user *models.User, opt *models.ReadHistoryOption) (*dto.ReadHistoryRes, error) {
+	var activities []*models.UserPostActivity
 	result := repo.db.
-		Raw("SELECT * FROM user_post_activities LEFT JOIN posts ON posts.id = user_post_activities.post_id WHERE user_post_activities.user_id = ?", user.ID).
-		Joins("PostTier").
-		Joins("PostCategory").
-		Joins("ImgThumbnail").
-		Joins("ImgContent").
-		Joins("CreatedBy").
-		Joins("UpdatedBy").
-		Scan(&posts)
+		Preload("Post.PostTier").
+		Preload("Post.PostCategory").
+		Preload("Post.ImgThumbnail").
+		Preload("Post.ImgContent").
+		Preload("Post.CreatedBy").
+		Preload("Post.UpdatedBy").
+		Preload(clause.Associations).
+		Where("user_id", user.ID).
+		Find(&activities)
 	totalData := int(result.RowsAffected)
 
-	result = result.
-		Limit(opt.Limit).
-		Offset((opt.Page - 1) * opt.Limit).
-		Scan(&posts)
+	//result = repo.db.
+	//	Limit(opt.Limit).
+	//	Offset((opt.Page - 1) * opt.Limit).
+	//	Find(&activities)
 
-	postsRes := new(dto.GetPostsRes).FromPosts(posts)
+	readHistoryRes := new(dto.ReadHistoryRes).FromActivities(activities)
 	totalPage := int(math.Ceil(float64(totalData) / float64(opt.Limit)))
-	postsRes.SetValues(int(result.RowsAffected), opt.Limit, opt.Page, totalPage, totalData)
-	return postsRes, result.Error
+	readHistoryRes.SetValues(int(result.RowsAffected), opt.Limit, opt.Page, totalPage, totalData)
+	return readHistoryRes, result.Error
 }
 
 func (repo *postRepository) FindPostBySlug(slug string) (*models.Post, error) {
@@ -175,7 +176,7 @@ func (repo *postRepository) SaveUnlock(unlock *models.PostUnlock) (*models.PostU
 	return unlock, result.Error
 }
 
-func (repo *postRepository) FindActivity(act *models.UserPostActivities) (*models.UserPostActivities, error) {
+func (repo *postRepository) FindActivity(act *models.UserPostActivity) (*models.UserPostActivity, error) {
 	result := repo.db.
 		Where("user_id = ?", act.UserID).
 		Where("post_id = ?", act.PostID).
@@ -183,20 +184,20 @@ func (repo *postRepository) FindActivity(act *models.UserPostActivities) (*model
 	return act, result.Error
 }
 
-func (repo *postRepository) SaveActivity(act *models.UserPostActivities) (*models.UserPostActivities, error) {
+func (repo *postRepository) SaveActivity(act *models.UserPostActivity) (*models.UserPostActivity, error) {
 	result := repo.db.
 		Create(act)
 	return act, result.Error
 }
 
-func (repo *postRepository) IncreaseViewsActivity(act *models.UserPostActivities) (*models.UserPostActivities, error) {
+func (repo *postRepository) IncreaseViewsActivity(act *models.UserPostActivity) (*models.UserPostActivity, error) {
 	result := repo.db.
 		Model(&act).
 		UpdateColumn("views_count", gorm.Expr("views_count + ?", 1))
 	return act, result.Error
 }
 
-func (repo *postRepository) UpdateActivity(act *models.UserPostActivities) (*models.UserPostActivities, error) {
+func (repo *postRepository) UpdateActivity(act *models.UserPostActivity) (*models.UserPostActivity, error) {
 	result := repo.db.
 		Model(&act).
 		UpdateColumn("is_liked", act.IsLiked).
