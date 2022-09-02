@@ -39,3 +39,13 @@ func (h *Handler) GetUnclaimedUserGifts(c *gin.Context) {
 	}
 	helpers.StandardResponse(c, http.StatusOK, ugs)
 }
+
+func (h *Handler) SaveGiftClaim(c *gin.Context) {
+	user := h.GetUserFromToken(c)
+	gc, insertErr := h.giftService.SaveGiftClaim(user)
+	if insertErr != nil {
+		_ = c.Error(insertErr)
+		return
+	}
+	helpers.StandardResponse(c, http.StatusOK, gc)
+}

@@ -274,6 +274,11 @@ func NewRouter(conf *RouterConfig) *gin.Engine {
 		middlewares.AuthorizePublic,
 		h.GetUnclaimedUserGifts,
 	)
+	router.POST(
+		"/pub/gift-claims",
+		middlewares.AuthorizePublic,
+		h.SaveGiftClaim,
+	)
 
 	// OPEN > PAYMENT
 	router.POST(

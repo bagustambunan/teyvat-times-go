@@ -10,6 +10,7 @@ type GiftRepository interface {
 	FindGifts() ([]*models.Gift, error)
 	FindGift(gift *models.Gift) (*models.Gift, error)
 	FindUnclaimedUserGifts(user *models.User) ([]*models.UserGift, error)
+	SaveGiftClaim(gc *models.GiftClaim) (*models.GiftClaim, error)
 }
 
 type giftRepository struct {
@@ -47,4 +48,10 @@ func (repo *giftRepository) FindUnclaimedUserGifts(user *models.User) ([]*models
 		Where("is_claimed", 0).
 		Find(&ugs)
 	return ugs, result.Error
+}
+
+func (repo *giftRepository) SaveGiftClaim(gc *models.GiftClaim) (*models.GiftClaim, error) {
+	result := repo.db.
+		Create(gc)
+	return gc, result.Error
 }
