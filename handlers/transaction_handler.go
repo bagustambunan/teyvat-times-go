@@ -159,6 +159,16 @@ func (h *Handler) ApproveTransaction(c *gin.Context) {
 		return
 	}
 
+	// GIFT REWARD SYSTEM
+	giftErr := h.transactionService.CheckGiftReward(
+		&models.User{ID: fetchedTr.UserID},
+		fetchedTr.NetTotal,
+	)
+	if giftErr != nil {
+		_ = c.Error(giftErr)
+		return
+	}
+
 	// VOUCHER REWARD SYSTEM
 	uRef, uRefErr := h.userService.GetUserReferral(&models.User{ID: fetchedTr.UserID})
 	if uRefErr == nil {

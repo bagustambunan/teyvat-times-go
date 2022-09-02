@@ -386,3 +386,21 @@ CREATE TABLE public.gift_claim_items (
             REFERENCES public.gift_claims(id)
 );
 INSERT INTO public.gift_claim_items (gift_id, gift_claim_id) VALUES (1,1);
+
+-- table user_gifts
+CREATE TABLE public.user_gifts (
+    id bigserial NOT NULL,
+    user_id bigint NOT NULL,
+    gift_id int NOT NULL,
+    is_claimed int DEFAULT 0 NOT NULL,
+    created_at timestamp without time zone DEFAULT now() NOT NULL,
+    updated_at timestamp without time zone DEFAULT now() NOT NULL,
+    deleted_at timestamp without time zone,
+    PRIMARY KEY(id),
+    CONSTRAINT fk_user
+        FOREIGN KEY (user_id)
+            REFERENCES public.users(id),
+    CONSTRAINT fk_gift
+        FOREIGN KEY (gift_id)
+            REFERENCES public.gifts(id)
+);

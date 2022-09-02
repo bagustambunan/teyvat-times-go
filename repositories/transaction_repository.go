@@ -14,7 +14,9 @@ type TransactionRepository interface {
 	FindTransaction(transaction *models.Transaction) (*models.Transaction, error)
 	UpdateTransactionStatus(transaction *models.Transaction, statusID int) (*models.Transaction, error)
 	FindUserTotalSpending(user *models.User) (*models.UserSpending, error)
+	FindUserThisMonthSpending(user *models.User) (*models.UserSpending, error)
 	SaveUserVoucher(uv *models.UserVoucher) (*models.UserVoucher, error)
+	SaveUserGift(ug *models.UserGift) (*models.UserGift, error)
 }
 
 type transactionRepository struct {
@@ -130,8 +132,35 @@ func (repo *transactionRepository) FindUserTotalSpending(user *models.User) (*mo
 	}, nil
 }
 
+func (repo *transactionRepository) FindUserThisMonthSpending(user *models.User) (*models.UserSpending, error) {
+	var uSpending *models.UserSpending
+	result := repo.db.
+		Raw("SELECT SUM(net_total) AS total_spending FROM transactions WHERE user_id = ? AND status_id = 3 AND EXTRACT(MONTH FROM transactions.updated_at) = EXTRACT(MONTH FROM current_date) GROUP BY user_id", user.ID).
+		Scan(&uSpending)
+
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	if uSpending == nil {
+		return &models.UserSpending{
+			UserName:      user.Name,
+			TotalSpending: 0,
+		}, nil
+	}
+	return &models.UserSpending{
+		UserName:      user.Name,
+		TotalSpending: uSpending.TotalSpending,
+	}, nil
+}
+
 func (repo *transactionRepository) SaveUserVoucher(uv *models.UserVoucher) (*models.UserVoucher, error) {
 	result := repo.db.
 		Create(uv)
 	return uv, result.Error
+}
+
+func (repo *transactionRepository) SaveUserGift(ug *models.UserGift) (*models.UserGift, error) {
+	result := repo.db.
+		Create(ug)
+	return ug, result.Error
 }

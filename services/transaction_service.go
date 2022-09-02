@@ -18,6 +18,8 @@ type TransactionService interface {
 	RejectTransaction(transaction *models.Transaction) (*models.Transaction, error)
 	ProcessPayment(transaction *models.Transaction, req *dto.PaymentReq) (*models.Transaction, error)
 	GetUserTotalSpending(user *models.User) (*models.UserSpending, error)
+	GetUserThisMonthSpending(user *models.User) (*models.UserSpending, error)
+	CheckGiftReward(user *models.User, lastTrNetTotal int) error
 	CheckVoucherReward(lastTrNetTotal int, user *models.User, referrerUser *models.User) error
 }
 
@@ -90,6 +92,35 @@ func (serv *transactionService) ProcessPayment(transaction *models.Transaction, 
 
 func (serv *transactionService) GetUserTotalSpending(user *models.User) (*models.UserSpending, error) {
 	return serv.transactionRepository.FindUserTotalSpending(user)
+}
+
+func (serv *transactionService) GetUserThisMonthSpending(user *models.User) (*models.UserSpending, error) {
+	return serv.transactionRepository.FindUserThisMonthSpending(user)
+}
+
+func (serv *transactionService) CheckGiftReward(user *models.User, lastTrNetTotal int) error {
+	thisMonthSpending, _ := serv.GetUserThisMonthSpending(user)
+	lastSpend := thisMonthSpending.TotalSpending - lastTrNetTotal
+	currentSpend := thisMonthSpending.TotalSpending
+	if lastSpend <= 50000 && currentSpend > 50000 {
+		return serv.GiveGiftToUser(user, &models.Gift{ID: 1})
+	}
+	if lastSpend <= 150000 && currentSpend > 150000 {
+		return serv.GiveGiftToUser(user, &models.Gift{ID: 2})
+	}
+	if lastSpend <= 200000 && currentSpend > 200000 {
+		return serv.GiveGiftToUser(user, &models.Gift{ID: 3})
+	}
+	return nil
+}
+
+func (serv *transactionService) GiveGiftToUser(user *models.User, gift *models.Gift) error {
+	_, ugErr := serv.transactionRepository.SaveUserGift(&models.UserGift{
+		UserID:    user.ID,
+		GiftID:    gift.ID,
+		IsClaimed: 0,
+	})
+	return ugErr
 }
 
 func (serv *transactionService) CheckVoucherReward(lastTrNetTotal int, user *models.User, referrerUser *models.User) error {
