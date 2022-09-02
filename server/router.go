@@ -141,6 +141,18 @@ func NewRouter(conf *RouterConfig) *gin.Engine {
 		h.GetVouchers,
 	)
 
+	// ADMIN GIFT
+	router.GET(
+		"gift-claim-statuses",
+		middlewares.AuthorizeInternal,
+		h.GetGiftClaimStatuses,
+	)
+	router.GET(
+		"gift-claims",
+		middlewares.AuthorizeInternal,
+		h.GetGiftClaims,
+	)
+
 	// PUBLIC > USER
 	router.GET(
 		"/pub/users/:userID",

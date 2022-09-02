@@ -15,6 +15,7 @@ type GiftRepository interface {
 	SaveGiftClaim(gc *models.GiftClaim) (*models.GiftClaim, error)
 	FindGiftClaims(opt *models.GetGiftClaimsOption) (*dto.GiftClaimsRes, error)
 	FindUserGiftClaims(opt *models.GetGiftClaimsOption) ([]*models.GiftClaim, error)
+	FindGiftClaimStatuses() ([]*models.GiftClaimStatus, error)
 }
 
 type giftRepository struct {
@@ -64,6 +65,7 @@ func (repo *giftRepository) FindGiftClaims(opt *models.GetGiftClaimsOption) (*dt
 	var gcs []*models.GiftClaim
 	result := repo.db.
 		Model(&models.GiftClaim{}).
+		Preload("GiftClaimItems.Gift.Image").
 		Preload(clause.Associations)
 
 	if opt.UserID != 0 {
@@ -108,4 +110,12 @@ func (repo *giftRepository) FindUserGiftClaims(opt *models.GetGiftClaimsOption) 
 		Order("updated_at DESC").
 		Find(&gcs)
 	return gcs, result.Error
+}
+
+func (repo *giftRepository) FindGiftClaimStatuses() ([]*models.GiftClaimStatus, error) {
+	var gcStatuses []*models.GiftClaimStatus
+	result := repo.db.
+		Order("id ASC").
+		Find(&gcStatuses)
+	return gcStatuses, result.Error
 }

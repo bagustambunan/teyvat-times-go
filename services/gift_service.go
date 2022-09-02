@@ -14,6 +14,7 @@ type GiftService interface {
 	SaveGiftClaim(user *models.User) (*models.GiftClaim, error)
 	GetGiftClaims(opt *models.GetGiftClaimsOption) (*dto.GiftClaimsRes, error)
 	GetUserGiftClaims(user *models.User) ([]*models.GiftClaim, error)
+	GetGiftClaimStatuses() ([]*models.GiftClaimStatus, error)
 }
 
 type giftService struct {
@@ -71,4 +72,8 @@ func (serv *giftService) GetGiftClaims(opt *models.GetGiftClaimsOption) (*dto.Gi
 func (serv *giftService) GetUserGiftClaims(user *models.User) ([]*models.GiftClaim, error) {
 	opt := &models.GetGiftClaimsOption{UserID: user.ID}
 	return serv.giftRepository.FindUserGiftClaims(opt)
+}
+
+func (serv *giftService) GetGiftClaimStatuses() ([]*models.GiftClaimStatus, error) {
+	return serv.giftRepository.FindGiftClaimStatuses()
 }

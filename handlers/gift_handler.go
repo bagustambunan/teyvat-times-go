@@ -50,6 +50,20 @@ func (h *Handler) SaveGiftClaim(c *gin.Context) {
 	helpers.StandardResponse(c, http.StatusOK, gc)
 }
 
+func (h *Handler) GetGiftClaims(c *gin.Context) {
+	opt, parsingErr := models.NewGetGiftClaimsOption(c.Request.URL.Query())
+	if parsingErr != nil {
+		_ = c.Error(parsingErr)
+		return
+	}
+	gcsRes, fetchErr := h.giftService.GetGiftClaims(opt)
+	if fetchErr != nil {
+		_ = c.Error(fetchErr)
+		return
+	}
+	helpers.StandardResponse(c, http.StatusOK, gcsRes)
+}
+
 func (h *Handler) GetUserGiftClaims(c *gin.Context) {
 	user := h.GetUserFromToken(c)
 	gcs, fetchErr := h.giftService.GetUserGiftClaims(user)
@@ -58,4 +72,13 @@ func (h *Handler) GetUserGiftClaims(c *gin.Context) {
 		return
 	}
 	helpers.StandardResponse(c, http.StatusOK, gcs)
+}
+
+func (h *Handler) GetGiftClaimStatuses(c *gin.Context) {
+	gcStatuses, fetchErr := h.giftService.GetGiftClaimStatuses()
+	if fetchErr != nil {
+		_ = c.Error(fetchErr)
+		return
+	}
+	helpers.StandardResponse(c, http.StatusOK, gcStatuses)
 }
