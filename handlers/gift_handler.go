@@ -29,3 +29,13 @@ func (h *Handler) GetGift(c *gin.Context) {
 	}
 	helpers.StandardResponse(c, http.StatusOK, gift)
 }
+
+func (h *Handler) GetUnclaimedUserGifts(c *gin.Context) {
+	user := h.GetUserFromToken(c)
+	ugs, fetchErr := h.giftService.GetUnclaimedUserGifts(user)
+	if fetchErr != nil {
+		_ = c.Error(fetchErr)
+		return
+	}
+	helpers.StandardResponse(c, http.StatusOK, ugs)
+}
