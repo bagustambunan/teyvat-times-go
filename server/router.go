@@ -279,6 +279,11 @@ func NewRouter(conf *RouterConfig) *gin.Engine {
 		middlewares.AuthorizePublic,
 		h.SaveGiftClaim,
 	)
+	router.GET(
+		"/pub/gift-claims",
+		middlewares.AuthorizePublic,
+		h.GetUserGiftClaims,
+	)
 
 	// OPEN > PAYMENT
 	router.POST(

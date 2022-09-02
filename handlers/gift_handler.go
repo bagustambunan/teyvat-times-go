@@ -49,3 +49,13 @@ func (h *Handler) SaveGiftClaim(c *gin.Context) {
 	}
 	helpers.StandardResponse(c, http.StatusOK, gc)
 }
+
+func (h *Handler) GetUserGiftClaims(c *gin.Context) {
+	user := h.GetUserFromToken(c)
+	gcs, fetchErr := h.giftService.GetUserGiftClaims(user)
+	if fetchErr != nil {
+		_ = c.Error(fetchErr)
+		return
+	}
+	helpers.StandardResponse(c, http.StatusOK, gcs)
+}

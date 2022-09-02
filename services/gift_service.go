@@ -1,6 +1,7 @@
 package services
 
 import (
+	"final-project-backend/dto"
 	"final-project-backend/httperror"
 	"final-project-backend/models"
 	"final-project-backend/repositories"
@@ -11,6 +12,8 @@ type GiftService interface {
 	GetGift(gift *models.Gift) (*models.Gift, error)
 	GetUnclaimedUserGifts(user *models.User) ([]*models.UserGift, error)
 	SaveGiftClaim(user *models.User) (*models.GiftClaim, error)
+	GetGiftClaims(opt *models.GetGiftClaimsOption) (*dto.GiftClaimsRes, error)
+	GetUserGiftClaims(user *models.User) ([]*models.GiftClaim, error)
 }
 
 type giftService struct {
@@ -57,6 +60,15 @@ func (serv *giftService) SaveGiftClaim(user *models.User) (*models.GiftClaim, er
 	}
 
 	// TODO: UPDATE USER CLAIM > IS CLAIMED
-	
+
 	return serv.giftRepository.SaveGiftClaim(gc)
+}
+
+func (serv *giftService) GetGiftClaims(opt *models.GetGiftClaimsOption) (*dto.GiftClaimsRes, error) {
+	return serv.giftRepository.FindGiftClaims(opt)
+}
+
+func (serv *giftService) GetUserGiftClaims(user *models.User) ([]*models.GiftClaim, error) {
+	opt := &models.GetGiftClaimsOption{UserID: user.ID}
+	return serv.giftRepository.FindUserGiftClaims(opt)
 }

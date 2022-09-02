@@ -6,10 +6,10 @@ type GiftClaim struct {
 	gorm.Model     `json:"-"`
 	ID             int              `json:"giftClaimID" gorm:"primaryKey"`
 	UserID         int              `json:"userID"`
-	User           *User            `json:"-"`
+	User           *User            `json:"user"`
 	AddressID      int              `json:"addressID"`
-	Address        *Address         `json:"-"`
+	Address        *Address         `json:"address"`
 	StatusID       int              `json:"statusID"`
-	Status         *GiftClaimStatus `json:"-"`
+	Status         *GiftClaimStatus `json:"status"`
 	GiftClaimItems []*GiftClaimItem `json:"giftClaimItems"`
 }
