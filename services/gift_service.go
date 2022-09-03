@@ -64,7 +64,12 @@ func (serv *giftService) SaveGiftClaim(user *models.User) (*models.GiftClaim, er
 		GiftClaimItems: giftClaimItems,
 	}
 
-	// TODO: UPDATE USER CLAIM > IS CLAIMED
+	for _, ug := range userGifts {
+		_, err := serv.giftRepository.UpdateUserGift(ug)
+		if err != nil {
+			return nil, err
+		}
+	}
 
 	return serv.giftRepository.SaveGiftClaim(gc)
 }

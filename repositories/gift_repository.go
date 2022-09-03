@@ -17,6 +17,7 @@ type GiftRepository interface {
 	FindUserGiftClaims(opt *models.GetGiftClaimsOption) ([]*models.GiftClaim, error)
 	FindGiftClaim(gc *models.GiftClaim) (*models.GiftClaim, error)
 	FindGiftClaimStatuses() ([]*models.GiftClaimStatus, error)
+	UpdateUserGift(ug *models.UserGift) (*models.UserGift, error)
 }
 
 type giftRepository struct {
@@ -58,7 +59,7 @@ func (repo *giftRepository) FindUnclaimedUserGifts(user *models.User) ([]*models
 
 func (repo *giftRepository) SaveGiftClaim(gc *models.GiftClaim) (*models.GiftClaim, error) {
 	result := repo.db.
-		Select("UserID", "AddressID", "StatusID", "GiftClaimItems").
+		//Select("UserID", "AddressID", "StatusID", "GiftClaimItems").
 		Create(gc)
 	return gc, result.Error
 }
@@ -128,4 +129,11 @@ func (repo *giftRepository) FindGiftClaimStatuses() ([]*models.GiftClaimStatus, 
 		Order("id ASC").
 		Find(&gcStatuses)
 	return gcStatuses, result.Error
+}
+
+func (repo *giftRepository) UpdateUserGift(ug *models.UserGift) (*models.UserGift, error) {
+	result := repo.db.
+		Model(&ug).
+		Update("is_claimed", 1)
+	return ug, result.Error
 }
