@@ -11,5 +11,7 @@ type GiftClaim struct {
 	Address        *Address         `json:"address"`
 	StatusID       int              `json:"statusID"`
 	Status         *GiftClaimStatus `json:"status"`
+	CreatedAt      string           `json:"createdAt"`
+	UpdatedAt      string           `json:"updatedAt"`
 	GiftClaimItems []*GiftClaimItem `json:"giftClaimItems"`
 }

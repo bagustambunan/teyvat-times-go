@@ -58,6 +58,7 @@ func (repo *giftRepository) FindUnclaimedUserGifts(user *models.User) ([]*models
 
 func (repo *giftRepository) SaveGiftClaim(gc *models.GiftClaim) (*models.GiftClaim, error) {
 	result := repo.db.
+		Select("UserID", "AddressID", "StatusID", "GiftClaimItems").
 		Create(gc)
 	return gc, result.Error
 }
