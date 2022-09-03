@@ -35,6 +35,27 @@ func NewRouter(conf *RouterConfig) *gin.Engine {
 	config.AllowHeaders = []string{"Origin", "Authorization", "Content-Type"}
 	router.Use(cors.New(config))
 
+	// dari faiz
+	//config := cors.DefaultConfig()
+	//config.AllowAllOrigins = true
+	//config.AllowHeaders = []string{"Origin, Authorization", "Content-Type", "Content-Length"}
+	//router.Use(cors.New(config))
+
+	// dari hadi
+	//config := cors.DefaultConfig()
+	//config.AllowAllOrigins = true
+	//config.AllowHeaders = []string{
+	//	"Access-Control-Allow-Headers",
+	//	"Authorization",
+	//	"Origin",
+	//	"Accept",
+	//	"X-Requested-With",
+	//	"Content-Type",
+	//	"Access-Control-Request-Method",
+	//	"Access-Control-Request-Headers",
+	//}
+	//router.Use(cors.New(config))
+
 	h := handlers.New(&handlers.HandlerConfig{
 		AuthService:         conf.AuthService,
 		UserService:         conf.UserService,
@@ -295,6 +316,11 @@ func NewRouter(conf *RouterConfig) *gin.Engine {
 		"/pub/gift-claims",
 		middlewares.AuthorizePublic,
 		h.GetUserGiftClaims,
+	)
+	router.GET(
+		"/pub/gift-claims/:gcID",
+		middlewares.AuthorizePublic,
+		h.GetGiftClaim,
 	)
 
 	// OPEN > PAYMENT

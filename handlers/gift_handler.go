@@ -30,6 +30,20 @@ func (h *Handler) GetGift(c *gin.Context) {
 	helpers.StandardResponse(c, http.StatusOK, gift)
 }
 
+func (h *Handler) GetGiftClaim(c *gin.Context) {
+	gcID, idErr := strconv.Atoi(c.Param("gcID"))
+	if idErr != nil {
+		_ = c.Error(idErr)
+		return
+	}
+	gc, fetchErr := h.giftService.GetGiftClaim(&models.GiftClaim{ID: gcID})
+	if fetchErr != nil {
+		_ = c.Error(fetchErr)
+		return
+	}
+	helpers.StandardResponse(c, http.StatusOK, gc)
+}
+
 func (h *Handler) GetUnclaimedUserGifts(c *gin.Context) {
 	user := h.GetUserFromToken(c)
 	ugs, fetchErr := h.giftService.GetUnclaimedUserGifts(user)
