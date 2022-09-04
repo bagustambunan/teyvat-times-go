@@ -1,28 +1,4 @@
 --
--- PostgreSQL database dump
---
-
--- Dumped from database version 14.4 (Ubuntu 14.4-1.pgdg20.04+1)
--- Dumped by pg_dump version 14.4 (Ubuntu 14.4-1.pgdg20.04+1)
-
--- Started on 2022-09-04 19:18:56 WIB
-
-SET statement_timeout = 0;
-SET lock_timeout = 0;
-SET idle_in_transaction_session_timeout = 0;
-SET client_encoding = 'UTF8';
-SET standard_conforming_strings = on;
-SELECT pg_catalog.set_config('search_path', '', false);
-SET check_function_bodies = false;
-SET xmloption = content;
-SET client_min_messages = warning;
-SET row_security = off;
-
-SET default_tablespace = '';
-
-SET default_table_access_method = heap;
-
---
 -- TOC entry 213 (class 1259 OID 18609)
 -- Name: addresses; Type: TABLE; Schema: public; Owner: postgres
 --
@@ -39,9 +15,6 @@ CREATE TABLE public.addresses (
     deleted_at timestamp without time zone
 );
 
-
-ALTER TABLE public.addresses OWNER TO postgres;
-
 --
 -- TOC entry 212 (class 1259 OID 18608)
 -- Name: addresses_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -53,9 +26,6 @@ CREATE SEQUENCE public.addresses_id_seq
     NO MINVALUE
     NO MAXVALUE
     CACHE 1;
-
-
-ALTER TABLE public.addresses_id_seq OWNER TO postgres;
 
 --
 -- TOC entry 3611 (class 0 OID 0)
@@ -80,9 +50,6 @@ CREATE TABLE public.gift_claim_items (
     deleted_at timestamp without time zone
 );
 
-
-ALTER TABLE public.gift_claim_items OWNER TO postgres;
-
 --
 -- TOC entry 240 (class 1259 OID 18943)
 -- Name: gift_claim_items_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -94,9 +61,6 @@ CREATE SEQUENCE public.gift_claim_items_id_seq
     NO MINVALUE
     NO MAXVALUE
     CACHE 1;
-
-
-ALTER TABLE public.gift_claim_items_id_seq OWNER TO postgres;
 
 --
 -- TOC entry 3612 (class 0 OID 0)
@@ -120,9 +84,6 @@ CREATE TABLE public.gift_claim_statuses (
     deleted_at timestamp without time zone
 );
 
-
-ALTER TABLE public.gift_claim_statuses OWNER TO postgres;
-
 --
 -- TOC entry 239 (class 1259 OID 18919)
 -- Name: gift_claims; Type: TABLE; Schema: public; Owner: postgres
@@ -138,9 +99,6 @@ CREATE TABLE public.gift_claims (
     deleted_at timestamp without time zone
 );
 
-
-ALTER TABLE public.gift_claims OWNER TO postgres;
-
 --
 -- TOC entry 238 (class 1259 OID 18918)
 -- Name: gift_claims_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -152,9 +110,6 @@ CREATE SEQUENCE public.gift_claims_id_seq
     NO MINVALUE
     NO MAXVALUE
     CACHE 1;
-
-
-ALTER TABLE public.gift_claims_id_seq OWNER TO postgres;
 
 --
 -- TOC entry 3613 (class 0 OID 0)
@@ -181,9 +136,6 @@ CREATE TABLE public.gifts (
     deleted_at timestamp without time zone
 );
 
-
-ALTER TABLE public.gifts OWNER TO postgres;
-
 --
 -- TOC entry 210 (class 1259 OID 18587)
 -- Name: images; Type: TABLE; Schema: public; Owner: postgres
@@ -198,9 +150,6 @@ CREATE TABLE public.images (
     deleted_at timestamp without time zone
 );
 
-
-ALTER TABLE public.images OWNER TO postgres;
-
 --
 -- TOC entry 209 (class 1259 OID 18586)
 -- Name: images_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -212,9 +161,6 @@ CREATE SEQUENCE public.images_id_seq
     NO MINVALUE
     NO MAXVALUE
     CACHE 1;
-
-
-ALTER TABLE public.images_id_seq OWNER TO postgres;
 
 --
 -- TOC entry 3614 (class 0 OID 0)
@@ -239,9 +185,6 @@ CREATE TABLE public.post_categories (
     deleted_at timestamp without time zone
 );
 
-
-ALTER TABLE public.post_categories OWNER TO postgres;
-
 --
 -- TOC entry 219 (class 1259 OID 18684)
 -- Name: post_categories_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -253,9 +196,6 @@ CREATE SEQUENCE public.post_categories_id_seq
     NO MINVALUE
     NO MAXVALUE
     CACHE 1;
-
-
-ALTER TABLE public.post_categories_id_seq OWNER TO postgres;
 
 --
 -- TOC entry 3615 (class 0 OID 0)
@@ -281,9 +221,6 @@ CREATE TABLE public.post_tiers (
     deleted_at timestamp without time zone
 );
 
-
-ALTER TABLE public.post_tiers OWNER TO postgres;
-
 --
 -- TOC entry 226 (class 1259 OID 18764)
 -- Name: post_unlocks; Type: TABLE; Schema: public; Owner: postgres
@@ -298,9 +235,6 @@ CREATE TABLE public.post_unlocks (
     deleted_at timestamp without time zone
 );
 
-
-ALTER TABLE public.post_unlocks OWNER TO postgres;
-
 --
 -- TOC entry 225 (class 1259 OID 18763)
 -- Name: post_unlocks_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -312,9 +246,6 @@ CREATE SEQUENCE public.post_unlocks_id_seq
     NO MINVALUE
     NO MAXVALUE
     CACHE 1;
-
-
-ALTER TABLE public.post_unlocks_id_seq OWNER TO postgres;
 
 --
 -- TOC entry 3616 (class 0 OID 0)
@@ -347,9 +278,6 @@ CREATE TABLE public.posts (
     deleted_at timestamp without time zone
 );
 
-
-ALTER TABLE public.posts OWNER TO postgres;
-
 --
 -- TOC entry 221 (class 1259 OID 18695)
 -- Name: posts_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -361,9 +289,6 @@ CREATE SEQUENCE public.posts_id_seq
     NO MINVALUE
     NO MAXVALUE
     CACHE 1;
-
-
-ALTER TABLE public.posts_id_seq OWNER TO postgres;
 
 --
 -- TOC entry 3617 (class 0 OID 0)
@@ -387,9 +312,6 @@ CREATE TABLE public.roles (
     deleted_at timestamp without time zone
 );
 
-
-ALTER TABLE public.roles OWNER TO postgres;
-
 --
 -- TOC entry 227 (class 1259 OID 18782)
 -- Name: subscriptions; Type: TABLE; Schema: public; Owner: postgres
@@ -405,9 +327,6 @@ CREATE TABLE public.subscriptions (
     deleted_at timestamp without time zone
 );
 
-
-ALTER TABLE public.subscriptions OWNER TO postgres;
-
 --
 -- TOC entry 233 (class 1259 OID 18849)
 -- Name: transaction_statuses; Type: TABLE; Schema: public; Owner: postgres
@@ -420,9 +339,6 @@ CREATE TABLE public.transaction_statuses (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     deleted_at timestamp without time zone
 );
-
-
-ALTER TABLE public.transaction_statuses OWNER TO postgres;
 
 --
 -- TOC entry 235 (class 1259 OID 18861)
@@ -442,9 +358,6 @@ CREATE TABLE public.transactions (
     deleted_at timestamp without time zone
 );
 
-
-ALTER TABLE public.transactions OWNER TO postgres;
-
 --
 -- TOC entry 234 (class 1259 OID 18860)
 -- Name: transactions_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -456,9 +369,6 @@ CREATE SEQUENCE public.transactions_id_seq
     NO MINVALUE
     NO MAXVALUE
     CACHE 1;
-
-
-ALTER TABLE public.transactions_id_seq OWNER TO postgres;
 
 --
 -- TOC entry 3618 (class 0 OID 0)
@@ -484,9 +394,6 @@ CREATE TABLE public.user_gifts (
     is_claimed integer DEFAULT 0 NOT NULL
 );
 
-
-ALTER TABLE public.user_gifts OWNER TO postgres;
-
 --
 -- TOC entry 242 (class 1259 OID 18963)
 -- Name: user_gifts_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -498,9 +405,6 @@ CREATE SEQUENCE public.user_gifts_id_seq
     NO MINVALUE
     NO MAXVALUE
     CACHE 1;
-
-
-ALTER TABLE public.user_gifts_id_seq OWNER TO postgres;
 
 --
 -- TOC entry 3619 (class 0 OID 0)
@@ -530,9 +434,6 @@ CREATE TABLE public.user_post_activities (
     deleted_at timestamp without time zone
 );
 
-
-ALTER TABLE public.user_post_activities OWNER TO postgres;
-
 --
 -- TOC entry 223 (class 1259 OID 18741)
 -- Name: user_post_activities_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -544,9 +445,6 @@ CREATE SEQUENCE public.user_post_activities_id_seq
     NO MINVALUE
     NO MAXVALUE
     CACHE 1;
-
-
-ALTER TABLE public.user_post_activities_id_seq OWNER TO postgres;
 
 --
 -- TOC entry 3620 (class 0 OID 0)
@@ -571,9 +469,6 @@ CREATE TABLE public.user_referrals (
     deleted_at timestamp without time zone
 );
 
-
-ALTER TABLE public.user_referrals OWNER TO postgres;
-
 --
 -- TOC entry 216 (class 1259 OID 18654)
 -- Name: user_referrals_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -585,9 +480,6 @@ CREATE SEQUENCE public.user_referrals_id_seq
     NO MINVALUE
     NO MAXVALUE
     CACHE 1;
-
-
-ALTER TABLE public.user_referrals_id_seq OWNER TO postgres;
 
 --
 -- TOC entry 3621 (class 0 OID 0)
@@ -614,9 +506,6 @@ CREATE TABLE public.user_subscriptions (
     deleted_at timestamp without time zone
 );
 
-
-ALTER TABLE public.user_subscriptions OWNER TO postgres;
-
 --
 -- TOC entry 228 (class 1259 OID 18793)
 -- Name: user_subscriptions_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -628,9 +517,6 @@ CREATE SEQUENCE public.user_subscriptions_id_seq
     NO MINVALUE
     NO MAXVALUE
     CACHE 1;
-
-
-ALTER TABLE public.user_subscriptions_id_seq OWNER TO postgres;
 
 --
 -- TOC entry 3622 (class 0 OID 0)
@@ -657,9 +543,6 @@ CREATE TABLE public.user_vouchers (
     deleted_at timestamp without time zone
 );
 
-
-ALTER TABLE public.user_vouchers OWNER TO postgres;
-
 --
 -- TOC entry 231 (class 1259 OID 18829)
 -- Name: user_vouchers_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -671,9 +554,6 @@ CREATE SEQUENCE public.user_vouchers_id_seq
     NO MINVALUE
     NO MAXVALUE
     CACHE 1;
-
-
-ALTER TABLE public.user_vouchers_id_seq OWNER TO postgres;
 
 --
 -- TOC entry 3623 (class 0 OID 0)
@@ -706,9 +586,6 @@ CREATE TABLE public.users (
     deleted_at timestamp without time zone
 );
 
-
-ALTER TABLE public.users OWNER TO postgres;
-
 --
 -- TOC entry 214 (class 1259 OID 18619)
 -- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -720,9 +597,6 @@ CREATE SEQUENCE public.users_id_seq
     NO MINVALUE
     NO MAXVALUE
     CACHE 1;
-
-
-ALTER TABLE public.users_id_seq OWNER TO postgres;
 
 --
 -- TOC entry 3624 (class 0 OID 0)
@@ -749,9 +623,6 @@ CREATE TABLE public.vouchers (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     deleted_at timestamp without time zone
 );
-
-
-ALTER TABLE public.vouchers OWNER TO postgres;
 
 --
 -- TOC entry 3270 (class 2604 OID 18612)
