@@ -16,6 +16,9 @@ type GiftService interface {
 	GetUserGiftClaims(user *models.User) ([]*models.GiftClaim, error)
 	GetGiftClaimStatuses() ([]*models.GiftClaimStatus, error)
 	GetGiftClaim(gc *models.GiftClaim) (*models.GiftClaim, error)
+	DeliverGiftClaim(gc *models.GiftClaim) (*models.GiftClaim, error)
+	RejectGiftClaim(gc *models.GiftClaim) (*models.GiftClaim, error)
+	CompleteGiftClaim(gc *models.GiftClaim) (*models.GiftClaim, error)
 }
 
 type giftService struct {
@@ -60,12 +63,12 @@ func (serv *giftService) SaveGiftClaim(user *models.User) (*models.GiftClaim, er
 	gc := &models.GiftClaim{
 		UserID:         user.ID,
 		AddressID:      user.AddressID,
-		StatusID:       1,
+		StatusID:       2,
 		GiftClaimItems: giftClaimItems,
 	}
 
 	for _, ug := range userGifts {
-		_, err := serv.giftRepository.UpdateUserGift(ug)
+		_, err := serv.giftRepository.UpdateUserGiftIsClaimed(ug, 1)
 		if err != nil {
 			return nil, err
 		}
@@ -85,4 +88,22 @@ func (serv *giftService) GetUserGiftClaims(user *models.User) ([]*models.GiftCla
 
 func (serv *giftService) GetGiftClaimStatuses() ([]*models.GiftClaimStatus, error) {
 	return serv.giftRepository.FindGiftClaimStatuses()
+}
+
+func (serv *giftService) DeliverGiftClaim(gc *models.GiftClaim) (*models.GiftClaim, error) {
+	for _, gcItem := range gc.GiftClaimItems {
+		_, updateStockErr := serv.giftRepository.UpdateGiftStock(gcItem.Gift, -1)
+		if updateStockErr != nil {
+			return nil, updateStockErr
+		}
+	}
+	return serv.giftRepository.UpdateGiftClaimStatus(gc, 3)
+}
+
+func (serv *giftService) RejectGiftClaim(gc *models.GiftClaim) (*models.GiftClaim, error) {
+	return serv.giftRepository.UpdateGiftClaimStatus(gc, 4)
+}
+
+func (serv *giftService) CompleteGiftClaim(gc *models.GiftClaim) (*models.GiftClaim, error) {
+	return serv.giftRepository.UpdateGiftClaimStatus(gc, 5)
 }

@@ -17,7 +17,9 @@ type GiftRepository interface {
 	FindUserGiftClaims(opt *models.GetGiftClaimsOption) ([]*models.GiftClaim, error)
 	FindGiftClaim(gc *models.GiftClaim) (*models.GiftClaim, error)
 	FindGiftClaimStatuses() ([]*models.GiftClaimStatus, error)
-	UpdateUserGift(ug *models.UserGift) (*models.UserGift, error)
+	UpdateUserGiftIsClaimed(ug *models.UserGift, isClaimed int) (*models.UserGift, error)
+	UpdateGiftClaimStatus(gc *models.GiftClaim, statusID int) (*models.GiftClaim, error)
+	UpdateGiftStock(gift *models.Gift, number int) (*models.Gift, error)
 }
 
 type giftRepository struct {
@@ -131,9 +133,25 @@ func (repo *giftRepository) FindGiftClaimStatuses() ([]*models.GiftClaimStatus, 
 	return gcStatuses, result.Error
 }
 
-func (repo *giftRepository) UpdateUserGift(ug *models.UserGift) (*models.UserGift, error) {
+func (repo *giftRepository) UpdateUserGiftIsClaimed(ug *models.UserGift, isClaimed int) (*models.UserGift, error) {
 	result := repo.db.
 		Model(&ug).
-		Update("is_claimed", 1)
+		Update("is_claimed", isClaimed)
 	return ug, result.Error
+}
+
+func (repo *giftRepository) UpdateGiftClaimStatus(gc *models.GiftClaim, statusID int) (*models.GiftClaim, error) {
+	result := repo.db.
+		//Model(&gc).
+		//UpdateColumn("status_id", statusID)
+		Raw("UPDATE gift_claims SET status_id = ? WHERE deleted_at IS NULL AND id = ?", statusID, gc.ID).
+		Scan(&gc)
+	return gc, result.Error
+}
+
+func (repo *giftRepository) UpdateGiftStock(gift *models.Gift, number int) (*models.Gift, error) {
+	result := repo.db.
+		Model(&gift).
+		Update("stock", gorm.Expr("stock + ?", number))
+	return gift, result.Error
 }

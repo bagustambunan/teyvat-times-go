@@ -96,3 +96,60 @@ func (h *Handler) GetGiftClaimStatuses(c *gin.Context) {
 	}
 	helpers.StandardResponse(c, http.StatusOK, gcStatuses)
 }
+
+func (h *Handler) DeliverGiftClaim(c *gin.Context) {
+	gcID, idErr := strconv.Atoi(c.Param("gcID"))
+	if idErr != nil {
+		_ = c.Error(idErr)
+		return
+	}
+	fetchedGc, fetchErr := h.giftService.GetGiftClaim(&models.GiftClaim{ID: gcID})
+	if fetchErr != nil {
+		_ = c.Error(fetchErr)
+		return
+	}
+	updatedGc, updateErr := h.giftService.DeliverGiftClaim(fetchedGc)
+	if updateErr != nil {
+		_ = c.Error(updateErr)
+		return
+	}
+	helpers.StandardResponse(c, http.StatusOK, updatedGc)
+}
+
+func (h *Handler) RejectGiftClaim(c *gin.Context) {
+	gcID, idErr := strconv.Atoi(c.Param("gcID"))
+	if idErr != nil {
+		_ = c.Error(idErr)
+		return
+	}
+	fetchedGc, fetchErr := h.giftService.GetGiftClaim(&models.GiftClaim{ID: gcID})
+	if fetchErr != nil {
+		_ = c.Error(fetchErr)
+		return
+	}
+	updatedGc, updateErr := h.giftService.RejectGiftClaim(fetchedGc)
+	if updateErr != nil {
+		_ = c.Error(updateErr)
+		return
+	}
+	helpers.StandardResponse(c, http.StatusOK, updatedGc)
+}
+
+func (h *Handler) PubCompleteGiftClaim(c *gin.Context) {
+	gcID, idErr := strconv.Atoi(c.Param("gcID"))
+	if idErr != nil {
+		_ = c.Error(idErr)
+		return
+	}
+	fetchedGc, fetchErr := h.giftService.GetGiftClaim(&models.GiftClaim{ID: gcID})
+	if fetchErr != nil {
+		_ = c.Error(fetchErr)
+		return
+	}
+	updatedGc, updateErr := h.giftService.CompleteGiftClaim(fetchedGc)
+	if updateErr != nil {
+		_ = c.Error(updateErr)
+		return
+	}
+	helpers.StandardResponse(c, http.StatusOK, updatedGc)
+}

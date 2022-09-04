@@ -173,6 +173,16 @@ func NewRouter(conf *RouterConfig) *gin.Engine {
 		middlewares.AuthorizeInternal,
 		h.GetGiftClaims,
 	)
+	router.POST(
+		"/gift-claims/:gcID/deliver",
+		middlewares.AuthorizeInternal,
+		h.DeliverGiftClaim,
+	)
+	router.POST(
+		"/gift-claims/:gcID/reject",
+		middlewares.AuthorizeInternal,
+		h.RejectGiftClaim,
+	)
 
 	// PUBLIC > USER
 	router.GET(
@@ -321,6 +331,11 @@ func NewRouter(conf *RouterConfig) *gin.Engine {
 		"/pub/gift-claims/:gcID",
 		middlewares.AuthorizePublic,
 		h.GetGiftClaim,
+	)
+	router.POST(
+		"/pub/gift-claims/:gcID/complete",
+		middlewares.AuthorizePublic,
+		h.PubCompleteGiftClaim,
 	)
 
 	// OPEN > PAYMENT
