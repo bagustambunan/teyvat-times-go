@@ -7,6 +7,7 @@ import (
 	"final-project-backend/services"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	"time"
 )
 
 type RouterConfig struct {
@@ -22,39 +23,13 @@ type RouterConfig struct {
 func NewRouter(conf *RouterConfig) *gin.Engine {
 	router := gin.Default()
 
-	//corsConfig := cors.New(cors.Config{
-	//	AllowAllOrigins: true,
-	//	AllowMethods:    []string{"GET", "POST", "PATCH", "DELETE", "OPTIONS"},
-	//	AllowHeaders:    []string{"Origin", "Content-Type", "X-Auth-Token", "Access-Control-Allow-Headers", "Access-Control-Allow-Origin", "Authorization"},
-	//	MaxAge:          12 * time.Hour,
-	//})
-	//router.Use(corsConfig)
-
-	config := cors.DefaultConfig()
-	config.AllowAllOrigins = true
-	config.AllowHeaders = []string{"Origin", "Authorization", "Content-Type"}
-	router.Use(cors.New(config))
-
-	// dari faiz
-	//config := cors.DefaultConfig()
-	//config.AllowAllOrigins = true
-	//config.AllowHeaders = []string{"Origin, Authorization", "Content-Type", "Content-Length"}
-	//router.Use(cors.New(config))
-
-	// dari hadi
-	//config := cors.DefaultConfig()
-	//config.AllowAllOrigins = true
-	//config.AllowHeaders = []string{
-	//	"Access-Control-Allow-Headers",
-	//	"Authorization",
-	//	"Origin",
-	//	"Accept",
-	//	"X-Requested-With",
-	//	"Content-Type",
-	//	"Access-Control-Request-Method",
-	//	"Access-Control-Request-Headers",
-	//}
-	//router.Use(cors.New(config))
+	corsConfig := cors.New(cors.Config{
+		AllowAllOrigins: true,
+		AllowMethods:    []string{"GET", "POST", "PATCH", "DELETE", "OPTIONS"},
+		AllowHeaders:    []string{"Origin", "Content-Type", "X-Auth-Token", "Access-Control-Allow-Headers", "Access-Control-Allow-Origin", "Authorization"},
+		MaxAge:          12 * time.Hour,
+	})
+	router.Use(corsConfig)
 
 	h := handlers.New(&handlers.HandlerConfig{
 		AuthService:         conf.AuthService,
@@ -135,22 +110,22 @@ func NewRouter(conf *RouterConfig) *gin.Engine {
 
 	// ADMIN > TRANSACTION
 	router.GET(
-		"transactions",
+		"/transactions",
 		middlewares.AuthorizeInternal,
 		h.GetTransactions,
 	)
 	router.GET(
-		"transaction-statuses",
+		"/transaction-statuses",
 		middlewares.AuthorizeInternal,
 		h.GetTransactionStatuses,
 	)
 	router.POST(
-		"transactions/:transactionID/approve",
+		"/transactions/:transactionID/approve",
 		middlewares.AuthorizeInternal,
 		h.ApproveTransaction,
 	)
 	router.POST(
-		"transactions/:transactionID/reject",
+		"/transactions/:transactionID/reject",
 		middlewares.AuthorizeInternal,
 		h.RejectTransaction,
 	)
@@ -164,12 +139,12 @@ func NewRouter(conf *RouterConfig) *gin.Engine {
 
 	// ADMIN GIFT
 	router.GET(
-		"gift-claim-statuses",
+		"/gift-claim-statuses",
 		middlewares.AuthorizeInternal,
 		h.GetGiftClaimStatuses,
 	)
 	router.GET(
-		"gift-claims",
+		"/gift-claims",
 		middlewares.AuthorizeInternal,
 		h.GetGiftClaims,
 	)
@@ -191,7 +166,7 @@ func NewRouter(conf *RouterConfig) *gin.Engine {
 		h.GetUser,
 	)
 	router.GET(
-		"/pub/users/:userID/downlines",
+		"/pub/users/:userID/down-lines",
 		middlewares.AuthorizePublic,
 		h.GetUserDownLines,
 	)
