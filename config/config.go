@@ -34,12 +34,12 @@ var Config = AppConfig{
 	AppName:            "Teyvat Times - API",
 	AppPort:            GetENV("PORT", "8080"),
 	JWTSecretKey:       []byte("very-secret"),
-	JWTExpiryInMinutes: 60,
+	JWTExpiryInMinutes: 15,
 	DBConfig: dbConfig{
 		DBHost:     GetENV("DBHost", "localhost"),
 		DBPort:     GetENV("DBPort", "5432"),
 		DBUser:     GetENV("DBUser", "postgres"),
 		DBPassword: GetENV("DBPassword", "123456"),
-		DBName:     GetENV("DBName", "teyvat-2"),
+		DBName:     GetENV("DBName", "teyvat"),
 	},
 }
