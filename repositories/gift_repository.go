@@ -61,7 +61,6 @@ func (repo *giftRepository) FindUnclaimedUserGifts(user *models.User) ([]*models
 
 func (repo *giftRepository) SaveGiftClaim(gc *models.GiftClaim) (*models.GiftClaim, error) {
 	result := repo.db.
-		//Select("UserID", "AddressID", "StatusID", "GiftClaimItems").
 		Create(gc)
 	return gc, result.Error
 }
@@ -142,8 +141,6 @@ func (repo *giftRepository) UpdateUserGiftIsClaimed(ug *models.UserGift, isClaim
 
 func (repo *giftRepository) UpdateGiftClaimStatus(gc *models.GiftClaim, statusID int) (*models.GiftClaim, error) {
 	result := repo.db.
-		//Model(&gc).
-		//UpdateColumn("status_id", statusID)
 		Raw("UPDATE gift_claims SET status_id = ? WHERE deleted_at IS NULL AND id = ?", statusID, gc.ID).
 		Scan(&gc)
 	return gc, result.Error

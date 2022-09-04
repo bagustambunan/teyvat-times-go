@@ -38,20 +38,13 @@ func (h *Handler) PubReadPost(c *gin.Context) {
 		return
 	}
 
-	//accessErr := h.postService.CanUserAccessThisPost(user, fetchedPost)
-	//if accessErr != nil {
-	//	_ = c.Error(accessErr)
-	//	return
-	//}
-
 	if fetchedPost.PostTierID != 1 {
-		// UNLOCK
 		_, unlockErr := h.postService.UnlockAPost(user, fetchedPost)
 		if unlockErr != nil {
 			_ = c.Error(unlockErr)
 			return
 		}
-		// DECREASE MORA
+
 		_, updateErr := h.userService.UpdateUserMora(user, -fetchedPost.GetMoraRequired())
 		if updateErr != nil {
 			_ = c.Error(updateErr)

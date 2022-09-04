@@ -70,9 +70,6 @@ func (serv *postService) generatePrefix(size int) string {
 }
 
 func (serv *postService) CanUserAccessThisPost(user *models.User, post *models.Post) error {
-	//if user.RoleID == 1 {
-	//	return nil
-	//}
 	if post.PostTierID != 1 {
 		subErr := serv.DoesUserHaveAnActiveSubscription(user)
 		if subErr != nil {

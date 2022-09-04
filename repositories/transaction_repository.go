@@ -104,8 +104,6 @@ func (repo *transactionRepository) FindTransaction(transaction *models.Transacti
 
 func (repo *transactionRepository) UpdateTransactionStatus(transaction *models.Transaction, statusID int) (*models.Transaction, error) {
 	result := repo.db.
-		//Model(&transaction).
-		//UpdateColumn("status_id", statusID).
 		Raw("UPDATE transactions SET status_id = ? WHERE deleted_at IS NULL AND id = ?", statusID, transaction.ID).
 		Scan(&transaction)
 	return transaction, result.Error
