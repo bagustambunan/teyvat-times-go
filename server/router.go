@@ -41,6 +41,7 @@ func NewRouter(conf *RouterConfig) *gin.Engine {
 		GiftService:         conf.GiftService,
 	})
 
+	router.Static("docs", "swaggerui")
 	router.Use(middlewares.ErrorHandler)
 
 	// AUTH

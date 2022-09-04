@@ -1,0 +1,4327 @@
+openapi: 3.0.0
+info:
+  title: Teyvat Times API
+  description: ''
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080/
+  - url: https://teyvat-times-api.herokuapp.com/
+tags:
+  - name: Auth
+    description: ''
+  - name: Post
+    description: ''
+  - name: Activity
+    description: ''
+  - name: Transaction
+    description: ''
+  - name: Subscription
+    description: ''
+  - name: Category
+    description: ''
+  - name: Gift
+    description: ''
+  - name: User
+    description: ''
+  - name: Voucher
+    description: ''
+  - name: Payment
+    description: ''
+  - name: Reading history
+    description: ''
+  - name: User subscription
+    description: ''
+  - name: Tier
+    description: ''
+  - name: User gift
+    description: ''
+  - name: Gift claim
+    description: ''
+paths:
+  /sign-in:
+    post:
+      tags:
+        - Auth
+      summary: Sign-In
+      description: Sign in using email and password to get JWT token
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                email: venti@mail.com
+                password: venti123
+      responses:
+        '200':
+          description: OK
+          headers:
+            access-control-allow-origin:
+              schema:
+                type: string
+                example: '*'
+            content-length:
+              schema:
+                type: integer
+                example: '344'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            date:
+              schema:
+                type: string
+                example: Sun, 04 Sep 2022 12:50:24 GMT
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                statusCode: 200
+                data:
+                  userID: 1
+                  token: >-
+                    eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJUZXl2YXQgVGltZXMgLSBBUEkiLCJleHAiOjE2NjIyOTk0MjQsImlhdCI6MTY2MjI5NTgyNCwidXNlciI6eyJ1c2VySUQiOjEsInJvbGVJRCI6MSwidXNlcm5hbWUiOiJ2ZW50aSIsIm5hbWUiOiJWZW50aSIsInJlZmVycmFsQ29kZSI6IlZFTlRJIiwibW9yYSI6NDN9fQ.UNVGdA7JGr5Tynd9Ea09EK7YZRXEg0wRr-D-aMPW9mg
+  /sign-up:
+    post:
+      tags:
+        - Auth
+      summary: Sign-Up
+      description: Sign up to register new account
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: Bagus Tambunan
+                username: bagus
+                email: bagus@mail.com
+                password: bagus123
+                phone: '01900101'
+                street: Reality St.001
+                city: South Jakarta
+                state: Jakarta
+                country: Indonesia
+                postalCode: ID45
+                referrerCode: ''
+      responses:
+        '201':
+          description: Created
+          headers:
+            access-control-allow-origin:
+              schema:
+                type: string
+                example: '*'
+            content-length:
+              schema:
+                type: integer
+                example: '251'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            date:
+              schema:
+                type: string
+                example: Sun, 04 Sep 2022 12:51:41 GMT
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                statusCode: 201
+                data:
+                  userID: 12
+                  email: bagustambunan@mail.com
+                  name: Bagus Tambunan
+                  phone: '01900101'
+                  address:
+                    addressID: 12
+                    street: Reality St.001
+                    city: South Jakarta
+                    state: Jakarta
+                    country: Indonesia
+                    postalCode: ID45
+  /pub/posts/read/knights-of-favonius-held-a-hilichurl-hunting-competition:
+    get:
+      tags:
+        - Post
+      summary: Read a post
+      description: Get post detail by slug
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            Bearer
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJUZXl2YXQgVGltZXMgLSBBUEkiLCJleHAiOjE2NjIzMDM4NzIsImlhdCI6MTY2MjMwMDI3MiwidXNlciI6eyJ1c2VySUQiOjEsInJvbGVJRCI6MSwidXNlcm5hbWUiOiJ2ZW50aSIsIm5hbWUiOiJWZW50aSIsInJlZmVycmFsQ29kZSI6IlZFTlRJIiwibW9yYSI6NDN9fQ.tLnVn3rhnZAZcQ5jsi3vnoo0T5fq7KeNRmoLAfzvY_4
+      responses:
+        '200':
+          description: OK
+          headers:
+            content-length:
+              schema:
+                type: integer
+                example: '1661'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            date:
+              schema:
+                type: string
+                example: Sun, 04 Sep 2022 14:06:47 GMT
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                statusCode: 200
+                data:
+                  postID: 5
+                  postTier:
+                    postTierID: 1
+                    name: Free
+                    moraRequired: 0
+                    color: '#adadad'
+                  postCategory:
+                    postCategoryID: 3
+                    name: Sport
+                    color: '#6b46e3'
+                  title: Knights of Favonius held a hilichurl hunting competition
+                  content: >-
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                    do eiusmod tempor incididunt ut labore et dolore magna
+                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+                    ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                    Duis aute irure dolor in reprehenderit in voluptate velit
+                    esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
+                    occaecat cupidatat non proident, sunt in culpa qui officia
+                    deserunt mollit anim id est laborum.
+                  slug: knights-of-favonius-held-a-hilichurl-hunting-competition
+                  summary: >-
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                    do eiusmod tempor incididunt ut labore et dolore magna
+                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+                    ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                  imgThumbnail:
+                    imageID: 2
+                    url: >-
+                      https://asset.kompas.com/crops/EGyrhYPJi_psXlT29Sq3KyHMR0E=/40x0:904x576/750x500/data/photo/2021/09/29/6153c38932e38.jpeg
+                    altText: Default thumbnail
+                  imgContent:
+                    imageID: 3
+                    url: >-
+                      https://static.zerochan.net/Lumine.%28Genshin.Impact%29.full.3126229.jpg
+                    altText: Default image
+                  createdBy:
+                    userID: 1
+                    roleID: 1
+                    username: venti
+                    name: Venti
+                    referralCode: VENTI
+                    mora: 43
+                  updatedBy:
+                    userID: 1
+                    roleID: 1
+                    username: venti
+                    name: Venti
+                    referralCode: VENTI
+                    mora: 43
+                  createdAt: '2022-08-30T03:32:09.665955Z'
+                  updatedAt: '2022-08-30T03:32:09.665955Z'
+                  totalLike: 2
+                  totalShare: 2
+  /posts:
+    get:
+      tags:
+        - Post
+      summary: Get posts
+      description: Get posts, can use url params to filter, sort and pagination
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            Bearer
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJUZXl2YXQgVGltZXMgLSBBUEkiLCJleHAiOjE2NjIzMDM0MTcsImlhdCI6MTY2MjI5OTgxNywidXNlciI6eyJ1c2VySUQiOjEsInJvbGVJRCI6MSwidXNlcm5hbWUiOiJ2ZW50aSIsIm5hbWUiOiJWZW50aSIsInJlZmVycmFsQ29kZSI6IlZFTlRJIiwibW9yYSI6NDN9fQ.jeEy8ll3WLzLeXe7sPXhcaVfV4yO51lunMw0J2k-vDU
+        - name: s
+          in: query
+          schema:
+            type: string
+        - name: category
+          in: query
+          schema:
+            type: integer
+          example: '0'
+        - name: tier
+          in: query
+          schema:
+            type: integer
+          example: '0'
+        - name: sortBy
+          in: query
+          schema:
+            type: string
+          example: date
+        - name: sortOrder
+          in: query
+          schema:
+            type: string
+          example: asc
+        - name: limit
+          in: query
+          schema:
+            type: integer
+          example: '12'
+        - name: page
+          in: query
+          schema:
+            type: integer
+          example: '1'
+      responses:
+        '200':
+          description: OK
+          headers:
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            date:
+              schema:
+                type: string
+                example: Sun, 04 Sep 2022 14:03:15 GMT
+            transfer-encoding:
+              schema:
+                type: string
+                example: chunked
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                statusCode: 200
+                data:
+                  count: 12
+                  limit: 12
+                  page: 1
+                  totalPage: 2
+                  totalData: 14
+                  posts:
+                    - postID: 2
+                      postTier:
+                        postTierID: 1
+                        name: Free
+                        moraRequired: 0
+                        color: '#adadad'
+                      postCategory:
+                        postCategoryID: 1
+                        name: Politic
+                        color: '#d16262'
+                      title: Inazuma Closing It's Gate From the Outside World Again?
+                      content: >-
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                        sed do eiusmod tempor incididunt ut labore et dolore
+                        magna aliqua. Ut enim ad minim veniam, quis nostrud
+                        exercitation ullamco laboris nisi ut aliquip ex ea
+                        commodo consequat. Duis aute irure dolor in
+                        reprehenderit in voluptate velit esse cillum dolore eu
+                        fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+                        non proident, sunt in culpa qui officia deserunt mollit
+                        anim id est laborum.
+                      slug: inazuma-closing-it-s-gate-from-the-outside-world-again
+                      summary: >-
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                        sed do eiusmod tempor incididunt ut labore et dolore
+                        magna aliqua. Ut enim ad minim veniam, quis nostrud
+                        exercitation ullamco laboris nisi ut aliquip ex ea
+                        commodo consequat.
+                      imgThumbnail:
+                        imageID: 2
+                        url: >-
+                          https://asset.kompas.com/crops/EGyrhYPJi_psXlT29Sq3KyHMR0E=/40x0:904x576/750x500/data/photo/2021/09/29/6153c38932e38.jpeg
+                        altText: Default thumbnail
+                      imgContent:
+                        imageID: 3
+                        url: >-
+                          https://static.zerochan.net/Lumine.%28Genshin.Impact%29.full.3126229.jpg
+                        altText: Default image
+                      createdBy:
+                        userID: 3
+                        roleID: 1
+                        username: raiden
+                        name: Raiden Shogun
+                        referralCode: XNDTBK
+                        mora: 7
+                      updatedBy:
+                        userID: 3
+                        roleID: 1
+                        username: raiden
+                        name: Raiden Shogun
+                        referralCode: XNDTBK
+                        mora: 7
+                      createdAt: '2022-08-30T03:23:43.019342Z'
+                      updatedAt: '2022-08-30T03:23:43.019342Z'
+                      totalLike: 0
+                      totalShare: 0
+                    - postID: 3
+                      postTier:
+                        postTierID: 3
+                        name: VIP
+                        moraRequired: 2
+                        color: '#3e92e6'
+                      postCategory:
+                        postCategoryID: 2
+                        name: Economy
+                        color: '#fcc142'
+                      title: >-
+                        Ningguang has just announced an important matter
+                        regarding financial policy
+                      content: >-
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                        sed do eiusmod tempor incididunt ut labore et dolore
+                        magna aliqua. Ut enim ad minim veniam, quis nostrud
+                        exercitation ullamco laboris nisi ut aliquip ex ea
+                        commodo consequat. Duis aute irure dolor in
+                        reprehenderit in voluptate velit esse cillum dolore eu
+                        fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+                        non proident, sunt in culpa qui officia deserunt mollit
+                        anim id est laborum.
+                      slug: >-
+                        ningguang-has-just-announced-an-important-matter-regarding-financial-policy
+                      summary: >-
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                        sed do eiusmod tempor incididunt ut labore et dolore
+                        magna aliqua. Ut enim ad minim veniam, quis nostrud
+                        exercitation ullamco laboris nisi ut aliquip ex ea
+                        commodo consequat.
+                      imgThumbnail:
+                        imageID: 2
+                        url: >-
+                          https://asset.kompas.com/crops/EGyrhYPJi_psXlT29Sq3KyHMR0E=/40x0:904x576/750x500/data/photo/2021/09/29/6153c38932e38.jpeg
+                        altText: Default thumbnail
+                      imgContent:
+                        imageID: 3
+                        url: >-
+                          https://static.zerochan.net/Lumine.%28Genshin.Impact%29.full.3126229.jpg
+                        altText: Default image
+                      createdBy:
+                        userID: 3
+                        roleID: 1
+                        username: raiden
+                        name: Raiden Shogun
+                        referralCode: XNDTBK
+                        mora: 7
+                      updatedBy:
+                        userID: 3
+                        roleID: 1
+                        username: raiden
+                        name: Raiden Shogun
+                        referralCode: XNDTBK
+                        mora: 7
+                      createdAt: '2022-08-30T03:27:13.758213Z'
+                      updatedAt: '2022-08-30T03:27:13.758213Z'
+                      totalLike: 0
+                      totalShare: 0
+                    - postID: 4
+                      postTier:
+                        postTierID: 2
+                        name: Premium
+                        moraRequired: 1
+                        color: '#d49455'
+                      postCategory:
+                        postCategoryID: 4
+                        name: Entertainment
+                        color: '#32afbf'
+                      title: This is why Diluc's tavern is the best tavern in town
+                      content: >-
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                        sed do eiusmod tempor incididunt ut labore et dolore
+                        magna aliqua. Ut enim ad minim veniam, quis nostrud
+                        exercitation ullamco laboris nisi ut aliquip ex ea
+                        commodo consequat. Duis aute irure dolor in
+                        reprehenderit in voluptate velit esse cillum dolore eu
+                        fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+                        non proident, sunt in culpa qui officia deserunt mollit
+                        anim id est laborum.
+                      slug: why-diluc-s-tavern-is-the-best-tavern-in-town
+                      summary: >-
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                        sed do eiusmod tempor incididunt ut labore et dolore
+                        magna aliqua. Ut enim ad minim veniam, quis nostrud
+                        exercitation ullamco laboris nisi ut aliquip ex ea
+                        commodo consequat.
+                      imgThumbnail:
+                        imageID: 2
+                        url: >-
+                          https://asset.kompas.com/crops/EGyrhYPJi_psXlT29Sq3KyHMR0E=/40x0:904x576/750x500/data/photo/2021/09/29/6153c38932e38.jpeg
+                        altText: Default thumbnail
+                      imgContent:
+                        imageID: 3
+                        url: >-
+                          https://static.zerochan.net/Lumine.%28Genshin.Impact%29.full.3126229.jpg
+                        altText: Default image
+                      createdBy:
+                        userID: 1
+                        roleID: 1
+                        username: venti
+                        name: Venti
+                        referralCode: VENTI
+                        mora: 43
+                      updatedBy:
+                        userID: 1
+                        roleID: 1
+                        username: venti
+                        name: Venti
+                        referralCode: VENTI
+                        mora: 43
+                      createdAt: '2022-08-30T03:29:34.004397Z'
+                      updatedAt: '2022-08-30T03:29:34.004397Z'
+                      totalLike: 0
+                      totalShare: 0
+                    - postID: 5
+                      postTier:
+                        postTierID: 1
+                        name: Free
+                        moraRequired: 0
+                        color: '#adadad'
+                      postCategory:
+                        postCategoryID: 3
+                        name: Sport
+                        color: '#6b46e3'
+                      title: Knights of Favonius held a hilichurl hunting competition
+                      content: >-
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                        sed do eiusmod tempor incididunt ut labore et dolore
+                        magna aliqua. Ut enim ad minim veniam, quis nostrud
+                        exercitation ullamco laboris nisi ut aliquip ex ea
+                        commodo consequat. Duis aute irure dolor in
+                        reprehenderit in voluptate velit esse cillum dolore eu
+                        fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+                        non proident, sunt in culpa qui officia deserunt mollit
+                        anim id est laborum.
+                      slug: knights-of-favonius-held-a-hilichurl-hunting-competition
+                      summary: >-
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                        sed do eiusmod tempor incididunt ut labore et dolore
+                        magna aliqua. Ut enim ad minim veniam, quis nostrud
+                        exercitation ullamco laboris nisi ut aliquip ex ea
+                        commodo consequat.
+                      imgThumbnail:
+                        imageID: 2
+                        url: >-
+                          https://asset.kompas.com/crops/EGyrhYPJi_psXlT29Sq3KyHMR0E=/40x0:904x576/750x500/data/photo/2021/09/29/6153c38932e38.jpeg
+                        altText: Default thumbnail
+                      imgContent:
+                        imageID: 3
+                        url: >-
+                          https://static.zerochan.net/Lumine.%28Genshin.Impact%29.full.3126229.jpg
+                        altText: Default image
+                      createdBy:
+                        userID: 1
+                        roleID: 1
+                        username: venti
+                        name: Venti
+                        referralCode: VENTI
+                        mora: 43
+                      updatedBy:
+                        userID: 1
+                        roleID: 1
+                        username: venti
+                        name: Venti
+                        referralCode: VENTI
+                        mora: 43
+                      createdAt: '2022-08-30T03:32:09.665955Z'
+                      updatedAt: '2022-08-30T03:32:09.665955Z'
+                      totalLike: 0
+                      totalShare: 0
+                    - postID: 6
+                      postTier:
+                        postTierID: 3
+                        name: VIP
+                        moraRequired: 2
+                        color: '#3e92e6'
+                      postCategory:
+                        postCategoryID: 1
+                        name: Politic
+                        color: '#d16262'
+                      title: Who is Barbatos and where is he now?
+                      content: >-
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                        sed do eiusmod tempor incididunt ut labore et dolore
+                        magna aliqua. Ut enim ad minim veniam, quis nostrud
+                        exercitation ullamco laboris nisi ut aliquip ex ea
+                        commodo consequat. Duis aute irure dolor in
+                        reprehenderit in voluptate velit esse cillum dolore eu
+                        fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+                        non proident, sunt in culpa qui officia deserunt mollit
+                        anim id est laborum.
+                      slug: who-is-barbatos-and-where-is-he-now
+                      summary: >-
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                        sed do eiusmod tempor incididunt ut labore et dolore
+                        magna aliqua. Ut enim ad minim veniam, quis nostrud
+                        exercitation ullamco laboris nisi ut aliquip ex ea
+                        commodo consequat.
+                      imgThumbnail:
+                        imageID: 2
+                        url: >-
+                          https://asset.kompas.com/crops/EGyrhYPJi_psXlT29Sq3KyHMR0E=/40x0:904x576/750x500/data/photo/2021/09/29/6153c38932e38.jpeg
+                        altText: Default thumbnail
+                      imgContent:
+                        imageID: 3
+                        url: >-
+                          https://static.zerochan.net/Lumine.%28Genshin.Impact%29.full.3126229.jpg
+                        altText: Default image
+                      createdBy:
+                        userID: 1
+                        roleID: 1
+                        username: venti
+                        name: Venti
+                        referralCode: VENTI
+                        mora: 43
+                      updatedBy:
+                        userID: 1
+                        roleID: 1
+                        username: venti
+                        name: Venti
+                        referralCode: VENTI
+                        mora: 43
+                      createdAt: '2022-08-30T03:33:24.658018Z'
+                      updatedAt: '2022-08-30T03:33:24.658018Z'
+                      totalLike: 0
+                      totalShare: 0
+                    - postID: 7
+                      postTier:
+                        postTierID: 3
+                        name: VIP
+                        moraRequired: 2
+                        color: '#3e92e6'
+                      postCategory:
+                        postCategoryID: 4
+                        name: Entertainment
+                        color: '#32afbf'
+                      title: Osmanthus wine taste the same as I remember
+                      content: >-
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                        sed do eiusmod tempor incididunt ut labore et dolore
+                        magna aliqua. Ut enim ad minim veniam, quis nostrud
+                        exercitation ullamco laboris nisi ut aliquip ex ea
+                        commodo consequat. Duis aute irure dolor in
+                        reprehenderit in voluptate velit esse cillum dolore eu
+                        fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+                        non proident, sunt in culpa qui officia deserunt mollit
+                        anim id est laborum.
+                      slug: osmanthus-wine-taste-the-same-as-i-remember
+                      summary: >-
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                        sed do eiusmod tempor incididunt ut labore et dolore
+                        magna aliqua. Ut enim ad minim veniam, quis nostrud
+                        exercitation ullamco laboris nisi ut aliquip ex ea
+                        commodo consequat.
+                      imgThumbnail:
+                        imageID: 2
+                        url: >-
+                          https://asset.kompas.com/crops/EGyrhYPJi_psXlT29Sq3KyHMR0E=/40x0:904x576/750x500/data/photo/2021/09/29/6153c38932e38.jpeg
+                        altText: Default thumbnail
+                      imgContent:
+                        imageID: 3
+                        url: >-
+                          https://static.zerochan.net/Lumine.%28Genshin.Impact%29.full.3126229.jpg
+                        altText: Default image
+                      createdBy:
+                        userID: 2
+                        roleID: 1
+                        username: zhongli
+                        name: Zhongli
+                        referralCode: ECVSXJ
+                        mora: 7
+                      updatedBy:
+                        userID: 2
+                        roleID: 1
+                        username: zhongli
+                        name: Zhongli
+                        referralCode: ECVSXJ
+                        mora: 7
+                      createdAt: '2022-08-30T03:34:33.375571Z'
+                      updatedAt: '2022-08-30T03:34:33.375571Z'
+                      totalLike: 0
+                      totalShare: 0
+                    - postID: 8
+                      postTier:
+                        postTierID: 1
+                        name: Free
+                        moraRequired: 0
+                        color: '#adadad'
+                      postCategory:
+                        postCategoryID: 2
+                        name: Economy
+                        color: '#fcc142'
+                      title: Liben finally retired
+                      content: >-
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                        sed do eiusmod tempor incididunt ut labore et dolore
+                        magna aliqua. Ut enim ad minim veniam, quis nostrud
+                        exercitation ullamco laboris nisi ut aliquip ex ea
+                        commodo consequat. Duis aute irure dolor in
+                        reprehenderit in voluptate velit esse cillum dolore eu
+                        fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+                        non proident, sunt in culpa qui officia deserunt mollit
+                        anim id est laborum.
+                      slug: liben-finally-retired
+                      summary: >-
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                        sed do eiusmod tempor incididunt ut labore et dolore
+                        magna aliqua. Ut enim ad minim veniam, quis nostrud
+                        exercitation ullamco laboris nisi ut aliquip ex ea
+                        commodo consequat.
+                      imgThumbnail:
+                        imageID: 2
+                        url: >-
+                          https://asset.kompas.com/crops/EGyrhYPJi_psXlT29Sq3KyHMR0E=/40x0:904x576/750x500/data/photo/2021/09/29/6153c38932e38.jpeg
+                        altText: Default thumbnail
+                      imgContent:
+                        imageID: 3
+                        url: >-
+                          https://static.zerochan.net/Lumine.%28Genshin.Impact%29.full.3126229.jpg
+                        altText: Default image
+                      createdBy:
+                        userID: 2
+                        roleID: 1
+                        username: zhongli
+                        name: Zhongli
+                        referralCode: ECVSXJ
+                        mora: 7
+                      updatedBy:
+                        userID: 2
+                        roleID: 1
+                        username: zhongli
+                        name: Zhongli
+                        referralCode: ECVSXJ
+                        mora: 7
+                      createdAt: '2022-08-30T03:45:27.676783Z'
+                      updatedAt: '2022-08-30T03:45:27.676783Z'
+                      totalLike: 0
+                      totalShare: 0
+                    - postID: 9
+                      postTier:
+                        postTierID: 2
+                        name: Premium
+                        moraRequired: 1
+                        color: '#d49455'
+                      postCategory:
+                        postCategoryID: 3
+                        name: Sport
+                        color: '#6b46e3'
+                      title: Lesser Lord Kusanali is the current Dendro Archon
+                      content: >-
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                        sed do eiusmod tempor incididunt ut labore et dolore
+                        magna aliqua. Ut enim ad minim veniam, quis nostrud
+                        exercitation ullamco laboris nisi ut aliquip ex ea
+                        commodo consequat. Duis aute irure dolor in
+                        reprehenderit in voluptate velit esse cillum dolore eu
+                        fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+                        non proident, sunt in culpa qui officia deserunt mollit
+                        anim id est laborum.
+                      slug: lesser-lord-kusanali-is-the-current-dendro-archon
+                      summary: >-
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                        sed do eiusmod tempor incididunt ut labore et dolore
+                        magna aliqua. Ut enim ad minim veniam, quis nostrud
+                        exercitation ullamco laboris nisi ut aliquip ex ea
+                        commodo consequat.
+                      imgThumbnail:
+                        imageID: 2
+                        url: >-
+                          https://asset.kompas.com/crops/EGyrhYPJi_psXlT29Sq3KyHMR0E=/40x0:904x576/750x500/data/photo/2021/09/29/6153c38932e38.jpeg
+                        altText: Default thumbnail
+                      imgContent:
+                        imageID: 3
+                        url: >-
+                          https://static.zerochan.net/Lumine.%28Genshin.Impact%29.full.3126229.jpg
+                        altText: Default image
+                      createdBy:
+                        userID: 3
+                        roleID: 1
+                        username: raiden
+                        name: Raiden Shogun
+                        referralCode: XNDTBK
+                        mora: 7
+                      updatedBy:
+                        userID: 3
+                        roleID: 1
+                        username: raiden
+                        name: Raiden Shogun
+                        referralCode: XNDTBK
+                        mora: 7
+                      createdAt: '2022-09-04T18:19:25.029148Z'
+                      updatedAt: '2022-09-04T18:19:25.029148Z'
+                      totalLike: 0
+                      totalShare: 0
+                    - postID: 10
+                      postTier:
+                        postTierID: 2
+                        name: Premium
+                        moraRequired: 1
+                        color: '#d49455'
+                      postCategory:
+                        postCategoryID: 2
+                        name: Economy
+                        color: '#fcc142'
+                      title: >-
+                        People who encounter misfortunes in the Avidya Forest
+                        are lucky to meet a Forest Watcher named Tighnari
+                      content: >-
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                        sed do eiusmod tempor incididunt ut labore et dolore
+                        magna aliqua. Ut enim ad minim veniam, quis nostrud
+                        exercitation ullamco laboris nisi ut aliquip ex ea
+                        commodo consequat. Duis aute irure dolor in
+                        reprehenderit in voluptate velit esse cillum dolore eu
+                        fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+                        non proident, sunt in culpa qui officia deserunt mollit
+                        anim id est laborum.
+                      slug: >-
+                        people-who-encounter-misfortunes-in-the-avidya-forest-are-lucky-to-meet-a-forest-watcher-named-tighnari
+                      summary: >-
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                        sed do eiusmod tempor incididunt ut labore et dolore
+                        magna aliqua. Ut enim ad minim veniam, quis nostrud
+                        exercitation ullamco laboris nisi ut aliquip ex ea
+                        commodo consequat.
+                      imgThumbnail:
+                        imageID: 2
+                        url: >-
+                          https://asset.kompas.com/crops/EGyrhYPJi_psXlT29Sq3KyHMR0E=/40x0:904x576/750x500/data/photo/2021/09/29/6153c38932e38.jpeg
+                        altText: Default thumbnail
+                      imgContent:
+                        imageID: 3
+                        url: >-
+                          https://static.zerochan.net/Lumine.%28Genshin.Impact%29.full.3126229.jpg
+                        altText: Default image
+                      createdBy:
+                        userID: 3
+                        roleID: 1
+                        username: raiden
+                        name: Raiden Shogun
+                        referralCode: XNDTBK
+                        mora: 7
+                      updatedBy:
+                        userID: 3
+                        roleID: 1
+                        username: raiden
+                        name: Raiden Shogun
+                        referralCode: XNDTBK
+                        mora: 7
+                      createdAt: '2022-09-04T18:22:54.334267Z'
+                      updatedAt: '2022-09-04T18:22:54.334267Z'
+                      totalLike: 0
+                      totalShare: 0
+                    - postID: 11
+                      postTier:
+                        postTierID: 1
+                        name: Free
+                        moraRequired: 0
+                        color: '#adadad'
+                      postCategory:
+                        postCategoryID: 4
+                        name: Entertainment
+                        color: '#32afbf'
+                      title: >-
+                        Early civilizations in the Lisha region of Liyue are
+                        established at Dunyu Ruins, Lingju Pass, Qingxu Pool
+                      content: >-
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                        sed do eiusmod tempor incididunt ut labore et dolore
+                        magna aliqua. Ut enim ad minim veniam, quis nostrud
+                        exercitation ullamco laboris nisi ut aliquip ex ea
+                        commodo consequat. Duis aute irure dolor in
+                        reprehenderit in voluptate velit esse cillum dolore eu
+                        fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+                        non proident, sunt in culpa qui officia deserunt mollit
+                        anim id est laborum.
+                      slug: >-
+                        early-civilizations-in-the-lisha-region-of-liyue-are-established-at-dunyu-ruins-lingju-pass-qingxu-pool
+                      summary: >-
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                        sed do eiusmod tempor incididunt ut labore et dolore
+                        magna aliqua. Ut enim ad minim veniam, quis nostrud
+                        exercitation ullamco laboris nisi ut aliquip ex ea
+                        commodo consequat.
+                      imgThumbnail:
+                        imageID: 2
+                        url: >-
+                          https://asset.kompas.com/crops/EGyrhYPJi_psXlT29Sq3KyHMR0E=/40x0:904x576/750x500/data/photo/2021/09/29/6153c38932e38.jpeg
+                        altText: Default thumbnail
+                      imgContent:
+                        imageID: 3
+                        url: >-
+                          https://static.zerochan.net/Lumine.%28Genshin.Impact%29.full.3126229.jpg
+                        altText: Default image
+                      createdBy:
+                        userID: 3
+                        roleID: 1
+                        username: raiden
+                        name: Raiden Shogun
+                        referralCode: XNDTBK
+                        mora: 7
+                      updatedBy:
+                        userID: 3
+                        roleID: 1
+                        username: raiden
+                        name: Raiden Shogun
+                        referralCode: XNDTBK
+                        mora: 7
+                      createdAt: '2022-09-04T18:25:05.80598Z'
+                      updatedAt: '2022-09-04T18:25:05.80598Z'
+                      totalLike: 0
+                      totalShare: 0
+                    - postID: 12
+                      postTier:
+                        postTierID: 2
+                        name: Premium
+                        moraRequired: 1
+                        color: '#d49455'
+                      postCategory:
+                        postCategoryID: 1
+                        name: Politic
+                        color: '#d16262'
+                      title: >-
+                        The civilization on Tsurumi Island comes to an end
+                        through unknown means
+                      content: >-
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                        sed do eiusmod tempor incididunt ut labore et dolore
+                        magna aliqua. Ut enim ad minim veniam, quis nostrud
+                        exercitation ullamco laboris nisi ut aliquip ex ea
+                        commodo consequat. Duis aute irure dolor in
+                        reprehenderit in voluptate velit esse cillum dolore eu
+                        fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+                        non proident, sunt in culpa qui officia deserunt mollit
+                        anim id est laborum.
+                      slug: >-
+                        he-civilization-on-tsurumi-island-comes-to-an-end-through-unknown-means
+                      summary: >-
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                        sed do eiusmod tempor incididunt ut labore et dolore
+                        magna aliqua. Ut enim ad minim veniam, quis nostrud
+                        exercitation ullamco laboris nisi ut aliquip ex ea
+                        commodo consequat.
+                      imgThumbnail:
+                        imageID: 2
+                        url: >-
+                          https://asset.kompas.com/crops/EGyrhYPJi_psXlT29Sq3KyHMR0E=/40x0:904x576/750x500/data/photo/2021/09/29/6153c38932e38.jpeg
+                        altText: Default thumbnail
+                      imgContent:
+                        imageID: 3
+                        url: >-
+                          https://static.zerochan.net/Lumine.%28Genshin.Impact%29.full.3126229.jpg
+                        altText: Default image
+                      createdBy:
+                        userID: 3
+                        roleID: 1
+                        username: raiden
+                        name: Raiden Shogun
+                        referralCode: XNDTBK
+                        mora: 7
+                      updatedBy:
+                        userID: 3
+                        roleID: 1
+                        username: raiden
+                        name: Raiden Shogun
+                        referralCode: XNDTBK
+                        mora: 7
+                      createdAt: '2022-09-04T18:26:22.450365Z'
+                      updatedAt: '2022-09-04T18:26:22.450365Z'
+                      totalLike: 0
+                      totalShare: 0
+                    - postID: 13
+                      postTier:
+                        postTierID: 3
+                        name: VIP
+                        moraRequired: 2
+                        color: '#3e92e6'
+                      postCategory:
+                        postCategoryID: 3
+                        name: Sport
+                        color: '#6b46e3'
+                      title: >-
+                        The Archon War comes to an end as the final divine seat
+                        in Celestia is claimed
+                      content: >-
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                        sed do eiusmod tempor incididunt ut labore et dolore
+                        magna aliqua. Ut enim ad minim veniam, quis nostrud
+                        exercitation ullamco laboris nisi ut aliquip ex ea
+                        commodo consequat. Duis aute irure dolor in
+                        reprehenderit in voluptate velit esse cillum dolore eu
+                        fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+                        non proident, sunt in culpa qui officia deserunt mollit
+                        anim id est laborum.
+                      slug: >-
+                        the-archon-war-comes-to-an-end-as-the-final-divine-seat-in-celestia-is-claimed
+                      summary: >-
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                        sed do eiusmod tempor incididunt ut labore et dolore
+                        magna aliqua. Ut enim ad minim veniam, quis nostrud
+                        exercitation ullamco laboris nisi ut aliquip ex ea
+                        commodo consequat.
+                      imgThumbnail:
+                        imageID: 2
+                        url: >-
+                          https://asset.kompas.com/crops/EGyrhYPJi_psXlT29Sq3KyHMR0E=/40x0:904x576/750x500/data/photo/2021/09/29/6153c38932e38.jpeg
+                        altText: Default thumbnail
+                      imgContent:
+                        imageID: 3
+                        url: >-
+                          https://static.zerochan.net/Lumine.%28Genshin.Impact%29.full.3126229.jpg
+                        altText: Default image
+                      createdBy:
+                        userID: 3
+                        roleID: 1
+                        username: raiden
+                        name: Raiden Shogun
+                        referralCode: XNDTBK
+                        mora: 7
+                      updatedBy:
+                        userID: 3
+                        roleID: 1
+                        username: raiden
+                        name: Raiden Shogun
+                        referralCode: XNDTBK
+                        mora: 7
+                      createdAt: '2022-09-04T18:28:18.139363Z'
+                      updatedAt: '2022-09-04T18:28:18.139363Z'
+                      totalLike: 0
+                      totalShare: 0
+    post:
+      tags:
+        - Post
+      summary: Add new post
+      description: Add new post to DB
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                postTierID: 1
+                postCategoryID: 1
+                title: Test title
+                content: Test content
+                slug: test-slug
+                summary: Tes summary
+                createdByID: 1
+                updatedByID: 1
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            Bearer
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJUZXl2YXQgVGltZXMgLSBBUEkiLCJleHAiOjE2NjIzMDE2MTMsImlhdCI6MTY2MjI5ODAxMywidXNlciI6eyJ1c2VySUQiOjEsInJvbGVJRCI6MSwidXNlcm5hbWUiOiJ2ZW50aSIsIm5hbWUiOiJWZW50aSIsInJlZmVycmFsQ29kZSI6IlZFTlRJIiwibW9yYSI6NDN9fQ.fILeBGhfohgr-oRWeLEnFXV4U6FLggwpu2g_H9-u0I4
+      responses:
+        '201':
+          description: Created
+          headers:
+            access-control-allow-origin:
+              schema:
+                type: string
+                example: '*'
+            content-length:
+              schema:
+                type: integer
+                example: '296'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            date:
+              schema:
+                type: string
+                example: Sun, 04 Sep 2022 13:31:26 GMT
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                statusCode: 201
+                data:
+                  postID: 15
+                  postTier: null
+                  postCategory: null
+                  title: Test title
+                  content: Test content
+                  slug: test-title
+                  summary: Tes summary
+                  imgThumbnail: null
+                  imgContent: null
+                  createdBy: null
+                  updatedBy: null
+                  createdAt: ''
+                  updatedAt: ''
+                  totalLike: 0
+                  totalShare: 0
+  /pub/posts/overview/knights-of-favonius-held-a-hilichurl-hunting-competition:
+    get:
+      tags:
+        - Post
+      summary: Get post overview
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            Bearer
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJUZXl2YXQgVGltZXMgLSBBUEkiLCJleHAiOjE2NjIzMDM4NzIsImlhdCI6MTY2MjMwMDI3MiwidXNlciI6eyJ1c2VySUQiOjEsInJvbGVJRCI6MSwidXNlcm5hbWUiOiJ2ZW50aSIsIm5hbWUiOiJWZW50aSIsInJlZmVycmFsQ29kZSI6IlZFTlRJIiwibW9yYSI6NDN9fQ.tLnVn3rhnZAZcQ5jsi3vnoo0T5fq7KeNRmoLAfzvY_4
+      responses:
+        '200':
+          description: OK
+          headers:
+            content-length:
+              schema:
+                type: integer
+                example: '1069'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            date:
+              schema:
+                type: string
+                example: Sun, 04 Sep 2022 14:06:13 GMT
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                statusCode: 200
+                data:
+                  postID: 5
+                  postTier:
+                    postTierID: 1
+                    name: Free
+                    moraRequired: 0
+                    color: '#adadad'
+                  postCategory:
+                    postCategoryID: 3
+                    name: Sport
+                    color: '#6b46e3'
+                  title: Knights of Favonius held a hilichurl hunting competition
+                  slug: knights-of-favonius-held-a-hilichurl-hunting-competition
+                  summary: >-
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                    do eiusmod tempor incididunt ut labore et dolore magna
+                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+                    ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                  imgThumbnail:
+                    imageID: 2
+                    url: >-
+                      https://asset.kompas.com/crops/EGyrhYPJi_psXlT29Sq3KyHMR0E=/40x0:904x576/750x500/data/photo/2021/09/29/6153c38932e38.jpeg
+                    altText: Default thumbnail
+                  createdBy:
+                    userID: 1
+                    roleID: 1
+                    username: venti
+                    name: Venti
+                    referralCode: VENTI
+                    mora: 43
+                  updatedBy:
+                    userID: 1
+                    roleID: 1
+                    username: venti
+                    name: Venti
+                    referralCode: VENTI
+                    mora: 43
+                  createdAt: '2022-08-30T03:32:09.665955Z'
+                  updatedAt: '2022-08-30T03:32:09.665955Z'
+                  totalLike: 2
+                  totalShare: 2
+  /posts/1:
+    get:
+      tags:
+        - Post
+      summary: Get a post detail
+      description: Get a post detail
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            Bearer
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJUZXl2YXQgVGltZXMgLSBBUEkiLCJleHAiOjE2NjIzMDEzNzQsImlhdCI6MTY2MjI5Nzc3NCwidXNlciI6eyJ1c2VySUQiOjEsInJvbGVJRCI6MSwidXNlcm5hbWUiOiJ2ZW50aSIsIm5hbWUiOiJWZW50aSIsInJlZmVycmFsQ29kZSI6IlZFTlRJIiwibW9yYSI6NDN9fQ.7QPtgDg2DnjDLiZa_XnwKKnikO-JacbffFbE-r5CTSg
+      responses:
+        '200':
+          description: OK
+          headers:
+            content-length:
+              schema:
+                type: integer
+                example: '977'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            date:
+              schema:
+                type: string
+                example: Sun, 04 Sep 2022 13:25:21 GMT
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                statusCode: 200
+                data:
+                  postID: 1
+                  postTier:
+                    postTierID: 1
+                    name: Free
+                    moraRequired: 0
+                    color: '#adadad'
+                  postCategory:
+                    postCategoryID: 1
+                    name: Politic
+                    color: '#d16262'
+                  title: Mondstadt signs a deal with Fatui
+                  content: Test content
+                  slug: mondstadt-signs-a-deal-with-fatui
+                  summary: What do you think, Jean?
+                  imgThumbnail:
+                    imageID: 2
+                    url: >-
+                      https://asset.kompas.com/crops/EGyrhYPJi_psXlT29Sq3KyHMR0E=/40x0:904x576/750x500/data/photo/2021/09/29/6153c38932e38.jpeg
+                    altText: Default thumbnail
+                  imgContent:
+                    imageID: 3
+                    url: >-
+                      https://static.zerochan.net/Lumine.%28Genshin.Impact%29.full.3126229.jpg
+                    altText: Default image
+                  createdBy:
+                    userID: 1
+                    roleID: 1
+                    username: venti
+                    name: Venti
+                    referralCode: VENTI
+                    mora: 43
+                  updatedBy:
+                    userID: 1
+                    roleID: 1
+                    username: venti
+                    name: Venti
+                    referralCode: VENTI
+                    mora: 43
+                  createdAt: '2022-08-30T02:31:39.662158Z'
+                  updatedAt: '2022-08-30T02:31:39.662158Z'
+                  totalLike: 0
+                  totalShare: 0
+    put:
+      tags:
+        - Post
+      summary: Update a post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                postTierID: 1
+                postCategoryID: 1
+                title: some title
+                content: some content
+                summary: some summary
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            Bearer
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJUZXl2YXQgVGltZXMgLSBBUEkiLCJleHAiOjE2NjIzMDE2MTMsImlhdCI6MTY2MjI5ODAxMywidXNlciI6eyJ1c2VySUQiOjEsInJvbGVJRCI6MSwidXNlcm5hbWUiOiJ2ZW50aSIsIm5hbWUiOiJWZW50aSIsInJlZmVycmFsQ29kZSI6IlZFTlRJIiwibW9yYSI6NDN9fQ.fILeBGhfohgr-oRWeLEnFXV4U6FLggwpu2g_H9-u0I4
+      responses:
+        '200':
+          description: OK
+          headers:
+            access-control-allow-origin:
+              schema:
+                type: string
+                example: '*'
+            content-length:
+              schema:
+                type: integer
+                example: '286'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            date:
+              schema:
+                type: string
+                example: Sun, 04 Sep 2022 13:28:06 GMT
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                statusCode: 200
+                data:
+                  postID: 1
+                  postTier: null
+                  postCategory: null
+                  title: some title
+                  content: some content
+                  slug: ''
+                  summary: some summary
+                  imgThumbnail: null
+                  imgContent: null
+                  createdBy: null
+                  updatedBy: null
+                  createdAt: ''
+                  updatedAt: ''
+                  totalLike: 0
+                  totalShare: 0
+    delete:
+      tags:
+        - Post
+      summary: Delete a post
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            Bearer
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJUZXl2YXQgVGltZXMgLSBBUEkiLCJleHAiOjE2NjIzMDE2MTMsImlhdCI6MTY2MjI5ODAxMywidXNlciI6eyJ1c2VySUQiOjEsInJvbGVJRCI6MSwidXNlcm5hbWUiOiJ2ZW50aSIsIm5hbWUiOiJWZW50aSIsInJlZmVycmFsQ29kZSI6IlZFTlRJIiwibW9yYSI6NDN9fQ.fILeBGhfohgr-oRWeLEnFXV4U6FLggwpu2g_H9-u0I4
+      responses:
+        '200':
+          description: OK
+          headers:
+            access-control-allow-origin:
+              schema:
+                type: string
+                example: '*'
+            content-length:
+              schema:
+                type: integer
+                example: '28'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            date:
+              schema:
+                type: string
+                example: Sun, 04 Sep 2022 13:29:57 GMT
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                statusCode: 200
+                data: ''
+  /pub/posts:
+    get:
+      tags:
+        - Post
+      summary: Pub get posts
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            Bearer
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJUZXl2YXQgVGltZXMgLSBBUEkiLCJleHAiOjE2NjIzMDM4NzIsImlhdCI6MTY2MjMwMDI3MiwidXNlciI6eyJ1c2VySUQiOjEsInJvbGVJRCI6MSwidXNlcm5hbWUiOiJ2ZW50aSIsIm5hbWUiOiJWZW50aSIsInJlZmVycmFsQ29kZSI6IlZFTlRJIiwibW9yYSI6NDN9fQ.tLnVn3rhnZAZcQ5jsi3vnoo0T5fq7KeNRmoLAfzvY_4
+        - name: s
+          in: query
+          schema:
+            type: string
+        - name: category
+          in: query
+          schema:
+            type: integer
+          example: '0'
+        - name: tier
+          in: query
+          schema:
+            type: integer
+          example: '0'
+        - name: sortBy
+          in: query
+          schema:
+            type: string
+          example: date
+        - name: sortOrder
+          in: query
+          schema:
+            type: string
+          example: asc
+        - name: limit
+          in: query
+          schema:
+            type: integer
+          example: '12'
+        - name: page
+          in: query
+          schema:
+            type: integer
+          example: '1'
+      responses:
+        '200':
+          description: OK
+          headers:
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            date:
+              schema:
+                type: string
+                example: Sun, 04 Sep 2022 14:04:44 GMT
+            transfer-encoding:
+              schema:
+                type: string
+                example: chunked
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                statusCode: 200
+                data:
+                  count: 12
+                  limit: 12
+                  page: 1
+                  totalPage: 2
+                  totalData: 14
+                  posts:
+                    - postID: 2
+                      postTier:
+                        postTierID: 1
+                        name: Free
+                        moraRequired: 0
+                        color: '#adadad'
+                      postCategory:
+                        postCategoryID: 1
+                        name: Politic
+                        color: '#d16262'
+                      title: Inazuma Closing It's Gate From the Outside World Again?
+                      content: >-
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                        sed do eiusmod tempor incididunt ut labore et dolore
+                        magna aliqua. Ut enim ad minim veniam, quis nostrud
+                        exercitation ullamco laboris nisi ut aliquip ex ea
+                        commodo consequat. Duis aute irure dolor in
+                        reprehenderit in voluptate velit esse cillum dolore eu
+                        fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+                        non proident, sunt in culpa qui officia deserunt mollit
+                        anim id est laborum.
+                      slug: inazuma-closing-it-s-gate-from-the-outside-world-again
+                      summary: >-
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                        sed do eiusmod tempor incididunt ut labore et dolore
+                        magna aliqua. Ut enim ad minim veniam, quis nostrud
+                        exercitation ullamco laboris nisi ut aliquip ex ea
+                        commodo consequat.
+                      imgThumbnail:
+                        imageID: 2
+                        url: >-
+                          https://asset.kompas.com/crops/EGyrhYPJi_psXlT29Sq3KyHMR0E=/40x0:904x576/750x500/data/photo/2021/09/29/6153c38932e38.jpeg
+                        altText: Default thumbnail
+                      imgContent:
+                        imageID: 3
+                        url: >-
+                          https://static.zerochan.net/Lumine.%28Genshin.Impact%29.full.3126229.jpg
+                        altText: Default image
+                      createdBy:
+                        userID: 3
+                        roleID: 1
+                        username: raiden
+                        name: Raiden Shogun
+                        referralCode: XNDTBK
+                        mora: 7
+                      updatedBy:
+                        userID: 3
+                        roleID: 1
+                        username: raiden
+                        name: Raiden Shogun
+                        referralCode: XNDTBK
+                        mora: 7
+                      createdAt: '2022-08-30T03:23:43.019342Z'
+                      updatedAt: '2022-08-30T03:23:43.019342Z'
+                      totalLike: 0
+                      totalShare: 0
+                    - postID: 3
+                      postTier:
+                        postTierID: 3
+                        name: VIP
+                        moraRequired: 2
+                        color: '#3e92e6'
+                      postCategory:
+                        postCategoryID: 2
+                        name: Economy
+                        color: '#fcc142'
+                      title: >-
+                        Ningguang has just announced an important matter
+                        regarding financial policy
+                      content: >-
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                        sed do eiusmod tempor incididunt ut labore et dolore
+                        magna aliqua. Ut enim ad minim veniam, quis nostrud
+                        exercitation ullamco laboris nisi ut aliquip ex ea
+                        commodo consequat. Duis aute irure dolor in
+                        reprehenderit in voluptate velit esse cillum dolore eu
+                        fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+                        non proident, sunt in culpa qui officia deserunt mollit
+                        anim id est laborum.
+                      slug: >-
+                        ningguang-has-just-announced-an-important-matter-regarding-financial-policy
+                      summary: >-
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                        sed do eiusmod tempor incididunt ut labore et dolore
+                        magna aliqua. Ut enim ad minim veniam, quis nostrud
+                        exercitation ullamco laboris nisi ut aliquip ex ea
+                        commodo consequat.
+                      imgThumbnail:
+                        imageID: 2
+                        url: >-
+                          https://asset.kompas.com/crops/EGyrhYPJi_psXlT29Sq3KyHMR0E=/40x0:904x576/750x500/data/photo/2021/09/29/6153c38932e38.jpeg
+                        altText: Default thumbnail
+                      imgContent:
+                        imageID: 3
+                        url: >-
+                          https://static.zerochan.net/Lumine.%28Genshin.Impact%29.full.3126229.jpg
+                        altText: Default image
+                      createdBy:
+                        userID: 3
+                        roleID: 1
+                        username: raiden
+                        name: Raiden Shogun
+                        referralCode: XNDTBK
+                        mora: 7
+                      updatedBy:
+                        userID: 3
+                        roleID: 1
+                        username: raiden
+                        name: Raiden Shogun
+                        referralCode: XNDTBK
+                        mora: 7
+                      createdAt: '2022-08-30T03:27:13.758213Z'
+                      updatedAt: '2022-08-30T03:27:13.758213Z'
+                      totalLike: 0
+                      totalShare: 0
+                    - postID: 4
+                      postTier:
+                        postTierID: 2
+                        name: Premium
+                        moraRequired: 1
+                        color: '#d49455'
+                      postCategory:
+                        postCategoryID: 4
+                        name: Entertainment
+                        color: '#32afbf'
+                      title: This is why Diluc's tavern is the best tavern in town
+                      content: >-
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                        sed do eiusmod tempor incididunt ut labore et dolore
+                        magna aliqua. Ut enim ad minim veniam, quis nostrud
+                        exercitation ullamco laboris nisi ut aliquip ex ea
+                        commodo consequat. Duis aute irure dolor in
+                        reprehenderit in voluptate velit esse cillum dolore eu
+                        fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+                        non proident, sunt in culpa qui officia deserunt mollit
+                        anim id est laborum.
+                      slug: why-diluc-s-tavern-is-the-best-tavern-in-town
+                      summary: >-
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                        sed do eiusmod tempor incididunt ut labore et dolore
+                        magna aliqua. Ut enim ad minim veniam, quis nostrud
+                        exercitation ullamco laboris nisi ut aliquip ex ea
+                        commodo consequat.
+                      imgThumbnail:
+                        imageID: 2
+                        url: >-
+                          https://asset.kompas.com/crops/EGyrhYPJi_psXlT29Sq3KyHMR0E=/40x0:904x576/750x500/data/photo/2021/09/29/6153c38932e38.jpeg
+                        altText: Default thumbnail
+                      imgContent:
+                        imageID: 3
+                        url: >-
+                          https://static.zerochan.net/Lumine.%28Genshin.Impact%29.full.3126229.jpg
+                        altText: Default image
+                      createdBy:
+                        userID: 1
+                        roleID: 1
+                        username: venti
+                        name: Venti
+                        referralCode: VENTI
+                        mora: 43
+                      updatedBy:
+                        userID: 1
+                        roleID: 1
+                        username: venti
+                        name: Venti
+                        referralCode: VENTI
+                        mora: 43
+                      createdAt: '2022-08-30T03:29:34.004397Z'
+                      updatedAt: '2022-08-30T03:29:34.004397Z'
+                      totalLike: 0
+                      totalShare: 0
+                    - postID: 5
+                      postTier:
+                        postTierID: 1
+                        name: Free
+                        moraRequired: 0
+                        color: '#adadad'
+                      postCategory:
+                        postCategoryID: 3
+                        name: Sport
+                        color: '#6b46e3'
+                      title: Knights of Favonius held a hilichurl hunting competition
+                      content: >-
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                        sed do eiusmod tempor incididunt ut labore et dolore
+                        magna aliqua. Ut enim ad minim veniam, quis nostrud
+                        exercitation ullamco laboris nisi ut aliquip ex ea
+                        commodo consequat. Duis aute irure dolor in
+                        reprehenderit in voluptate velit esse cillum dolore eu
+                        fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+                        non proident, sunt in culpa qui officia deserunt mollit
+                        anim id est laborum.
+                      slug: knights-of-favonius-held-a-hilichurl-hunting-competition
+                      summary: >-
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                        sed do eiusmod tempor incididunt ut labore et dolore
+                        magna aliqua. Ut enim ad minim veniam, quis nostrud
+                        exercitation ullamco laboris nisi ut aliquip ex ea
+                        commodo consequat.
+                      imgThumbnail:
+                        imageID: 2
+                        url: >-
+                          https://asset.kompas.com/crops/EGyrhYPJi_psXlT29Sq3KyHMR0E=/40x0:904x576/750x500/data/photo/2021/09/29/6153c38932e38.jpeg
+                        altText: Default thumbnail
+                      imgContent:
+                        imageID: 3
+                        url: >-
+                          https://static.zerochan.net/Lumine.%28Genshin.Impact%29.full.3126229.jpg
+                        altText: Default image
+                      createdBy:
+                        userID: 1
+                        roleID: 1
+                        username: venti
+                        name: Venti
+                        referralCode: VENTI
+                        mora: 43
+                      updatedBy:
+                        userID: 1
+                        roleID: 1
+                        username: venti
+                        name: Venti
+                        referralCode: VENTI
+                        mora: 43
+                      createdAt: '2022-08-30T03:32:09.665955Z'
+                      updatedAt: '2022-08-30T03:32:09.665955Z'
+                      totalLike: 0
+                      totalShare: 0
+                    - postID: 6
+                      postTier:
+                        postTierID: 3
+                        name: VIP
+                        moraRequired: 2
+                        color: '#3e92e6'
+                      postCategory:
+                        postCategoryID: 1
+                        name: Politic
+                        color: '#d16262'
+                      title: Who is Barbatos and where is he now?
+                      content: >-
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                        sed do eiusmod tempor incididunt ut labore et dolore
+                        magna aliqua. Ut enim ad minim veniam, quis nostrud
+                        exercitation ullamco laboris nisi ut aliquip ex ea
+                        commodo consequat. Duis aute irure dolor in
+                        reprehenderit in voluptate velit esse cillum dolore eu
+                        fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+                        non proident, sunt in culpa qui officia deserunt mollit
+                        anim id est laborum.
+                      slug: who-is-barbatos-and-where-is-he-now
+                      summary: >-
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                        sed do eiusmod tempor incididunt ut labore et dolore
+                        magna aliqua. Ut enim ad minim veniam, quis nostrud
+                        exercitation ullamco laboris nisi ut aliquip ex ea
+                        commodo consequat.
+                      imgThumbnail:
+                        imageID: 2
+                        url: >-
+                          https://asset.kompas.com/crops/EGyrhYPJi_psXlT29Sq3KyHMR0E=/40x0:904x576/750x500/data/photo/2021/09/29/6153c38932e38.jpeg
+                        altText: Default thumbnail
+                      imgContent:
+                        imageID: 3
+                        url: >-
+                          https://static.zerochan.net/Lumine.%28Genshin.Impact%29.full.3126229.jpg
+                        altText: Default image
+                      createdBy:
+                        userID: 1
+                        roleID: 1
+                        username: venti
+                        name: Venti
+                        referralCode: VENTI
+                        mora: 43
+                      updatedBy:
+                        userID: 1
+                        roleID: 1
+                        username: venti
+                        name: Venti
+                        referralCode: VENTI
+                        mora: 43
+                      createdAt: '2022-08-30T03:33:24.658018Z'
+                      updatedAt: '2022-08-30T03:33:24.658018Z'
+                      totalLike: 0
+                      totalShare: 0
+                    - postID: 7
+                      postTier:
+                        postTierID: 3
+                        name: VIP
+                        moraRequired: 2
+                        color: '#3e92e6'
+                      postCategory:
+                        postCategoryID: 4
+                        name: Entertainment
+                        color: '#32afbf'
+                      title: Osmanthus wine taste the same as I remember
+                      content: >-
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                        sed do eiusmod tempor incididunt ut labore et dolore
+                        magna aliqua. Ut enim ad minim veniam, quis nostrud
+                        exercitation ullamco laboris nisi ut aliquip ex ea
+                        commodo consequat. Duis aute irure dolor in
+                        reprehenderit in voluptate velit esse cillum dolore eu
+                        fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+                        non proident, sunt in culpa qui officia deserunt mollit
+                        anim id est laborum.
+                      slug: osmanthus-wine-taste-the-same-as-i-remember
+                      summary: >-
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                        sed do eiusmod tempor incididunt ut labore et dolore
+                        magna aliqua. Ut enim ad minim veniam, quis nostrud
+                        exercitation ullamco laboris nisi ut aliquip ex ea
+                        commodo consequat.
+                      imgThumbnail:
+                        imageID: 2
+                        url: >-
+                          https://asset.kompas.com/crops/EGyrhYPJi_psXlT29Sq3KyHMR0E=/40x0:904x576/750x500/data/photo/2021/09/29/6153c38932e38.jpeg
+                        altText: Default thumbnail
+                      imgContent:
+                        imageID: 3
+                        url: >-
+                          https://static.zerochan.net/Lumine.%28Genshin.Impact%29.full.3126229.jpg
+                        altText: Default image
+                      createdBy:
+                        userID: 2
+                        roleID: 1
+                        username: zhongli
+                        name: Zhongli
+                        referralCode: ECVSXJ
+                        mora: 7
+                      updatedBy:
+                        userID: 2
+                        roleID: 1
+                        username: zhongli
+                        name: Zhongli
+                        referralCode: ECVSXJ
+                        mora: 7
+                      createdAt: '2022-08-30T03:34:33.375571Z'
+                      updatedAt: '2022-08-30T03:34:33.375571Z'
+                      totalLike: 0
+                      totalShare: 0
+                    - postID: 8
+                      postTier:
+                        postTierID: 1
+                        name: Free
+                        moraRequired: 0
+                        color: '#adadad'
+                      postCategory:
+                        postCategoryID: 2
+                        name: Economy
+                        color: '#fcc142'
+                      title: Liben finally retired
+                      content: >-
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                        sed do eiusmod tempor incididunt ut labore et dolore
+                        magna aliqua. Ut enim ad minim veniam, quis nostrud
+                        exercitation ullamco laboris nisi ut aliquip ex ea
+                        commodo consequat. Duis aute irure dolor in
+                        reprehenderit in voluptate velit esse cillum dolore eu
+                        fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+                        non proident, sunt in culpa qui officia deserunt mollit
+                        anim id est laborum.
+                      slug: liben-finally-retired
+                      summary: >-
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                        sed do eiusmod tempor incididunt ut labore et dolore
+                        magna aliqua. Ut enim ad minim veniam, quis nostrud
+                        exercitation ullamco laboris nisi ut aliquip ex ea
+                        commodo consequat.
+                      imgThumbnail:
+                        imageID: 2
+                        url: >-
+                          https://asset.kompas.com/crops/EGyrhYPJi_psXlT29Sq3KyHMR0E=/40x0:904x576/750x500/data/photo/2021/09/29/6153c38932e38.jpeg
+                        altText: Default thumbnail
+                      imgContent:
+                        imageID: 3
+                        url: >-
+                          https://static.zerochan.net/Lumine.%28Genshin.Impact%29.full.3126229.jpg
+                        altText: Default image
+                      createdBy:
+                        userID: 2
+                        roleID: 1
+                        username: zhongli
+                        name: Zhongli
+                        referralCode: ECVSXJ
+                        mora: 7
+                      updatedBy:
+                        userID: 2
+                        roleID: 1
+                        username: zhongli
+                        name: Zhongli
+                        referralCode: ECVSXJ
+                        mora: 7
+                      createdAt: '2022-08-30T03:45:27.676783Z'
+                      updatedAt: '2022-08-30T03:45:27.676783Z'
+                      totalLike: 0
+                      totalShare: 0
+                    - postID: 9
+                      postTier:
+                        postTierID: 2
+                        name: Premium
+                        moraRequired: 1
+                        color: '#d49455'
+                      postCategory:
+                        postCategoryID: 3
+                        name: Sport
+                        color: '#6b46e3'
+                      title: Lesser Lord Kusanali is the current Dendro Archon
+                      content: >-
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                        sed do eiusmod tempor incididunt ut labore et dolore
+                        magna aliqua. Ut enim ad minim veniam, quis nostrud
+                        exercitation ullamco laboris nisi ut aliquip ex ea
+                        commodo consequat. Duis aute irure dolor in
+                        reprehenderit in voluptate velit esse cillum dolore eu
+                        fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+                        non proident, sunt in culpa qui officia deserunt mollit
+                        anim id est laborum.
+                      slug: lesser-lord-kusanali-is-the-current-dendro-archon
+                      summary: >-
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                        sed do eiusmod tempor incididunt ut labore et dolore
+                        magna aliqua. Ut enim ad minim veniam, quis nostrud
+                        exercitation ullamco laboris nisi ut aliquip ex ea
+                        commodo consequat.
+                      imgThumbnail:
+                        imageID: 2
+                        url: >-
+                          https://asset.kompas.com/crops/EGyrhYPJi_psXlT29Sq3KyHMR0E=/40x0:904x576/750x500/data/photo/2021/09/29/6153c38932e38.jpeg
+                        altText: Default thumbnail
+                      imgContent:
+                        imageID: 3
+                        url: >-
+                          https://static.zerochan.net/Lumine.%28Genshin.Impact%29.full.3126229.jpg
+                        altText: Default image
+                      createdBy:
+                        userID: 3
+                        roleID: 1
+                        username: raiden
+                        name: Raiden Shogun
+                        referralCode: XNDTBK
+                        mora: 7
+                      updatedBy:
+                        userID: 3
+                        roleID: 1
+                        username: raiden
+                        name: Raiden Shogun
+                        referralCode: XNDTBK
+                        mora: 7
+                      createdAt: '2022-09-04T18:19:25.029148Z'
+                      updatedAt: '2022-09-04T18:19:25.029148Z'
+                      totalLike: 0
+                      totalShare: 0
+                    - postID: 10
+                      postTier:
+                        postTierID: 2
+                        name: Premium
+                        moraRequired: 1
+                        color: '#d49455'
+                      postCategory:
+                        postCategoryID: 2
+                        name: Economy
+                        color: '#fcc142'
+                      title: >-
+                        People who encounter misfortunes in the Avidya Forest
+                        are lucky to meet a Forest Watcher named Tighnari
+                      content: >-
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                        sed do eiusmod tempor incididunt ut labore et dolore
+                        magna aliqua. Ut enim ad minim veniam, quis nostrud
+                        exercitation ullamco laboris nisi ut aliquip ex ea
+                        commodo consequat. Duis aute irure dolor in
+                        reprehenderit in voluptate velit esse cillum dolore eu
+                        fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+                        non proident, sunt in culpa qui officia deserunt mollit
+                        anim id est laborum.
+                      slug: >-
+                        people-who-encounter-misfortunes-in-the-avidya-forest-are-lucky-to-meet-a-forest-watcher-named-tighnari
+                      summary: >-
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                        sed do eiusmod tempor incididunt ut labore et dolore
+                        magna aliqua. Ut enim ad minim veniam, quis nostrud
+                        exercitation ullamco laboris nisi ut aliquip ex ea
+                        commodo consequat.
+                      imgThumbnail:
+                        imageID: 2
+                        url: >-
+                          https://asset.kompas.com/crops/EGyrhYPJi_psXlT29Sq3KyHMR0E=/40x0:904x576/750x500/data/photo/2021/09/29/6153c38932e38.jpeg
+                        altText: Default thumbnail
+                      imgContent:
+                        imageID: 3
+                        url: >-
+                          https://static.zerochan.net/Lumine.%28Genshin.Impact%29.full.3126229.jpg
+                        altText: Default image
+                      createdBy:
+                        userID: 3
+                        roleID: 1
+                        username: raiden
+                        name: Raiden Shogun
+                        referralCode: XNDTBK
+                        mora: 7
+                      updatedBy:
+                        userID: 3
+                        roleID: 1
+                        username: raiden
+                        name: Raiden Shogun
+                        referralCode: XNDTBK
+                        mora: 7
+                      createdAt: '2022-09-04T18:22:54.334267Z'
+                      updatedAt: '2022-09-04T18:22:54.334267Z'
+                      totalLike: 0
+                      totalShare: 0
+                    - postID: 11
+                      postTier:
+                        postTierID: 1
+                        name: Free
+                        moraRequired: 0
+                        color: '#adadad'
+                      postCategory:
+                        postCategoryID: 4
+                        name: Entertainment
+                        color: '#32afbf'
+                      title: >-
+                        Early civilizations in the Lisha region of Liyue are
+                        established at Dunyu Ruins, Lingju Pass, Qingxu Pool
+                      content: >-
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                        sed do eiusmod tempor incididunt ut labore et dolore
+                        magna aliqua. Ut enim ad minim veniam, quis nostrud
+                        exercitation ullamco laboris nisi ut aliquip ex ea
+                        commodo consequat. Duis aute irure dolor in
+                        reprehenderit in voluptate velit esse cillum dolore eu
+                        fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+                        non proident, sunt in culpa qui officia deserunt mollit
+                        anim id est laborum.
+                      slug: >-
+                        early-civilizations-in-the-lisha-region-of-liyue-are-established-at-dunyu-ruins-lingju-pass-qingxu-pool
+                      summary: >-
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                        sed do eiusmod tempor incididunt ut labore et dolore
+                        magna aliqua. Ut enim ad minim veniam, quis nostrud
+                        exercitation ullamco laboris nisi ut aliquip ex ea
+                        commodo consequat.
+                      imgThumbnail:
+                        imageID: 2
+                        url: >-
+                          https://asset.kompas.com/crops/EGyrhYPJi_psXlT29Sq3KyHMR0E=/40x0:904x576/750x500/data/photo/2021/09/29/6153c38932e38.jpeg
+                        altText: Default thumbnail
+                      imgContent:
+                        imageID: 3
+                        url: >-
+                          https://static.zerochan.net/Lumine.%28Genshin.Impact%29.full.3126229.jpg
+                        altText: Default image
+                      createdBy:
+                        userID: 3
+                        roleID: 1
+                        username: raiden
+                        name: Raiden Shogun
+                        referralCode: XNDTBK
+                        mora: 7
+                      updatedBy:
+                        userID: 3
+                        roleID: 1
+                        username: raiden
+                        name: Raiden Shogun
+                        referralCode: XNDTBK
+                        mora: 7
+                      createdAt: '2022-09-04T18:25:05.80598Z'
+                      updatedAt: '2022-09-04T18:25:05.80598Z'
+                      totalLike: 0
+                      totalShare: 0
+                    - postID: 12
+                      postTier:
+                        postTierID: 2
+                        name: Premium
+                        moraRequired: 1
+                        color: '#d49455'
+                      postCategory:
+                        postCategoryID: 1
+                        name: Politic
+                        color: '#d16262'
+                      title: >-
+                        The civilization on Tsurumi Island comes to an end
+                        through unknown means
+                      content: >-
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                        sed do eiusmod tempor incididunt ut labore et dolore
+                        magna aliqua. Ut enim ad minim veniam, quis nostrud
+                        exercitation ullamco laboris nisi ut aliquip ex ea
+                        commodo consequat. Duis aute irure dolor in
+                        reprehenderit in voluptate velit esse cillum dolore eu
+                        fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+                        non proident, sunt in culpa qui officia deserunt mollit
+                        anim id est laborum.
+                      slug: >-
+                        he-civilization-on-tsurumi-island-comes-to-an-end-through-unknown-means
+                      summary: >-
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                        sed do eiusmod tempor incididunt ut labore et dolore
+                        magna aliqua. Ut enim ad minim veniam, quis nostrud
+                        exercitation ullamco laboris nisi ut aliquip ex ea
+                        commodo consequat.
+                      imgThumbnail:
+                        imageID: 2
+                        url: >-
+                          https://asset.kompas.com/crops/EGyrhYPJi_psXlT29Sq3KyHMR0E=/40x0:904x576/750x500/data/photo/2021/09/29/6153c38932e38.jpeg
+                        altText: Default thumbnail
+                      imgContent:
+                        imageID: 3
+                        url: >-
+                          https://static.zerochan.net/Lumine.%28Genshin.Impact%29.full.3126229.jpg
+                        altText: Default image
+                      createdBy:
+                        userID: 3
+                        roleID: 1
+                        username: raiden
+                        name: Raiden Shogun
+                        referralCode: XNDTBK
+                        mora: 7
+                      updatedBy:
+                        userID: 3
+                        roleID: 1
+                        username: raiden
+                        name: Raiden Shogun
+                        referralCode: XNDTBK
+                        mora: 7
+                      createdAt: '2022-09-04T18:26:22.450365Z'
+                      updatedAt: '2022-09-04T18:26:22.450365Z'
+                      totalLike: 0
+                      totalShare: 0
+                    - postID: 13
+                      postTier:
+                        postTierID: 3
+                        name: VIP
+                        moraRequired: 2
+                        color: '#3e92e6'
+                      postCategory:
+                        postCategoryID: 3
+                        name: Sport
+                        color: '#6b46e3'
+                      title: >-
+                        The Archon War comes to an end as the final divine seat
+                        in Celestia is claimed
+                      content: >-
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                        sed do eiusmod tempor incididunt ut labore et dolore
+                        magna aliqua. Ut enim ad minim veniam, quis nostrud
+                        exercitation ullamco laboris nisi ut aliquip ex ea
+                        commodo consequat. Duis aute irure dolor in
+                        reprehenderit in voluptate velit esse cillum dolore eu
+                        fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+                        non proident, sunt in culpa qui officia deserunt mollit
+                        anim id est laborum.
+                      slug: >-
+                        the-archon-war-comes-to-an-end-as-the-final-divine-seat-in-celestia-is-claimed
+                      summary: >-
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                        sed do eiusmod tempor incididunt ut labore et dolore
+                        magna aliqua. Ut enim ad minim veniam, quis nostrud
+                        exercitation ullamco laboris nisi ut aliquip ex ea
+                        commodo consequat.
+                      imgThumbnail:
+                        imageID: 2
+                        url: >-
+                          https://asset.kompas.com/crops/EGyrhYPJi_psXlT29Sq3KyHMR0E=/40x0:904x576/750x500/data/photo/2021/09/29/6153c38932e38.jpeg
+                        altText: Default thumbnail
+                      imgContent:
+                        imageID: 3
+                        url: >-
+                          https://static.zerochan.net/Lumine.%28Genshin.Impact%29.full.3126229.jpg
+                        altText: Default image
+                      createdBy:
+                        userID: 3
+                        roleID: 1
+                        username: raiden
+                        name: Raiden Shogun
+                        referralCode: XNDTBK
+                        mora: 7
+                      updatedBy:
+                        userID: 3
+                        roleID: 1
+                        username: raiden
+                        name: Raiden Shogun
+                        referralCode: XNDTBK
+                        mora: 7
+                      createdAt: '2022-09-04T18:28:18.139363Z'
+                      updatedAt: '2022-09-04T18:28:18.139363Z'
+                      totalLike: 0
+                      totalShare: 0
+  /pub/posts/3/activities:
+    post:
+      tags:
+        - Activity
+      summary: Save user activity on a post
+      description: Like, or share a post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                isLiked: 0
+                isShared: 0
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            Bearer
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJUZXl2YXQgVGltZXMgLSBBUEkiLCJleHAiOjE2NjIzMDM4NzIsImlhdCI6MTY2MjMwMDI3MiwidXNlciI6eyJ1c2VySUQiOjEsInJvbGVJRCI6MSwidXNlcm5hbWUiOiJ2ZW50aSIsIm5hbWUiOiJWZW50aSIsInJlZmVycmFsQ29kZSI6IlZFTlRJIiwibW9yYSI6NDN9fQ.tLnVn3rhnZAZcQ5jsi3vnoo0T5fq7KeNRmoLAfzvY_4
+      responses:
+        '200':
+          description: OK
+          headers:
+            access-control-allow-origin:
+              schema:
+                type: string
+                example: '*'
+            content-length:
+              schema:
+                type: integer
+                example: '221'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            date:
+              schema:
+                type: string
+                example: Sun, 04 Sep 2022 14:09:04 GMT
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                statusCode: 200
+                data:
+                  userPostActivityID: 41
+                  userID: 1
+                  user: null
+                  postID: 3
+                  post: null
+                  isLiked: 1
+                  isShared: 0
+                  viewsCount: 0
+                  createdAt: '2022-09-04T21:08:54.770217Z'
+                  updatedAt: '2022-09-04T21:08:54.783088Z'
+  /pub/posts/5/activities:
+    get:
+      tags:
+        - Activity
+      summary: Get user activity of a post
+      description: Get user activity of a post
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            Bearer
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJUZXl2YXQgVGltZXMgLSBBUEkiLCJleHAiOjE2NjIzMDM4NzIsImlhdCI6MTY2MjMwMDI3MiwidXNlciI6eyJ1c2VySUQiOjEsInJvbGVJRCI6MSwidXNlcm5hbWUiOiJ2ZW50aSIsIm5hbWUiOiJWZW50aSIsInJlZmVycmFsQ29kZSI6IlZFTlRJIiwibW9yYSI6NDN9fQ.tLnVn3rhnZAZcQ5jsi3vnoo0T5fq7KeNRmoLAfzvY_4
+      responses:
+        '200':
+          description: OK
+          headers:
+            content-length:
+              schema:
+                type: integer
+                example: '220'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            date:
+              schema:
+                type: string
+                example: Sun, 04 Sep 2022 14:08:25 GMT
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                statusCode: 200
+                data:
+                  userPostActivityID: 5
+                  userID: 1
+                  user: null
+                  postID: 5
+                  post: null
+                  isLiked: 0
+                  isShared: 0
+                  viewsCount: 4
+                  createdAt: '2022-08-30T13:38:55.561602Z'
+                  updatedAt: '2022-09-04T21:06:47.984568Z'
+  /pub/transactions:
+    post:
+      tags:
+        - Transaction
+      summary: Pub new tr
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                subscriptionID: 1
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            Bearer
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJQcm9qZWN0IE5lbWVzaXMgLSBQcm90b3R5cGUiLCJleHAiOjE2NjE3ODM2NTEsImlhdCI6MTY2MTc4MDA1MSwidXNlciI6eyJ1c2VySUQiOjEsInJvbGVJRCI6MSwidXNlcm5hbWUiOiJqZWFuIiwibmFtZSI6IkplYW4gR3VubmhpbGRyIiwiY29pbnMiOjB9fQ.K1TDgO_bPX-jUVe_oeX1eGOem5pA_J51P0etyeKYE58
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    get:
+      tags:
+        - Transaction
+      summary: Get transactions of a user
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            Bearer
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJUZXl2YXQgVGltZXMgLSBBUEkiLCJleHAiOjE2NjIwMjg2NzAsImlhdCI6MTY2MjAyNTA3MCwidXNlciI6eyJ1c2VySUQiOjEsInJvbGVJRCI6MSwidXNlcm5hbWUiOiJ2ZW50aSIsIm5hbWUiOiJWZW50aSIsInJlZmVycmFsQ29kZSI6IlZFTlRJIiwibW9yYSI6MzV9fQ.BdF4QS3sbK8xmB61irilwMIRb6qw_EejbRW5GsSX7ks
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /transactions:
+    get:
+      tags:
+        - Transaction
+      summary: Get all transactions
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            Bearer
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJUZXl2YXQgVGltZXMgLSBBUEkiLCJleHAiOjE2NjIzMDM4NzIsImlhdCI6MTY2MjMwMDI3MiwidXNlciI6eyJ1c2VySUQiOjEsInJvbGVJRCI6MSwidXNlcm5hbWUiOiJ2ZW50aSIsIm5hbWUiOiJWZW50aSIsInJlZmVycmFsQ29kZSI6IlZFTlRJIiwibW9yYSI6NDN9fQ.tLnVn3rhnZAZcQ5jsi3vnoo0T5fq7KeNRmoLAfzvY_4
+      responses:
+        '200':
+          description: OK
+          headers:
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            date:
+              schema:
+                type: string
+                example: Sun, 04 Sep 2022 14:10:18 GMT
+            transfer-encoding:
+              schema:
+                type: string
+                example: chunked
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                statusCode: 200
+                data:
+                  count: 10
+                  limit: 10
+                  page: 1
+                  totalPage: 3
+                  totalData: 26
+                  transactions:
+                    - transactionID: 26
+                      user:
+                        userID: 5
+                        roleID: 2
+                        username: albedo
+                        name: Albedo
+                        referralCode: HYVFLR
+                        mora: 58
+                      subscription:
+                        subscriptionID: 2
+                        name: Premium
+                        price: 50000
+                        moraAmount: 10
+                      status:
+                        transactionStatusID: 3
+                        name: Completed
+                      grossTotal: 50000
+                      netTotal: 50000
+                      userVoucherID: 0
+                      createdAt: '2022-09-04T19:11:44.082466Z'
+                    - transactionID: 25
+                      user:
+                        userID: 5
+                        roleID: 2
+                        username: albedo
+                        name: Albedo
+                        referralCode: HYVFLR
+                        mora: 58
+                      subscription:
+                        subscriptionID: 3
+                        name: Gold
+                        price: 90000
+                        moraAmount: 20
+                      status:
+                        transactionStatusID: 3
+                        name: Completed
+                      grossTotal: 90000
+                      netTotal: 90000
+                      userVoucherID: 0
+                      createdAt: '2022-09-04T19:11:42.134977Z'
+                    - transactionID: 24
+                      user:
+                        userID: 5
+                        roleID: 2
+                        username: albedo
+                        name: Albedo
+                        referralCode: HYVFLR
+                        mora: 58
+                      subscription:
+                        subscriptionID: 1
+                        name: Standard
+                        price: 30000
+                        moraAmount: 5
+                      status:
+                        transactionStatusID: 3
+                        name: Completed
+                      grossTotal: 30000
+                      netTotal: 30000
+                      userVoucherID: 0
+                      createdAt: '2022-09-04T19:11:39.65282Z'
+                    - transactionID: 23
+                      user:
+                        userID: 7
+                        roleID: 2
+                        username: sucrose
+                        name: Sucrose
+                        referralCode: AWSVPN
+                        mora: 11
+                      subscription:
+                        subscriptionID: 1
+                        name: Standard
+                        price: 30000
+                        moraAmount: 5
+                      status:
+                        transactionStatusID: 3
+                        name: Completed
+                      grossTotal: 30000
+                      netTotal: 30000
+                      userVoucherID: 0
+                      createdAt: '2022-09-04T19:07:51.892772Z'
+                    - transactionID: 22
+                      user:
+                        userID: 7
+                        roleID: 2
+                        username: sucrose
+                        name: Sucrose
+                        referralCode: AWSVPN
+                        mora: 11
+                      subscription:
+                        subscriptionID: 2
+                        name: Premium
+                        price: 50000
+                        moraAmount: 10
+                      status:
+                        transactionStatusID: 3
+                        name: Completed
+                      grossTotal: 50000
+                      netTotal: 50000
+                      userVoucherID: 0
+                      createdAt: '2022-09-04T19:07:35.15522Z'
+                    - transactionID: 21
+                      user:
+                        userID: 10
+                        roleID: 2
+                        username: jean
+                        name: Jean Gunnhildr
+                        referralCode: KQPXPC
+                        mora: 15
+                      subscription:
+                        subscriptionID: 3
+                        name: Gold
+                        price: 90000
+                        moraAmount: 20
+                      status:
+                        transactionStatusID: 3
+                        name: Completed
+                      grossTotal: 90000
+                      netTotal: 90000
+                      userVoucherID: 0
+                      createdAt: '2022-09-04T19:04:17.120167Z'
+                    - transactionID: 20
+                      user:
+                        userID: 10
+                        roleID: 2
+                        username: jean
+                        name: Jean Gunnhildr
+                        referralCode: KQPXPC
+                        mora: 15
+                      subscription:
+                        subscriptionID: 2
+                        name: Premium
+                        price: 50000
+                        moraAmount: 10
+                      status:
+                        transactionStatusID: 4
+                        name: Canceled
+                      grossTotal: 50000
+                      netTotal: 50000
+                      userVoucherID: 0
+                      createdAt: '2022-09-04T19:04:14.769356Z'
+                    - transactionID: 19
+                      user:
+                        userID: 10
+                        roleID: 2
+                        username: jean
+                        name: Jean Gunnhildr
+                        referralCode: KQPXPC
+                        mora: 15
+                      subscription:
+                        subscriptionID: 1
+                        name: Standard
+                        price: 30000
+                        moraAmount: 5
+                      status:
+                        transactionStatusID: 2
+                        name: Processing
+                      grossTotal: 30000
+                      netTotal: 30000
+                      userVoucherID: 0
+                      createdAt: '2022-09-04T19:04:12.37446Z'
+                    - transactionID: 18
+                      user:
+                        userID: 9
+                        roleID: 2
+                        username: lisa
+                        name: Lisa
+                        referralCode: RZXZUG
+                        mora: 15
+                      subscription:
+                        subscriptionID: 3
+                        name: Gold
+                        price: 90000
+                        moraAmount: 20
+                      status:
+                        transactionStatusID: 3
+                        name: Completed
+                      grossTotal: 90000
+                      netTotal: 90000
+                      userVoucherID: 0
+                      createdAt: '2022-09-04T19:00:33.037074Z'
+                    - transactionID: 17
+                      user:
+                        userID: 9
+                        roleID: 2
+                        username: lisa
+                        name: Lisa
+                        referralCode: RZXZUG
+                        mora: 15
+                      subscription:
+                        subscriptionID: 1
+                        name: Standard
+                        price: 30000
+                        moraAmount: 5
+                      status:
+                        transactionStatusID: 1
+                        name: Waiting for payment
+                      grossTotal: 30000
+                      netTotal: 30000
+                      userVoucherID: 0
+                      createdAt: '2022-09-04T19:00:29.779744Z'
+  /transaction-statuses:
+    get:
+      tags:
+        - Transaction
+      summary: Get all transaction statuses
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            Bearer
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJUZXl2YXQgVGltZXMgLSBBUEkiLCJleHAiOjE2NjIzMDM4NzIsImlhdCI6MTY2MjMwMDI3MiwidXNlciI6eyJ1c2VySUQiOjEsInJvbGVJRCI6MSwidXNlcm5hbWUiOiJ2ZW50aSIsIm5hbWUiOiJWZW50aSIsInJlZmVycmFsQ29kZSI6IlZFTlRJIiwibW9yYSI6NDN9fQ.tLnVn3rhnZAZcQ5jsi3vnoo0T5fq7KeNRmoLAfzvY_4
+      responses:
+        '200':
+          description: OK
+          headers:
+            content-length:
+              schema:
+                type: integer
+                example: '217'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            date:
+              schema:
+                type: string
+                example: Sun, 04 Sep 2022 14:10:44 GMT
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                statusCode: 200
+                data:
+                  - transactionStatusID: 1
+                    name: Waiting for payment
+                  - transactionStatusID: 2
+                    name: Processing
+                  - transactionStatusID: 3
+                    name: Completed
+                  - transactionStatusID: 4
+                    name: Canceled
+  /pub/transactions/1:
+    get:
+      tags:
+        - Transaction
+      summary: Get a user transaction
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            Bearer
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJQcm9qZWN0IE5lbWVzaXMgLSBQcm90b3R5cGUiLCJleHAiOjE2NjE3MjAxNjEsImlhdCI6MTY2MTcxNjU2MSwidXNlciI6eyJ1c2VySUQiOjEsInJvbGVJRCI6MSwidXNlcm5hbWUiOiJqZWFuIiwibmFtZSI6IkplYW4gR3VubmhpbGRyIiwiY29pbnMiOjB9fQ.-7tMK-C7ISRr8esEBOPDwX45gl1Hx0Xib2-8qK7cm2w
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /transactions/1/approve:
+    post:
+      tags:
+        - Transaction
+      summary: Approve a transaction
+      requestBody:
+        content: {}
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            Bearer
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJUZXl2YXQgVGltZXMgLSBBUEkiLCJleHAiOjE2NjIzMDM4NzIsImlhdCI6MTY2MjMwMDI3MiwidXNlciI6eyJ1c2VySUQiOjEsInJvbGVJRCI6MSwidXNlcm5hbWUiOiJ2ZW50aSIsIm5hbWUiOiJWZW50aSIsInJlZmVycmFsQ29kZSI6IlZFTlRJIiwibW9yYSI6NDN9fQ.tLnVn3rhnZAZcQ5jsi3vnoo0T5fq7KeNRmoLAfzvY_4
+      responses:
+        '200':
+          description: OK
+          headers:
+            access-control-allow-origin:
+              schema:
+                type: string
+                example: '*'
+            content-length:
+              schema:
+                type: integer
+                example: '376'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            date:
+              schema:
+                type: string
+                example: Sun, 04 Sep 2022 14:11:30 GMT
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                statusCode: 200
+                data:
+                  transactionID: 1
+                  user:
+                    userID: 1
+                    roleID: 1
+                    username: venti
+                    name: Venti
+                    referralCode: VENTI
+                    mora: 43
+                  subscription:
+                    subscriptionID: 1
+                    name: Standard
+                    price: 30000
+                    moraAmount: 5
+                  status:
+                    transactionStatusID: 2
+                    name: Processing
+                  grossTotal: 30000
+                  netTotal: 5000
+                  userVoucherID: 1
+                  createdAt: '2022-08-30T02:31:39.662158Z'
+  /pub/user-spending:
+    get:
+      tags:
+        - Transaction
+      summary: Get user spending
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: number
+          example: >-
+            Bearer
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJUZXl2YXQgVGltZXMgLSBBUEkiLCJleHAiOjE2NjIwOTIxNzUsImlhdCI6MTY2MjA4ODU3NSwidXNlciI6eyJ1c2VySUQiOjQsInJvbGVJRCI6MiwidXNlcm5hbWUiOiJrbGVlIiwibmFtZSI6IktsZWUiLCJyZWZlcnJhbENvZGUiOiJGRURZWkgiLCJtb3JhIjoxNn19.49clmJ86ECU_3OuaJWfzN4aImZ9Dh-TiWfGR7Ca7Fs0
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /transactions/1/reject:
+    post:
+      tags:
+        - Transaction
+      summary: Reject a transaction
+      requestBody:
+        content: {}
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            Bearer
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJUZXl2YXQgVGltZXMgLSBBUEkiLCJleHAiOjE2NjIzMDQzMTEsImlhdCI6MTY2MjMwMDcxMSwidXNlciI6eyJ1c2VySUQiOjEsInJvbGVJRCI6MSwidXNlcm5hbWUiOiJ2ZW50aSIsIm5hbWUiOiJWZW50aSIsInJlZmVycmFsQ29kZSI6IlZFTlRJIiwibW9yYSI6NDh9fQ.HrmJNVVKm35VaoeqviSGKu_znY8tDhZt09lAZ7QeQ_o
+      responses:
+        '200':
+          description: OK
+          headers:
+            access-control-allow-origin:
+              schema:
+                type: string
+                example: '*'
+            content-length:
+              schema:
+                type: integer
+                example: '375'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            date:
+              schema:
+                type: string
+                example: Sun, 04 Sep 2022 14:12:29 GMT
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                statusCode: 200
+                data:
+                  transactionID: 1
+                  user:
+                    userID: 1
+                    roleID: 1
+                    username: venti
+                    name: Venti
+                    referralCode: VENTI
+                    mora: 48
+                  subscription:
+                    subscriptionID: 1
+                    name: Standard
+                    price: 30000
+                    moraAmount: 5
+                  status:
+                    transactionStatusID: 3
+                    name: Completed
+                  grossTotal: 30000
+                  netTotal: 5000
+                  userVoucherID: 1
+                  createdAt: '2022-08-30T02:31:39.662158Z'
+  /pub/subscriptions:
+    get:
+      tags:
+        - Subscription
+      summary: Get subscriptions
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: number
+          example: >-
+            Bearer
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJUZXl2YXQgVGltZXMgLSBBUEkiLCJleHAiOjE2NjIzMDU0NjQsImlhdCI6MTY2MjMwMTg2NCwidXNlciI6eyJ1c2VySUQiOjEwLCJyb2xlSUQiOjIsInVzZXJuYW1lIjoiamVhbiIsIm5hbWUiOiJKZWFuIEd1bm5oaWxkciIsInJlZmVycmFsQ29kZSI6IktRUFhQQyIsIm1vcmEiOjE1fX0.5Hh8Pebg--LhWbSn_3rk0EfNFO6rOAU6Jk9bNDGq54k
+      responses:
+        '200':
+          description: OK
+          headers:
+            content-length:
+              schema:
+                type: integer
+                example: '228'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            date:
+              schema:
+                type: string
+                example: Sun, 04 Sep 2022 14:37:03 GMT
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                statusCode: 200
+                data:
+                  - subscriptionID: 1
+                    name: Standard
+                    price: 30000
+                    moraAmount: 5
+                  - subscriptionID: 2
+                    name: Premium
+                    price: 50000
+                    moraAmount: 10
+                  - subscriptionID: 3
+                    name: Gold
+                    price: 90000
+                    moraAmount: 20
+  /pub/subscriptions/1:
+    get:
+      tags:
+        - Subscription
+      summary: Get a subscription
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: number
+          example: >-
+            Bearer
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJUZXl2YXQgVGltZXMgLSBBUEkiLCJleHAiOjE2NjIzMDU0NjQsImlhdCI6MTY2MjMwMTg2NCwidXNlciI6eyJ1c2VySUQiOjEwLCJyb2xlSUQiOjIsInVzZXJuYW1lIjoiamVhbiIsIm5hbWUiOiJKZWFuIEd1bm5oaWxkciIsInJlZmVycmFsQ29kZSI6IktRUFhQQyIsIm1vcmEiOjE1fX0.5Hh8Pebg--LhWbSn_3rk0EfNFO6rOAU6Jk9bNDGq54k
+      responses:
+        '200':
+          description: OK
+          headers:
+            content-length:
+              schema:
+                type: integer
+                example: '93'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            date:
+              schema:
+                type: string
+                example: Sun, 04 Sep 2022 14:37:26 GMT
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                statusCode: 200
+                data:
+                  subscriptionID: 1
+                  name: Standard
+                  price: 30000
+                  moraAmount: 5
+  /pub/user-subscriptions/active:
+    get:
+      tags:
+        - User subscription
+      summary: Get user latest active subscription
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: number
+          example: >-
+            Bearer
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJUZXl2YXQgVGltZXMgLSBBUEkiLCJleHAiOjE2NjIzMDU0NjQsImlhdCI6MTY2MjMwMTg2NCwidXNlciI6eyJ1c2VySUQiOjEwLCJyb2xlSUQiOjIsInVzZXJuYW1lIjoiamVhbiIsIm5hbWUiOiJKZWFuIEd1bm5oaWxkciIsInJlZmVycmFsQ29kZSI6IktRUFhQQyIsIm1vcmEiOjE1fX0.5Hh8Pebg--LhWbSn_3rk0EfNFO6rOAU6Jk9bNDGq54k
+      responses:
+        '200':
+          description: OK
+          headers:
+            content-length:
+              schema:
+                type: integer
+                example: '305'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            date:
+              schema:
+                type: string
+                example: Sun, 04 Sep 2022 14:38:46 GMT
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                statusCode: 200
+                data:
+                  userSubscriptionID: 16
+                  userID: 10
+                  user:
+                    userID: 0
+                    roleID: 0
+                    username: ''
+                    name: ''
+                    referralCode: ''
+                    mora: 0
+                  subscriptionID: 3
+                  subscription:
+                    subscriptionID: 0
+                    name: ''
+                    price: 0
+                    moraAmount: 0
+                  dateStart: '2022-09-04T00:00:00Z'
+                  dateEnded: '2022-10-04T00:00:00Z'
+  /categories/1:
+    get:
+      tags:
+        - Category
+      summary: Get a category
+      description: Get a category
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            Bearer
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJUZXl2YXQgVGltZXMgLSBBUEkiLCJleHAiOjE2NjIyOTk0MjQsImlhdCI6MTY2MjI5NTgyNCwidXNlciI6eyJ1c2VySUQiOjEsInJvbGVJRCI6MSwidXNlcm5hbWUiOiJ2ZW50aSIsIm5hbWUiOiJWZW50aSIsInJlZmVycmFsQ29kZSI6IlZFTlRJIiwibW9yYSI6NDN9fQ.UNVGdA7JGr5Tynd9Ea09EK7YZRXEg0wRr-D-aMPW9mg
+      responses:
+        '200':
+          description: OK
+          headers:
+            content-length:
+              schema:
+                type: integer
+                example: '81'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            date:
+              schema:
+                type: string
+                example: Sun, 04 Sep 2022 12:53:16 GMT
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                statusCode: 200
+                data:
+                  postCategoryID: 1
+                  name: Politic
+                  color: '#d16262'
+  /categories:
+    post:
+      tags:
+        - Category
+      summary: Add new category
+      description: Add new category
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: New category
+                color: red
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            Bearer
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJUZXl2YXQgVGltZXMgLSBBUEkiLCJleHAiOjE2NjIyOTk0MjQsImlhdCI6MTY2MjI5NTgyNCwidXNlciI6eyJ1c2VySUQiOjEsInJvbGVJRCI6MSwidXNlcm5hbWUiOiJ2ZW50aSIsIm5hbWUiOiJWZW50aSIsInJlZmVycmFsQ29kZSI6IlZFTlRJIiwibW9yYSI6NDN9fQ.UNVGdA7JGr5Tynd9Ea09EK7YZRXEg0wRr-D-aMPW9mg
+      responses:
+        '201':
+          description: Created
+          headers:
+            access-control-allow-origin:
+              schema:
+                type: string
+                example: '*'
+            content-length:
+              schema:
+                type: integer
+                example: '84'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            date:
+              schema:
+                type: string
+                example: Sun, 04 Sep 2022 12:57:58 GMT
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                statusCode: 201
+                data:
+                  postCategoryID: 6
+                  name: New category 2
+                  color: red
+  /categories/6:
+    put:
+      tags:
+        - Category
+      summary: Update a category
+      description: Update a category
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example: ''
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            Bearer
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJUZXl2YXQgVGltZXMgLSBBUEkiLCJleHAiOjE2NjIyOTk0MjQsImlhdCI6MTY2MjI5NTgyNCwidXNlciI6eyJ1c2VySUQiOjEsInJvbGVJRCI6MSwidXNlcm5hbWUiOiJ2ZW50aSIsIm5hbWUiOiJWZW50aSIsInJlZmVycmFsQ29kZSI6IlZFTlRJIiwibW9yYSI6NDN9fQ.UNVGdA7JGr5Tynd9Ea09EK7YZRXEg0wRr-D-aMPW9mg
+      responses:
+        '200':
+          description: OK
+          headers:
+            access-control-allow-origin:
+              schema:
+                type: string
+                example: '*'
+            content-length:
+              schema:
+                type: integer
+                example: '85'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            date:
+              schema:
+                type: string
+                example: Sun, 04 Sep 2022 12:59:00 GMT
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                statusCode: 200
+                data:
+                  postCategoryID: 6
+                  name: New category 3
+                  color: blue
+  /pub/categories:
+    get:
+      tags:
+        - Category
+      summary: Get categories
+      description: Get categories
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            Bearer
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJUZXl2YXQgVGltZXMgLSBBUEkiLCJleHAiOjE2NjIzMDM0MTcsImlhdCI6MTY2MjI5OTgxNywidXNlciI6eyJ1c2VySUQiOjEsInJvbGVJRCI6MSwidXNlcm5hbWUiOiJ2ZW50aSIsIm5hbWUiOiJWZW50aSIsInJlZmVycmFsQ29kZSI6IlZFTlRJIiwibW9yYSI6NDN9fQ.jeEy8ll3WLzLeXe7sPXhcaVfV4yO51lunMw0J2k-vDU
+      responses:
+        '200':
+          description: OK
+          headers:
+            content-length:
+              schema:
+                type: integer
+                example: '372'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            date:
+              schema:
+                type: string
+                example: Sun, 04 Sep 2022 14:02:08 GMT
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                statusCode: 200
+                data:
+                  - postCategoryID: 1
+                    name: Politic
+                    color: '#d16262'
+                  - postCategoryID: 2
+                    name: Economy
+                    color: '#fcc142'
+                  - postCategoryID: 3
+                    name: Sport
+                    color: '#6b46e3'
+                  - postCategoryID: 4
+                    name: Entertainment
+                    color: '#32afbf'
+                  - postCategoryID: 5
+                    name: New category
+                    color: red
+                  - postCategoryID: 6
+                    name: New category 3
+                    color: blue
+  /pub/gifts:
+    get:
+      tags:
+        - Gift
+      summary: Get all gifts
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            Bearer
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJUZXl2YXQgVGltZXMgLSBBUEkiLCJleHAiOjE2NjIzMDUxMjYsImlhdCI6MTY2MjMwMTUyNiwidXNlciI6eyJ1c2VySUQiOjUsInJvbGVJRCI6MiwidXNlcm5hbWUiOiJhbGJlZG8iLCJuYW1lIjoiQWxiZWRvIiwicmVmZXJyYWxDb2RlIjoiSFlWRkxSIiwibW9yYSI6NTh9fQ.37CgNf080o_or6oP-2WpJR6A62i7Lt71KX778_OAPFY
+      responses:
+        '200':
+          description: OK
+          headers:
+            content-length:
+              schema:
+                type: integer
+                example: '642'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            date:
+              schema:
+                type: string
+                example: Sun, 04 Sep 2022 14:25:37 GMT
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                statusCode: 200
+                data:
+                  - giftID: 3
+                    name: Keyboard
+                    description: '-'
+                    image:
+                      imageID: 3
+                      url: >-
+                        https://static.zerochan.net/Lumine.%28Genshin.Impact%29.full.3126229.jpg
+                      altText: Default image
+                    stock: 10
+                  - giftID: 1
+                    name: Windsong Lyre
+                    description: '-'
+                    image:
+                      imageID: 4
+                      url: >-
+                        https://static.wikia.nocookie.net/gensin-impact/images/4/4a/Item_Windsong_Lyre.png
+                      altText: Windsong Lyre
+                    stock: 47
+                  - giftID: 2
+                    name: Wings of Descension
+                    description: '-'
+                    image:
+                      imageID: 5
+                      url: >-
+                        https://static.wikia.nocookie.net/gensin-impact/images/6/6d/Item_Wings_of_Descension.png
+                      altText: Wings of Descension
+                    stock: 22
+  /pub/gifts/1:
+    get:
+      tags:
+        - Gift
+      summary: Get a gift
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            Bearer
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJUZXl2YXQgVGltZXMgLSBBUEkiLCJleHAiOjE2NjIzMDUxMjYsImlhdCI6MTY2MjMwMTUyNiwidXNlciI6eyJ1c2VySUQiOjUsInJvbGVJRCI6MiwidXNlcm5hbWUiOiJhbGJlZG8iLCJuYW1lIjoiQWxiZWRvIiwicmVmZXJyYWxDb2RlIjoiSFlWRkxSIiwibW9yYSI6NTh9fQ.37CgNf080o_or6oP-2WpJR6A62i7Lt71KX778_OAPFY
+      responses:
+        '200':
+          description: OK
+          headers:
+            content-length:
+              schema:
+                type: integer
+                example: '229'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            date:
+              schema:
+                type: string
+                example: Sun, 04 Sep 2022 14:26:24 GMT
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                statusCode: 200
+                data:
+                  giftID: 1
+                  name: Windsong Lyre
+                  description: '-'
+                  image:
+                    imageID: 4
+                    url: >-
+                      https://static.wikia.nocookie.net/gensin-impact/images/4/4a/Item_Windsong_Lyre.png
+                    altText: Windsong Lyre
+                  stock: 47
+  /pub/unclaimed-user-gifts:
+    get:
+      tags:
+        - User gift
+      summary: Get user gifts
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            Bearer
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJUZXl2YXQgVGltZXMgLSBBUEkiLCJleHAiOjE2NjIwOTU0NjUsImlhdCI6MTY2MjA5MTg2NSwidXNlciI6eyJ1c2VySUQiOjQsInJvbGVJRCI6MiwidXNlcm5hbWUiOiJrbGVlIiwibmFtZSI6IktsZWUiLCJyZWZlcnJhbENvZGUiOiJGRURZWkgiLCJtb3JhIjoxNn19.jNzSsG98P9F59sVxYpAiBryTYqT-pUdEI4eBtULqokY
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /pub/users/1:
+    get:
+      tags:
+        - User
+      summary: Get user information
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            Bearer
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJUZXl2YXQgVGltZXMgLSBBUEkiLCJleHAiOjE2NjIzMDM0MTcsImlhdCI6MTY2MjI5OTgxNywidXNlciI6eyJ1c2VySUQiOjEsInJvbGVJRCI6MSwidXNlcm5hbWUiOiJ2ZW50aSIsIm5hbWUiOiJWZW50aSIsInJlZmVycmFsQ29kZSI6IlZFTlRJIiwibW9yYSI6NDN9fQ.jeEy8ll3WLzLeXe7sPXhcaVfV4yO51lunMw0J2k-vDU
+      responses:
+        '200':
+          description: OK
+          headers:
+            content-length:
+              schema:
+                type: integer
+                example: '456'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            date:
+              schema:
+                type: string
+                example: Sun, 04 Sep 2022 13:57:05 GMT
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                statusCode: 200
+                data:
+                  userID: 1
+                  role:
+                    roleID: 1
+                    name: admin
+                  username: venti
+                  email: venti@mail.com
+                  name: Venti
+                  phone: '0199901'
+                  address:
+                    addressID: 1
+                    street: Dandelion St.127
+                    city: Windrise
+                    state: Mondstadt
+                    country: Teyvat
+                    postalCode: MOND38
+                  profilePic:
+                    imageID: 1
+                    url: >-
+                      https://static.zerochan.net/Lumine.%28Genshin.Impact%29.full.3126229.jpg
+                    altText: Default profile pic
+                  mora: 43
+                  referralCode: VENTI
+  /pub/users/1/down-lines:
+    get:
+      tags:
+        - User
+      summary: Get user downlines
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            Bearer
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJUZXl2YXQgVGltZXMgLSBBUEkiLCJleHAiOjE2NjIzMDM0MTcsImlhdCI6MTY2MjI5OTgxNywidXNlciI6eyJ1c2VySUQiOjEsInJvbGVJRCI6MSwidXNlcm5hbWUiOiJ2ZW50aSIsIm5hbWUiOiJWZW50aSIsInJlZmVycmFsQ29kZSI6IlZFTlRJIiwibW9yYSI6NDN9fQ.jeEy8ll3WLzLeXe7sPXhcaVfV4yO51lunMw0J2k-vDU
+      responses:
+        '200':
+          description: OK
+          headers:
+            content-length:
+              schema:
+                type: integer
+                example: '113'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            date:
+              schema:
+                type: string
+                example: Sun, 04 Sep 2022 13:57:47 GMT
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                statusCode: 200
+                data:
+                  - userName: Jean Gunnhildr
+                    totalSpending: 90000
+                  - userName: ''
+                    totalSpending: 0
+  /pub/user-vouchers/GLAZELILY:
+    get:
+      tags:
+        - Voucher
+      summary: Get user voucher
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            Bearer
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJUZXl2YXQgVGltZXMgLSBBUEkiLCJleHAiOjE2NjIzMDQ3MjQsImlhdCI6MTY2MjMwMTEyNCwidXNlciI6eyJ1c2VySUQiOjQsInJvbGVJRCI6MiwidXNlcm5hbWUiOiJrbGVlIiwibmFtZSI6IktsZWUiLCJyZWZlcnJhbENvZGUiOiJGRURZWkgiLCJtb3JhIjozMH19.KquU5L3xvLfuNRtrpwRCN2ndvlAAni39tCry6hOM7dc
+      responses:
+        '200':
+          description: OK
+          headers:
+            content-length:
+              schema:
+                type: integer
+                example: '287'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            date:
+              schema:
+                type: string
+                example: Sun, 04 Sep 2022 14:20:26 GMT
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                statusCode: 200
+                data:
+                  userVoucherID: 3
+                  userID: 4
+                  voucher:
+                    voucherID: 1
+                    name: VOUCHER 25K
+                    description: Voucher 25K untuk pembelian subscription.
+                    image:
+                      imageID: 0
+                      url: ''
+                      altText: ''
+                    amount: 25000
+                    code: GLAZELILY
+                  dateExpired: '2022-10-01T00:00:00Z'
+                  isUsed: 0
+  /vouchers:
+    get:
+      tags:
+        - Voucher
+      summary: Get all voucher
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            Bearer
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJUZXl2YXQgVGltZXMgLSBBUEkiLCJleHAiOjE2NjIzMDQ1ODQsImlhdCI6MTY2MjMwMDk4NCwidXNlciI6eyJ1c2VySUQiOjEsInJvbGVJRCI6MSwidXNlcm5hbWUiOiJ2ZW50aSIsIm5hbWUiOiJWZW50aSIsInJlZmVycmFsQ29kZSI6IlZFTlRJIiwibW9yYSI6NDh9fQ.xVBDlLBhQ7HxuLxLyJGG3hx7G-0FLaOFSz-Osda0XoA
+      responses:
+        '200':
+          description: OK
+          headers:
+            content-length:
+              schema:
+                type: integer
+                example: '811'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            date:
+              schema:
+                type: string
+                example: Sun, 04 Sep 2022 14:16:35 GMT
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                statusCode: 200
+                data:
+                  - voucherID: 1
+                    name: VOUCHER 25K
+                    description: Voucher 25K untuk pembelian subscription.
+                    image:
+                      imageID: 3
+                      url: >-
+                        https://static.zerochan.net/Lumine.%28Genshin.Impact%29.full.3126229.jpg
+                      altText: Default image
+                    amount: 25000
+                    code: GLAZELILY
+                  - voucherID: 2
+                    name: VOUCHER 50K
+                    description: Voucher 50K untuk pembelian subscription.
+                    image:
+                      imageID: 3
+                      url: >-
+                        https://static.zerochan.net/Lumine.%28Genshin.Impact%29.full.3126229.jpg
+                      altText: Default image
+                    amount: 50000
+                    code: WINDWHEELASTER
+                  - voucherID: 3
+                    name: VOUCHER 75K
+                    description: Voucher 75K untuk pembelian subscription.
+                    image:
+                      imageID: 3
+                      url: >-
+                        https://static.zerochan.net/Lumine.%28Genshin.Impact%29.full.3126229.jpg
+                      altText: Default image
+                    amount: 75000
+                    code: NILOTPALALOTUS
+  /pub/user-vouchers:
+    get:
+      tags:
+        - Voucher
+      summary: Get user vouchers
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            Bearer
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJUZXl2YXQgVGltZXMgLSBBUEkiLCJleHAiOjE2NjIzMDQ3MjQsImlhdCI6MTY2MjMwMTEyNCwidXNlciI6eyJ1c2VySUQiOjQsInJvbGVJRCI6MiwidXNlcm5hbWUiOiJrbGVlIiwibmFtZSI6IktsZWUiLCJyZWZlcnJhbENvZGUiOiJGRURZWkgiLCJtb3JhIjozMH19.KquU5L3xvLfuNRtrpwRCN2ndvlAAni39tCry6hOM7dc
+      responses:
+        '200':
+          description: OK
+          headers:
+            content-length:
+              schema:
+                type: integer
+                example: '556'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            date:
+              schema:
+                type: string
+                example: Sun, 04 Sep 2022 14:19:09 GMT
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                statusCode: 200
+                data:
+                  - userVoucherID: 4
+                    userID: 4
+                    voucher:
+                      voucherID: 2
+                      name: VOUCHER 50K
+                      description: Voucher 50K untuk pembelian subscription.
+                      image:
+                        imageID: 0
+                        url: ''
+                        altText: ''
+                      amount: 50000
+                      code: WINDWHEELASTER
+                    dateExpired: '2022-10-04T00:00:00Z'
+                    isUsed: 0
+                  - userVoucherID: 3
+                    userID: 4
+                    voucher:
+                      voucherID: 1
+                      name: VOUCHER 25K
+                      description: Voucher 25K untuk pembelian subscription.
+                      image:
+                        imageID: 0
+                        url: ''
+                        altText: ''
+                      amount: 25000
+                      code: GLAZELILY
+                    dateExpired: '2022-10-01T00:00:00Z'
+                    isUsed: 0
+  /open/payment:
+    post:
+      tags:
+        - Payment
+      summary: Pay a transaction
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                transactionID: 2
+                amount: 5000
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /pub/reading-history:
+    get:
+      tags:
+        - Reading history
+      summary: Get user reading history
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            Bearer
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJUZXl2YXQgVGltZXMgLSBBUEkiLCJleHAiOjE2NjIzMDM4NzIsImlhdCI6MTY2MjMwMDI3MiwidXNlciI6eyJ1c2VySUQiOjEsInJvbGVJRCI6MSwidXNlcm5hbWUiOiJ2ZW50aSIsIm5hbWUiOiJWZW50aSIsInJlZmVycmFsQ29kZSI6IlZFTlRJIiwibW9yYSI6NDN9fQ.tLnVn3rhnZAZcQ5jsi3vnoo0T5fq7KeNRmoLAfzvY_4
+      responses:
+        '200':
+          description: OK
+          headers:
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            date:
+              schema:
+                type: string
+                example: Sun, 04 Sep 2022 14:05:35 GMT
+            transfer-encoding:
+              schema:
+                type: string
+                example: chunked
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                statusCode: 200
+                data:
+                  count: 4
+                  limit: 10
+                  page: 1
+                  totalPage: 1
+                  totalData: 4
+                  activities:
+                    - userPostActivityID: 13
+                      userID: 1
+                      user:
+                        userID: 1
+                        roleID: 1
+                        username: venti
+                        name: Venti
+                        referralCode: VENTI
+                        mora: 43
+                      postID: 7
+                      post:
+                        postID: 7
+                        postTierID: 3
+                        postTier:
+                          postTierID: 3
+                          name: VIP
+                          moraRequired: 2
+                          color: '#3e92e6'
+                        postCategoryID: 4
+                        postCategory:
+                          postCategoryID: 4
+                          name: Entertainment
+                          color: '#32afbf'
+                        title: Osmanthus wine taste the same as I remember
+                        content: >-
+                          Lorem ipsum dolor sit amet, consectetur adipiscing
+                          elit, sed do eiusmod tempor incididunt ut labore et
+                          dolore magna aliqua. Ut enim ad minim veniam, quis
+                          nostrud exercitation ullamco laboris nisi ut aliquip
+                          ex ea commodo consequat. Duis aute irure dolor in
+                          reprehenderit in voluptate velit esse cillum dolore eu
+                          fugiat nulla pariatur. Excepteur sint occaecat
+                          cupidatat non proident, sunt in culpa qui officia
+                          deserunt mollit anim id est laborum.
+                        slug: osmanthus-wine-taste-the-same-as-i-remember
+                        summary: >-
+                          Lorem ipsum dolor sit amet, consectetur adipiscing
+                          elit, sed do eiusmod tempor incididunt ut labore et
+                          dolore magna aliqua. Ut enim ad minim veniam, quis
+                          nostrud exercitation ullamco laboris nisi ut aliquip
+                          ex ea commodo consequat.
+                        imgThumbnailID: 2
+                        imgThumbnail:
+                          imageID: 2
+                          url: >-
+                            https://asset.kompas.com/crops/EGyrhYPJi_psXlT29Sq3KyHMR0E=/40x0:904x576/750x500/data/photo/2021/09/29/6153c38932e38.jpeg
+                          altText: Default thumbnail
+                        imgContentID: 3
+                        imgContent:
+                          imageID: 3
+                          url: >-
+                            https://static.zerochan.net/Lumine.%28Genshin.Impact%29.full.3126229.jpg
+                          altText: Default image
+                        createdByID: 2
+                        createdBy:
+                          userID: 2
+                          roleID: 1
+                          username: zhongli
+                          name: Zhongli
+                          referralCode: ECVSXJ
+                          mora: 7
+                        updatedByID: 2
+                        updatedBy:
+                          userID: 2
+                          roleID: 1
+                          username: zhongli
+                          name: Zhongli
+                          referralCode: ECVSXJ
+                          mora: 7
+                        createdAt: '2022-08-30T03:34:33.375571Z'
+                        updatedAt: '2022-08-30T03:34:33.375571Z'
+                        totalLike: 0
+                        totalShare: 0
+                      isLiked: 0
+                      isShared: 0
+                      viewsCount: 1
+                      createdAt: '2022-09-01T16:41:33.435699Z'
+                      updatedAt: '2022-09-01T16:41:33.435699Z'
+                    - userPostActivityID: 11
+                      userID: 1
+                      user:
+                        userID: 1
+                        roleID: 1
+                        username: venti
+                        name: Venti
+                        referralCode: VENTI
+                        mora: 43
+                      postID: 8
+                      post:
+                        postID: 8
+                        postTierID: 1
+                        postTier:
+                          postTierID: 1
+                          name: Free
+                          moraRequired: 0
+                          color: '#adadad'
+                        postCategoryID: 2
+                        postCategory:
+                          postCategoryID: 2
+                          name: Economy
+                          color: '#fcc142'
+                        title: Liben finally retired
+                        content: >-
+                          Lorem ipsum dolor sit amet, consectetur adipiscing
+                          elit, sed do eiusmod tempor incididunt ut labore et
+                          dolore magna aliqua. Ut enim ad minim veniam, quis
+                          nostrud exercitation ullamco laboris nisi ut aliquip
+                          ex ea commodo consequat. Duis aute irure dolor in
+                          reprehenderit in voluptate velit esse cillum dolore eu
+                          fugiat nulla pariatur. Excepteur sint occaecat
+                          cupidatat non proident, sunt in culpa qui officia
+                          deserunt mollit anim id est laborum.
+                        slug: liben-finally-retired
+                        summary: >-
+                          Lorem ipsum dolor sit amet, consectetur adipiscing
+                          elit, sed do eiusmod tempor incididunt ut labore et
+                          dolore magna aliqua. Ut enim ad minim veniam, quis
+                          nostrud exercitation ullamco laboris nisi ut aliquip
+                          ex ea commodo consequat.
+                        imgThumbnailID: 2
+                        imgThumbnail:
+                          imageID: 2
+                          url: >-
+                            https://asset.kompas.com/crops/EGyrhYPJi_psXlT29Sq3KyHMR0E=/40x0:904x576/750x500/data/photo/2021/09/29/6153c38932e38.jpeg
+                          altText: Default thumbnail
+                        imgContentID: 3
+                        imgContent:
+                          imageID: 3
+                          url: >-
+                            https://static.zerochan.net/Lumine.%28Genshin.Impact%29.full.3126229.jpg
+                          altText: Default image
+                        createdByID: 2
+                        createdBy:
+                          userID: 2
+                          roleID: 1
+                          username: zhongli
+                          name: Zhongli
+                          referralCode: ECVSXJ
+                          mora: 7
+                        updatedByID: 2
+                        updatedBy:
+                          userID: 2
+                          roleID: 1
+                          username: zhongli
+                          name: Zhongli
+                          referralCode: ECVSXJ
+                          mora: 7
+                        createdAt: '2022-08-30T03:45:27.676783Z'
+                        updatedAt: '2022-08-30T03:45:27.676783Z'
+                        totalLike: 0
+                        totalShare: 0
+                      isLiked: 1
+                      isShared: 1
+                      viewsCount: 6
+                      createdAt: '2022-08-31T16:32:52.312089Z'
+                      updatedAt: '2022-08-31T16:32:52.312089Z'
+                    - userPostActivityID: 7
+                      userID: 1
+                      user:
+                        userID: 1
+                        roleID: 1
+                        username: venti
+                        name: Venti
+                        referralCode: VENTI
+                        mora: 43
+                      postID: 1
+                      post: null
+                      isLiked: 1
+                      isShared: 1
+                      viewsCount: 4
+                      createdAt: '2022-08-30T13:50:23.042623Z'
+                      updatedAt: '2022-08-30T13:50:23.042623Z'
+                    - userPostActivityID: 5
+                      userID: 1
+                      user:
+                        userID: 1
+                        roleID: 1
+                        username: venti
+                        name: Venti
+                        referralCode: VENTI
+                        mora: 43
+                      postID: 5
+                      post:
+                        postID: 5
+                        postTierID: 1
+                        postTier:
+                          postTierID: 1
+                          name: Free
+                          moraRequired: 0
+                          color: '#adadad'
+                        postCategoryID: 3
+                        postCategory:
+                          postCategoryID: 3
+                          name: Sport
+                          color: '#6b46e3'
+                        title: >-
+                          Knights of Favonius held a hilichurl hunting
+                          competition
+                        content: >-
+                          Lorem ipsum dolor sit amet, consectetur adipiscing
+                          elit, sed do eiusmod tempor incididunt ut labore et
+                          dolore magna aliqua. Ut enim ad minim veniam, quis
+                          nostrud exercitation ullamco laboris nisi ut aliquip
+                          ex ea commodo consequat. Duis aute irure dolor in
+                          reprehenderit in voluptate velit esse cillum dolore eu
+                          fugiat nulla pariatur. Excepteur sint occaecat
+                          cupidatat non proident, sunt in culpa qui officia
+                          deserunt mollit anim id est laborum.
+                        slug: >-
+                          knights-of-favonius-held-a-hilichurl-hunting-competition
+                        summary: >-
+                          Lorem ipsum dolor sit amet, consectetur adipiscing
+                          elit, sed do eiusmod tempor incididunt ut labore et
+                          dolore magna aliqua. Ut enim ad minim veniam, quis
+                          nostrud exercitation ullamco laboris nisi ut aliquip
+                          ex ea commodo consequat.
+                        imgThumbnailID: 2
+                        imgThumbnail:
+                          imageID: 2
+                          url: >-
+                            https://asset.kompas.com/crops/EGyrhYPJi_psXlT29Sq3KyHMR0E=/40x0:904x576/750x500/data/photo/2021/09/29/6153c38932e38.jpeg
+                          altText: Default thumbnail
+                        imgContentID: 3
+                        imgContent:
+                          imageID: 3
+                          url: >-
+                            https://static.zerochan.net/Lumine.%28Genshin.Impact%29.full.3126229.jpg
+                          altText: Default image
+                        createdByID: 1
+                        createdBy:
+                          userID: 1
+                          roleID: 1
+                          username: venti
+                          name: Venti
+                          referralCode: VENTI
+                          mora: 43
+                        updatedByID: 1
+                        updatedBy:
+                          userID: 1
+                          roleID: 1
+                          username: venti
+                          name: Venti
+                          referralCode: VENTI
+                          mora: 43
+                        createdAt: '2022-08-30T03:32:09.665955Z'
+                        updatedAt: '2022-08-30T03:32:09.665955Z'
+                        totalLike: 0
+                        totalShare: 0
+                      isLiked: 0
+                      isShared: 0
+                      viewsCount: 3
+                      createdAt: '2022-08-30T13:38:55.561602Z'
+                      updatedAt: '2022-08-30T13:38:55.561602Z'
+  /pub/user-subscriptions/:
+    get:
+      tags:
+        - User subscription
+      summary: Get user subscriptions
+      description: Get list of a user subscriptions
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: number
+          example: >-
+            Bearer
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJUZXl2YXQgVGltZXMgLSBBUEkiLCJleHAiOjE2NjIzMDU0NjQsImlhdCI6MTY2MjMwMTg2NCwidXNlciI6eyJ1c2VySUQiOjEwLCJyb2xlSUQiOjIsInVzZXJuYW1lIjoiamVhbiIsIm5hbWUiOiJKZWFuIEd1bm5oaWxkciIsInJlZmVycmFsQ29kZSI6IktRUFhQQyIsIm1vcmEiOjE1fX0.5Hh8Pebg--LhWbSn_3rk0EfNFO6rOAU6Jk9bNDGq54k
+      responses:
+        '200':
+          description: OK
+          headers:
+            content-length:
+              schema:
+                type: integer
+                example: '422'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            date:
+              schema:
+                type: string
+                example: Sun, 04 Sep 2022 14:38:05 GMT
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                statusCode: 200
+                data:
+                  count: 1
+                  limit: 10
+                  page: 1
+                  totalPage: 1
+                  totalData: 1
+                  userSubscriptions:
+                    - userSubscriptionID: 16
+                      userID: 10
+                      user:
+                        userID: 10
+                        roleID: 2
+                        username: jean
+                        name: Jean Gunnhildr
+                        referralCode: KQPXPC
+                        mora: 15
+                      subscriptionID: 3
+                      subscription:
+                        subscriptionID: 3
+                        name: Gold
+                        price: 90000
+                        moraAmount: 20
+                      dateStart: '2022-09-04T00:00:00Z'
+                      dateEnded: '2022-10-04T00:00:00Z'
+  /pub/tiers/:
+    get:
+      tags:
+        - Tier
+      summary: Get tiers
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            Bearer
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJUZXl2YXQgVGltZXMgLSBBUEkiLCJleHAiOjE2NjIzMDM0MTcsImlhdCI6MTY2MjI5OTgxNywidXNlciI6eyJ1c2VySUQiOjEsInJvbGVJRCI6MSwidXNlcm5hbWUiOiJ2ZW50aSIsIm5hbWUiOiJWZW50aSIsInJlZmVycmFsQ29kZSI6IlZFTlRJIiwibW9yYSI6NDN9fQ.jeEy8ll3WLzLeXe7sPXhcaVfV4yO51lunMw0J2k-vDU
+      responses:
+        '200':
+          description: OK
+          headers:
+            content-length:
+              schema:
+                type: integer
+                example: '227'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            date:
+              schema:
+                type: string
+                example: Sun, 04 Sep 2022 13:58:58 GMT
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                statusCode: 200
+                data:
+                  - postTierID: 1
+                    name: Free
+                    moraRequired: 0
+                    color: '#adadad'
+                  - postTierID: 2
+                    name: Premium
+                    moraRequired: 1
+                    color: '#d49455'
+                  - postTierID: 3
+                    name: VIP
+                    moraRequired: 2
+                    color: '#3e92e6'
+  /tiers/1:
+    get:
+      tags:
+        - Tier
+      summary: Get tier
+      description: Get tier
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            Bearer
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJUZXl2YXQgVGltZXMgLSBBUEkiLCJleHAiOjE2NjIzMDEzNzQsImlhdCI6MTY2MjI5Nzc3NCwidXNlciI6eyJ1c2VySUQiOjEsInJvbGVJRCI6MSwidXNlcm5hbWUiOiJ2ZW50aSIsIm5hbWUiOiJWZW50aSIsInJlZmVycmFsQ29kZSI6IlZFTlRJIiwibW9yYSI6NDN9fQ.7QPtgDg2DnjDLiZa_XnwKKnikO-JacbffFbE-r5CTSg
+      responses:
+        '200':
+          description: OK
+          headers:
+            content-length:
+              schema:
+                type: integer
+                example: '91'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            date:
+              schema:
+                type: string
+                example: Sun, 04 Sep 2022 13:23:06 GMT
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                statusCode: 200
+                data:
+                  postTierID: 1
+                  name: Free
+                  moraRequired: 0
+                  color: '#adadad'
+  /pub/gift-claims:
+    get:
+      tags:
+        - Gift claim
+      summary: Get gift claims of a user
+      description: Get gift claims of a user
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: number
+          example: >-
+            Bearer
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJUZXl2YXQgVGltZXMgLSBBUEkiLCJleHAiOjE2NjIzMDU0NjQsImlhdCI6MTY2MjMwMTg2NCwidXNlciI6eyJ1c2VySUQiOjEwLCJyb2xlSUQiOjIsInVzZXJuYW1lIjoiamVhbiIsIm5hbWUiOiJKZWFuIEd1bm5oaWxkciIsInJlZmVycmFsQ29kZSI6IktRUFhQQyIsIm1vcmEiOjE1fX0.5Hh8Pebg--LhWbSn_3rk0EfNFO6rOAU6Jk9bNDGq54k
+      responses:
+        '200':
+          description: OK
+          headers:
+            content-length:
+              schema:
+                type: integer
+                example: '692'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            date:
+              schema:
+                type: string
+                example: Sun, 04 Sep 2022 14:34:20 GMT
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                statusCode: 200
+                data:
+                  - giftClaimID: 14
+                    userID: 10
+                    user:
+                      userID: 10
+                      roleID: 2
+                      username: jean
+                      name: Jean Gunnhildr
+                      referralCode: KQPXPC
+                      mora: 15
+                    addressID: 10
+                    address:
+                      addressID: 10
+                      street: Leo Minor
+                      city: Dandelions City
+                      state: Mondstadt
+                      country: Teyvat
+                      postalCode: DANDE3
+                    statusID: 2
+                    status:
+                      giftClaimStatusID: 2
+                      name: Processing
+                    createdAt: ''
+                    updatedAt: ''
+                    giftClaimItems:
+                      - giftClaimItemID: 23
+                        giftID: 1
+                        gift:
+                          giftID: 1
+                          name: Windsong Lyre
+                          description: '-'
+                          image:
+                            imageID: 4
+                            url: >-
+                              https://static.wikia.nocookie.net/gensin-impact/images/4/4a/Item_Windsong_Lyre.png
+                            altText: Windsong Lyre
+                          stock: 47
+                        giftClaimID: 14
+    post:
+      tags:
+        - Gift claim
+      summary: Create new gift claim
+      requestBody:
+        content: {}
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: number
+          example: >-
+            Bearer
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJUZXl2YXQgVGltZXMgLSBBUEkiLCJleHAiOjE2NjIzMDU0NjQsImlhdCI6MTY2MjMwMTg2NCwidXNlciI6eyJ1c2VySUQiOjEwLCJyb2xlSUQiOjIsInVzZXJuYW1lIjoiamVhbiIsIm5hbWUiOiJKZWFuIEd1bm5oaWxkciIsInJlZmVycmFsQ29kZSI6IktRUFhQQyIsIm1vcmEiOjE1fX0.5Hh8Pebg--LhWbSn_3rk0EfNFO6rOAU6Jk9bNDGq54k
+      responses:
+        '200':
+          description: OK
+          headers:
+            access-control-allow-origin:
+              schema:
+                type: string
+                example: '*'
+            content-length:
+              schema:
+                type: integer
+                example: '436'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            date:
+              schema:
+                type: string
+                example: Sun, 04 Sep 2022 14:33:15 GMT
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                statusCode: 200
+                data:
+                  giftClaimID: 14
+                  userID: 10
+                  user: null
+                  addressID: 10
+                  address: null
+                  statusID: 2
+                  status: null
+                  createdAt: ''
+                  updatedAt: ''
+                  giftClaimItems:
+                    - giftClaimItemID: 23
+                      giftID: 1
+                      gift:
+                        giftID: 1
+                        name: Windsong Lyre
+                        description: '-'
+                        image:
+                          imageID: 4
+                          url: >-
+                            https://static.wikia.nocookie.net/gensin-impact/images/4/4a/Item_Windsong_Lyre.png
+                          altText: Windsong Lyre
+                        stock: 47
+                      giftClaimID: 14
+  /gift-claim-statuses:
+    get:
+      tags:
+        - Gift claim
+      summary: Get gift claim statuses
+      description: Get gift claim statuses
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            Bearer
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJUZXl2YXQgVGltZXMgLSBBUEkiLCJleHAiOjE2NjIzMDYxMTMsImlhdCI6MTY2MjMwMjUxMywidXNlciI6eyJ1c2VySUQiOjEsInJvbGVJRCI6MSwidXNlcm5hbWUiOiJ2ZW50aSIsIm5hbWUiOiJWZW50aSIsInJlZmVycmFsQ29kZSI6IlZFTlRJIiwibW9yYSI6NDh9fQ.i58mydWe0hj_7e3L5r0tSwyTTAUHJaCXliLDOiqykzY
+      responses:
+        '200':
+          description: OK
+          headers:
+            content-length:
+              schema:
+                type: integer
+                example: '240'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            date:
+              schema:
+                type: string
+                example: Sun, 04 Sep 2022 14:42:17 GMT
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                statusCode: 200
+                data:
+                  - giftClaimStatusID: 1
+                    name: Draft
+                  - giftClaimStatusID: 2
+                    name: Processing
+                  - giftClaimStatusID: 3
+                    name: On Delivery
+                  - giftClaimStatusID: 4
+                    name: Rejected
+                  - giftClaimStatusID: 5
+                    name: Delivered
+  /gift-claims:
+    get:
+      tags:
+        - Gift claim
+      summary: Get gift claims
+      description: Get gift claims
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            Bearer
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJUZXl2YXQgVGltZXMgLSBBUEkiLCJleHAiOjE2NjIzMDYxMTMsImlhdCI6MTY2MjMwMjUxMywidXNlciI6eyJ1c2VySUQiOjEsInJvbGVJRCI6MSwidXNlcm5hbWUiOiJ2ZW50aSIsIm5hbWUiOiJWZW50aSIsInJlZmVycmFsQ29kZSI6IlZFTlRJIiwibW9yYSI6NDh9fQ.i58mydWe0hj_7e3L5r0tSwyTTAUHJaCXliLDOiqykzY
+      responses:
+        '200':
+          description: OK
+          headers:
+            content-length:
+              schema:
+                type: integer
+                example: '1710'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            date:
+              schema:
+                type: string
+                example: Sun, 04 Sep 2022 14:42:40 GMT
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                statusCode: 200
+                data:
+                  count: 2
+                  limit: 10
+                  page: 1
+                  totalPage: 1
+                  totalData: 2
+                  giftClaims:
+                    - giftClaimID: 14
+                      userID: 10
+                      user:
+                        userID: 10
+                        roleID: 2
+                        username: jean
+                        name: Jean Gunnhildr
+                        referralCode: KQPXPC
+                        mora: 15
+                      addressID: 10
+                      address:
+                        addressID: 10
+                        street: Leo Minor
+                        city: Dandelions City
+                        state: Mondstadt
+                        country: Teyvat
+                        postalCode: DANDE3
+                      statusID: 2
+                      status:
+                        giftClaimStatusID: 2
+                        name: Processing
+                      createdAt: ''
+                      updatedAt: ''
+                      giftClaimItems:
+                        - giftClaimItemID: 23
+                          giftID: 1
+                          gift:
+                            giftID: 1
+                            name: Windsong Lyre
+                            description: '-'
+                            image:
+                              imageID: 4
+                              url: >-
+                                https://static.wikia.nocookie.net/gensin-impact/images/4/4a/Item_Windsong_Lyre.png
+                              altText: Windsong Lyre
+                            stock: 47
+                          giftClaimID: 14
+                    - giftClaimID: 13
+                      userID: 5
+                      user:
+                        userID: 5
+                        roleID: 2
+                        username: albedo
+                        name: Albedo
+                        referralCode: HYVFLR
+                        mora: 58
+                      addressID: 5
+                      address:
+                        addressID: 5
+                        street: Soil St. 777
+                        city: Alchemy of Favonious
+                        state: Mondstadt
+                        country: Teyvat
+                        postalCode: ALCH812
+                      statusID: 3
+                      status:
+                        giftClaimStatusID: 3
+                        name: On Delivery
+                      createdAt: ''
+                      updatedAt: ''
+                      giftClaimItems:
+                        - giftClaimItemID: 21
+                          giftID: 1
+                          gift:
+                            giftID: 1
+                            name: Windsong Lyre
+                            description: '-'
+                            image:
+                              imageID: 4
+                              url: >-
+                                https://static.wikia.nocookie.net/gensin-impact/images/4/4a/Item_Windsong_Lyre.png
+                              altText: Windsong Lyre
+                            stock: 47
+                          giftClaimID: 13
+                        - giftClaimItemID: 22
+                          giftID: 2
+                          gift:
+                            giftID: 2
+                            name: Wings of Descension
+                            description: '-'
+                            image:
+                              imageID: 5
+                              url: >-
+                                https://static.wikia.nocookie.net/gensin-impact/images/6/6d/Item_Wings_of_Descension.png
+                              altText: Wings of Descension
+                            stock: 22
+                          giftClaimID: 13
+  /pub/gift-claims/14:
+    get:
+      tags:
+        - Gift claim
+      summary: Get gift claim detail
+      description: Get gift claim detail
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: number
+          example: >-
+            Bearer
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJUZXl2YXQgVGltZXMgLSBBUEkiLCJleHAiOjE2NjIzMDU0NjQsImlhdCI6MTY2MjMwMTg2NCwidXNlciI6eyJ1c2VySUQiOjEwLCJyb2xlSUQiOjIsInVzZXJuYW1lIjoiamVhbiIsIm5hbWUiOiJKZWFuIEd1bm5oaWxkciIsInJlZmVycmFsQ29kZSI6IktRUFhQQyIsIm1vcmEiOjE1fX0.5Hh8Pebg--LhWbSn_3rk0EfNFO6rOAU6Jk9bNDGq54k
+      responses:
+        '200':
+          description: OK
+          headers:
+            content-length:
+              schema:
+                type: integer
+                example: '690'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            date:
+              schema:
+                type: string
+                example: Sun, 04 Sep 2022 14:35:39 GMT
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                statusCode: 200
+                data:
+                  giftClaimID: 14
+                  userID: 10
+                  user:
+                    userID: 10
+                    roleID: 2
+                    username: jean
+                    name: Jean Gunnhildr
+                    referralCode: KQPXPC
+                    mora: 15
+                  addressID: 10
+                  address:
+                    addressID: 10
+                    street: Leo Minor
+                    city: Dandelions City
+                    state: Mondstadt
+                    country: Teyvat
+                    postalCode: DANDE3
+                  statusID: 2
+                  status:
+                    giftClaimStatusID: 2
+                    name: Processing
+                  createdAt: ''
+                  updatedAt: ''
+                  giftClaimItems:
+                    - giftClaimItemID: 23
+                      giftID: 1
+                      gift:
+                        giftID: 1
+                        name: Windsong Lyre
+                        description: '-'
+                        image:
+                          imageID: 4
+                          url: >-
+                            https://static.wikia.nocookie.net/gensin-impact/images/4/4a/Item_Windsong_Lyre.png
+                          altText: Windsong Lyre
+                        stock: 47
+                      giftClaimID: 14
+  /gift-claims/1/reject:
+    post:
+      tags:
+        - Gift claim
+      summary: Reject a gift claim
+      description: Reject a gift claim
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                '':
+                  type: string
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            Bearer
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJUZXl2YXQgVGltZXMgLSBBUEkiLCJleHAiOjE2NjIyODc0MzcsImlhdCI6MTY2MjI4MzgzNywidXNlciI6eyJ1c2VySUQiOjEsInJvbGVJRCI6MSwidXNlcm5hbWUiOiJ2ZW50aSIsIm5hbWUiOiJWZW50aSIsInJlZmVycmFsQ29kZSI6IlZFTlRJIiwibW9yYSI6NDN9fQ.h2rx6-EdePl0SttkOJ31GI77eQ0O1cqMSCGA-GCoXrE
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /gift-claims/1/deliver:
+    get:
+      tags:
+        - Gift claim
+      summary: Deliver a gift claim
+      description: Deliver a gift claim
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /pub/gift-claims/1/complete:
+    get:
+      tags:
+        - Gift claim
+      summary: Complete a gift claim
+      description: Complete a gift claim
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
